@@ -238,11 +238,15 @@
 /* burger */
 .nav__burger {
   display: none;
+  /* the desktop nav links carry `margin-inline: auto`; once they are hidden
+     nothing pushes the burger, so it anchors itself to the right edge */
+  margin-left: auto;
   width: 44px; height: 44px;
   border-radius: 13px;
   border: 1px solid var(--line-strong);
   background: #fff;
   place-items: center;
+  flex: none;
 }
 .burger { display: grid; gap: 5px; width: 20px; }
 .burger i {

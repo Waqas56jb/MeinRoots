@@ -104,12 +104,7 @@ export const planKeys = [
   { key: 'premium', variant: 'ghost' },
 ]
 
-export const footerColumnKeys = ['platform', 'candidates', 'company', 'legal']
-
-export const footerMetaIcons = ['shield', 'globe', 'lock']
-
 export const contact = {
   email: 'hello@meinroots.com',
   phone: '+49 30 1234 5678',
-  city: 'Berlin, Germany',
 }

@@ -379,35 +379,9 @@ export default {
 
   footer: {
     tagline: 'Roots everywhere. Careers in Germany.',
-    follow: 'Follow us',
-    newsletter: {
-      title: 'Hiring news for international talent',
-      text: 'One short email a month — new domains, language tips, visa changes. No spam.',
-      placeholder: 'you@email.com',
-      cta: 'Subscribe',
-      done: 'You’re on the list.',
-    },
     about: 'Connecting global talent with employment in Germany, remote roles and freelance projects — AI qualification, human review.',
+    legalLinks: ['Privacy policy', 'Terms of service', 'Imprint'],
     rights: 'All rights reserved.',
-    columns: {
-      platform: {
-        title: 'Platform',
-        links: ['CV analysis', 'Skill gap engine', 'Readiness score', 'Multilingual CVs', 'Admin console'],
-      },
-      candidates: {
-        title: 'Candidates',
-        links: ['Work in Germany', 'Remote roles', 'Freelance projects', 'Language guidance', 'Visa & relocation'],
-      },
-      company: {
-        title: 'Company',
-        links: ['About MeinRoots', 'For recruiters', 'Careers', 'Contact', 'Press kit'],
-      },
-      legal: {
-        title: 'Legal',
-        links: ['Privacy policy', 'GDPR & data rights', 'Terms of service', 'Cookie settings', 'Imprint'],
-      },
-    },
-    meta: ['GDPR compliant', 'EN · DE · FR', 'Encrypted storage'],
   },
 
   auth: {

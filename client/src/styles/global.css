@@ -449,6 +449,12 @@ svg.is-flipped { transition: transform 0.25s var(--ease); }
   .grid--2, .grid--3, .grid--4 { grid-template-columns: minmax(0, 1fr); }
 }
 
+/* iOS Safari zooms the whole page when a focused input is under 16px —
+   keep form text at exactly 16px on phones so focusing never zooms. */
+@media (max-width: 820px) {
+  input, select, textarea { font-size: 16px !important; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after {

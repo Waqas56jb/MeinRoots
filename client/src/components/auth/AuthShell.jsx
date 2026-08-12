@@ -34,8 +34,8 @@ export default function AuthShell({ image, asidePath, children }) {
         </div>
 
         <div className="auth__asideFoot">
-          <span><Icon name="shield" size={14} /> {t('footer.meta')[0]}</span>
-          <span><Icon name="lock" size={14} /> {t('footer.meta')[2]}</span>
+          <span><Icon name="shield" size={14} /> {t('trust.items.gdpr')}</span>
+          <span><Icon name="lock" size={14} /> {t('trust.items.encrypted')}</span>
         </div>
       </aside>
 

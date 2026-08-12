@@ -379,35 +379,9 @@ export default {
 
   footer: {
     tagline: 'Wurzeln überall. Karriere in Deutschland.',
-    follow: 'Folge uns',
-    newsletter: {
-      title: 'Jobnews für internationale Fachkräfte',
-      text: 'Eine kurze E-Mail im Monat — neue Berufsfelder, Sprachtipps, Visa-Änderungen. Kein Spam.',
-      placeholder: 'du@email.com',
-      cta: 'Abonnieren',
-      done: 'Du bist dabei.',
-    },
     about: 'Wir verbinden globale Talente mit Jobs in Deutschland, Remote-Rollen und Freelance-Projekten — KI-Qualifizierung, menschliche Prüfung.',
+    legalLinks: ['Datenschutz', 'AGB', 'Impressum'],
     rights: 'Alle Rechte vorbehalten.',
-    columns: {
-      platform: {
-        title: 'Plattform',
-        links: ['Lebenslaufanalyse', 'Skill-Gap-Engine', 'Bereitschafts-Score', 'Mehrsprachige Lebensläufe', 'Admin-Konsole'],
-      },
-      candidates: {
-        title: 'Kandidat:innen',
-        links: ['Arbeiten in Deutschland', 'Remote-Stellen', 'Freelance-Projekte', 'Sprachberatung', 'Visum & Umzug'],
-      },
-      company: {
-        title: 'Unternehmen',
-        links: ['Über MeinRoots', 'Für Recruiter', 'Karriere', 'Kontakt', 'Pressemappe'],
-      },
-      legal: {
-        title: 'Rechtliches',
-        links: ['Datenschutz', 'DSGVO & Betroffenenrechte', 'AGB', 'Cookie-Einstellungen', 'Impressum'],
-      },
-    },
-    meta: ['DSGVO-konform', 'EN · DE · FR', 'Verschlüsselte Speicherung'],
   },
 
   auth: {

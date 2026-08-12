@@ -379,35 +379,9 @@ export default {
 
   footer: {
     tagline: 'Des racines partout. Une carrière en Allemagne.',
-    follow: 'Suivez-nous',
-    newsletter: {
-      title: 'L’actu emploi pour les talents internationaux',
-      text: 'Un court e-mail par mois — nouveaux domaines, conseils de langue, évolutions de visa. Sans spam.',
-      placeholder: 'vous@email.com',
-      cta: 'S’abonner',
-      done: 'Vous êtes inscrit.',
-    },
     about: 'Nous relions les talents du monde entier à l’emploi en Allemagne, au télétravail et aux missions freelance — qualification par IA, relecture humaine.',
+    legalLinks: ['Confidentialité', 'Conditions d’utilisation', 'Mentions légales'],
     rights: 'Tous droits réservés.',
-    columns: {
-      platform: {
-        title: 'Plateforme',
-        links: ['Analyse de CV', 'Moteur de lacunes', 'Score de préparation', 'CV multilingues', 'Console admin'],
-      },
-      candidates: {
-        title: 'Candidats',
-        links: ['Travailler en Allemagne', 'Postes à distance', 'Missions freelance', 'Conseil linguistique', 'Visa & relocalisation'],
-      },
-      company: {
-        title: 'Entreprise',
-        links: ['À propos de MeinRoots', 'Pour les recruteurs', 'Carrières', 'Contact', 'Kit presse'],
-      },
-      legal: {
-        title: 'Mentions légales',
-        links: ['Confidentialité', 'RGPD & vos droits', 'Conditions d’utilisation', 'Cookies', 'Mentions légales'],
-      },
-    },
-    meta: ['Conforme RGPD', 'EN · DE · FR', 'Stockage chiffré'],
   },
 
   auth: {
