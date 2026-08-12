@@ -35,7 +35,7 @@ export default {
 
   hero: {
     proof: 'Utilisé par des candidats de <b>40+ pays</b>',
-    titleA: 'Vos racines.',
+    titleA: 'Le talent n’a pas de frontières.',
     titleB: 'Votre avenir',
     rotator: ['en Allemagne.', 'en télétravail.', 'en freelance.'],
     lead: 'Un seul CV. Un profil structuré, votre domaine professionnel et les compétences qui vous manquent — en moins d’une minute.',

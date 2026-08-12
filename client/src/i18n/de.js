@@ -35,7 +35,7 @@ export default {
 
   hero: {
     proof: 'Genutzt von Kandidat:innen aus <b>40+ Ländern</b>',
-    titleA: 'Deine Wurzeln.',
+    titleA: 'Talent kennt keine Grenzen.',
     titleB: 'Deine Zukunft',
     rotator: ['in Deutschland.', 'im Remote-Job.', 'als Freelancer:in.'],
     lead: 'Ein Upload. Ein strukturiertes Profil, dein Berufsfeld und die Skills, die dir noch fehlen — in unter einer Minute.',

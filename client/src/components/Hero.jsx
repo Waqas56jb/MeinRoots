@@ -7,7 +7,16 @@ import { useI18n, RichText } from '../context/I18nContext.jsx'
 import { useCvGate } from '../hooks/useCvGate.js'
 import { heroStatKeys, testimonialKeys, domainKeys, images } from '../data/content.js'
 
-/** Headline word that swaps on a timer without shifting the layout. */
+/**
+ * Headline word that swaps on a timer without shifting the layout.
+ *
+ * Every word is stacked in the same CSS grid cell, so the box is always as wide
+ * as the widest word as the browser actually renders it. Reserving space from a
+ * hidden "longest" string measured in characters was wrong — "working remote."
+ * has fewer characters than "as a freelancer." but is physically wider, and the
+ * overflow lost its gradient fill (background-clip: text paints nothing outside
+ * the element box), so the last letters disappeared.
+ */
 function Rotator({ words, interval = 2900 }) {
   const [index, setIndex] = useState(0)
 
@@ -17,11 +26,8 @@ function Rotator({ words, interval = 2900 }) {
     return () => clearInterval(id)
   }, [words, interval])
 
-  const longest = words.reduce((a, b) => (b.length > a.length ? b : a), '')
-
   return (
     <span className="rotator">
-      <span className="rotator__sizer" aria-hidden="true">{longest}</span>
       <span className="sr-only">{words[index]}</span>
       {words.map((w, i) => (
         <span key={w} aria-hidden="true" className={`rotator__word ${i === index ? 'is-in' : ''}`}>

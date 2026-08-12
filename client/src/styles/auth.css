@@ -549,30 +549,112 @@
   font-size: 0.83rem;
 }
 
-/* ============================== responsive ============================== */
+/* ============================== responsive ==============================
+   Below 1080px the two columns stack: the brand panel becomes a rounded
+   banner and the form rises over it as a white sheet — the pattern native
+   iOS / Android sign-in screens use.
+   ====================================================================== */
 
 @media (max-width: 1080px) {
-  .auth { grid-template-columns: 1fr; }
+  .auth {
+    grid-template-columns: minmax(0, 1fr);
+    overflow: visible;
+  }
+
+  /* --- brand panel becomes a compact banner --- */
   .auth__aside {
     min-height: 0;
+    justify-content: center;
     align-items: center;
-    padding-block: clamp(20px, 4vw, 34px);
+    text-align: center;
+    gap: 16px;
+    padding: calc(env(safe-area-inset-top) + 24px) 22px 58px;
+    border-radius: 0 0 30px 30px;
   }
+  .auth__asideTop { display: flex; justify-content: center; }
+  .auth__asideBody { max-width: 36ch; margin-inline: auto; }
+  .auth__asideBody h2 { font-size: clamp(1.3rem, 4.6vw, 1.75rem); }
+  .auth__asideBody p { margin-top: 6px; font-size: 0.92rem; line-height: 1.55; }
+  .auth__asideBody ul { display: none; }
   .auth__asideFoot { display: none; }
-  .auth__asideBody { max-width: none; text-align: center; margin-inline: auto; }
-  .auth__asideBody .eyebrow { margin-inline: auto; }
-  .auth__asideBody ul { justify-items: center; }
-  .auth__asideBody li { justify-content: center; }
+
+  /* --- form lifts over the banner as a sheet --- */
+  .auth__form {
+    position: relative;
+    z-index: 1;
+    margin-top: -32px;
+    border-radius: 30px 30px 0 0;
+    background: var(--surface);
+    box-shadow: 0 -16px 44px rgba(6, 20, 48, 0.18);
+    overflow: hidden;
+    padding: 16px clamp(18px, 5vw, 34px) calc(28px + env(safe-area-inset-bottom));
+  }
+  .auth__form::before { display: none; }
+  .auth__body { padding-block: 20px 8px; place-items: start center; }
+  .auth__card { max-width: 460px; }
 }
 
 @media (max-width: 620px) {
-  .auth__aside { min-height: 0; padding-block: 30px; }
-  .auth__asideBody ul { display: none; }
-  .auth__asideBody p { font-size: 0.92rem; }
-  .auth__grid2 { grid-template-columns: 1fr; }
-  .auth__bar { justify-content: center; }
-  .auth__back span { display: none; }
+  .auth__aside { padding-bottom: 54px; gap: 14px; }
+  .auth__aside .brand__markWrap { width: 42px; height: 42px; }
+  .auth__aside .brand__mark { width: 36px; height: 36px; }
+
+  .auth__card h1 { font-size: clamp(1.45rem, 6.4vw, 1.8rem); }
+  .auth__sub { font-size: 0.89rem; margin-bottom: 18px; }
+
+  /* back arrow keeps its label; the pair stays split across the row */
+  .auth__bar { justify-content: space-between; gap: 10px; }
+  .auth__back { font-size: 0.82rem; }
+
+  .auth__grid2 { grid-template-columns: minmax(0, 1fr); }
+
+  /* comfortable thumb targets */
+  .ffield__box { padding-inline: 14px; }
+  .ffield__box input { padding-block: 13px; }
+  .ffield__toggle { padding: 8px; }
+
+  .goalpick__row { display: grid; grid-template-columns: minmax(0, 1fr); gap: 8px; }
+  .goalpick__chip { justify-content: flex-start; padding: 12px 16px; }
+  .goalpick__chip.is-on { padding-right: 38px; }
+
+  .gate { padding: 12px 14px; gap: 11px; }
+  .gate p { font-size: 0.82rem; }
+
+  .auth__row { gap: 10px; }
+  .auth__link { font-size: 0.82rem; }
+}
+
+@media (max-width: 380px) {
+  .auth__asideBody p { display: none; }
+  .auth__aside { padding-bottom: 48px; }
+  .checkbox--block { font-size: 0.79rem; }
+}
+
+/* landscape phones: the banner would eat the whole screen */
+@media (max-width: 1080px) and (max-height: 520px) and (orientation: landscape) {
+  .auth__aside { padding-block: 18px 44px; }
+  .auth__asideBody p { display: none; }
+  .auth__asideBody h2 { font-size: 1.2rem; }
+}
+
+/* ---------------------------- upload screen ---------------------------- */
+
+@media (max-width: 780px) {
+  .upload__barInner { height: 64px; }
   .upload__who > span:last-child { display: none; }
-  .goalpick__row { flex-direction: column; }
-  .goalpick__chip { justify-content: flex-start; }
-  
+  .upload__main { padding-block: 22px 34px; }
+  .upload__head { margin-bottom: 22px; }
+  .upload__card { padding: 18px; }
+  .dropzone { padding: 26px 16px; }
+  .dropzone__file { flex-wrap: wrap; }
+  .dropzone__file button { width: 100%; }
+  .upload__doneList { gap: 7px; }
+}
+
+@media (max-width: 620px) {
+  .upload__bar { padding-top: env(safe-area-inset-top); }
+  .upload__barActions { gap: 10px; }
+  .upload__main { padding-bottom: calc(34px + env(safe-area-inset-bottom)); }
+  .upload__inner .goalpick__row { grid-template-columns: minmax(0, 1fr); }
+  .progress li { font-size: 0.87rem; }
+}
