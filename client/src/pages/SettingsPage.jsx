@@ -60,39 +60,55 @@ export default function SettingsPage() {
       {error && <Note tone="bad">{error}</Note>}
       {saved && <Note tone="good" icon="check">{t(`app.settings.saved.${saved}`)}</Note>}
 
-      <div className="wgrid wgrid--2">
-        <Card icon="mail" title={t('app.settings.account')}>
-          <dl className="wfacts">
-            <div className="wfact">
-              <dt>{t('auth.fullName')}</dt>
-              <dd>{user?.name}</dd>
+      {/* Two deliberate columns rather than auto-fit: on a wide screen auto-fit
+          produced three, which left the fourth card stranded on its own row. */}
+      <div className="settings__grid">
+        <Card icon="userCircle" title={t('app.settings.account')}>
+          <div className="settings__identity">
+            <span className="settings__avatar" aria-hidden="true">
+              {(user?.name ?? '')
+                .split(' ')
+                .filter(Boolean)
+                .slice(0, 2)
+                .map((p) => p[0].toUpperCase())
+                .join('') || 'M'}
+            </span>
+            <div>
+              <strong>{user?.name}</strong>
+              {/* The address is one long unbroken token; without this it breaks
+                  mid-word and reads as two lines of nonsense. */}
+              <span className="settings__addr">{user?.email}</span>
             </div>
-            <div className="wfact">
-              <dt>{t('auth.email')}</dt>
-              <dd className="settings__email">
-                {user?.email}
-                {user?.emailVerified ? (
-                  <Badge tone="good" icon="check">{t('app.settings.verified')}</Badge>
-                ) : (
-                  <Badge tone="warn" icon="alert">{t('app.settings.unverified')}</Badge>
-                )}
-              </dd>
-            </div>
-          </dl>
+          </div>
 
-          {!user?.emailVerified && (
-            <button
-              type="button"
-              className="btn btn--ghost btn--sm"
-              style={{ marginTop: 'var(--s-3)' }}
-              onClick={async () => {
-                const result = await resendVerification()
-                if (result.ok) flash('verification')
-                else setError(apiMessage(result.error))
-              }}
-            >
-              <Icon name="mail" size={15} /> {t('app.verify.resend')}
-            </button>
+          <div className="settings__verify">
+            {user?.emailVerified ? (
+              <Badge tone="good" icon="check">{t('app.settings.verified')}</Badge>
+            ) : (
+              <>
+                <Badge tone="warn" icon="alert">{t('app.settings.unverified')}</Badge>
+                <button
+                  type="button"
+                  className="btn btn--ghost btn--sm"
+                  onClick={async () => {
+                    const result = await resendVerification()
+                    if (result.ok) flash('verification')
+                    else setError(apiMessage(result.error))
+                  }}
+                >
+                  <Icon name="mail" size={15} /> {t('app.verify.resend')}
+                </button>
+              </>
+            )}
+          </div>
+
+          {user?.createdAt && (
+            <p className="settings__since">
+              <Icon name="clock" size={13} />
+              {t('app.settings.memberSince', {
+                date: new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(new Date(user.createdAt)),
+              })}
+            </p>
           )}
         </Card>
 
@@ -110,9 +126,9 @@ export default function SettingsPage() {
                 }}
                 aria-pressed={l.code === locale}
               >
-                <span aria-hidden="true">{l.flag}</span>
-                {l.native}
-                {l.code === locale && <Icon name="check" size={15} />}
+                <span className="settings__langCode" aria-hidden="true">{l.code.toUpperCase()}</span>
+                <span className="settings__langName">{l.native}</span>
+                {l.code === locale && <Icon name="check" size={16} />}
               </button>
             ))}
           </div>
@@ -135,18 +151,17 @@ export default function SettingsPage() {
               </button>
             ))}
           </div>
-          <button
-            type="button"
-            className="btn btn--primary btn--sm"
-            style={{ marginTop: 'var(--s-4)' }}
-            onClick={saveGoals}
-            disabled={busy || JSON.stringify(goals) === JSON.stringify(user?.goals ?? [])}
-          >
-            {busy ? t('auth.processing') : t('app.edit.save')}
-          </button>
-          <p className="wcard__hint" style={{ marginTop: 'var(--s-3)', marginBottom: 0 }}>
-            {t('app.settings.goalsNote')}
-          </p>
+          <div className="settings__foot">
+            <p>{t('app.settings.goalsNote')}</p>
+            <button
+              type="button"
+              className="btn btn--primary btn--sm"
+              onClick={saveGoals}
+              disabled={busy || JSON.stringify(goals) === JSON.stringify(user?.goals ?? [])}
+            >
+              {busy ? t('auth.processing') : t('app.edit.save')}
+            </button>
+          </div>
         </Card>
 
         <Card icon="bell" title={t('app.settings.notifications')}>
@@ -215,7 +230,7 @@ function PasswordCard({ onSaved, onError }) {
 
   return (
     <Card icon="lock" title={t('app.settings.password')} hint={t('app.settings.passwordHint')}>
-      <form className="editform wcard--flat" onSubmit={submit} style={{ background: 'transparent', border: 0, padding: 0, margin: 0 }}>
+      <form className="settings__form" onSubmit={submit}>
         <div className="editform__grid">
           <label className="editfield is-wide">
             <span className="editfield__label">{t('app.settings.currentPassword')}</span>

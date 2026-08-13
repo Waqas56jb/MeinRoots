@@ -948,6 +948,7 @@ export default {
         password: 'Password changed.',
         verification: 'Confirmation email sent.',
       },
+      memberSince: 'Member since {date}',
     },
   },
 }

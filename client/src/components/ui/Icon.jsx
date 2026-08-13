@@ -114,10 +114,12 @@ const icons = {
   upload: LuUpload,
   brain: LuBrain,
   file: LuFileText,
+  fileText: LuFileText,
   translate: LuLanguages,
   search: LuSearch,
   clipboard: LuClipboardList,
   gear: LuSettings,
+  settings: LuSettings,
   image: LuImage,
 
   // people

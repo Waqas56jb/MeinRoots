@@ -944,6 +944,7 @@ export default {
         password: 'Passwort geändert.',
         verification: 'Bestätigungs-E-Mail gesendet.',
       },
+      memberSince: 'Mitglied seit {date}',
     },
   },
 }

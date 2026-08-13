@@ -961,6 +961,7 @@ export default {
         password: 'Mot de passe modifié.',
         verification: 'E-mail de confirmation envoyé.',
       },
+      memberSince: 'Membre depuis le {date}',
     },
   },
 }
