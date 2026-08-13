@@ -1,0 +1,205 @@
+/* ==========================================================================
+   Tokens and reset.
+   ========================================================================== */
+
+:root {
+  --brand: #2563eb;
+  --brand-600: #2563eb;
+  --brand-700: #1d4ed8;
+  --brand-500: #3b82f6;
+  --brand-400: #60a5fa;
+  --brand-100: #dbeafe;
+  --brand-50: #eff6ff;
+
+  /* The sidebar is deep navy so the console never gets mistaken for the
+     candidate-facing site, while staying in the same blue family as the logo. */
+  --navy-900: #0b1730;
+  --navy-800: #0f1e3d;
+  --navy-700: #16294f;
+  --navy-600: #1e3765;
+
+  --ink: #0d1b34;
+  --ink-2: #24344f;
+  --muted: #5d6d88;
+  --muted-2: #8492a8;
+
+  --line: #e5ecf6;
+  --line-strong: #d3e0f2;
+  --surface: #ffffff;
+  --surface-2: #f5f8fd;
+
+  --good: #15803d;
+  --good-bg: #f0fdf4;
+  --good-line: #bbf7d0;
+  --warn: #b45309;
+  --warn-bg: #fffbeb;
+  --warn-line: #fde68a;
+  --bad: #b91c1c;
+  --bad-bg: #fef2f2;
+  --bad-line: #fecaca;
+
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-pill: 999px;
+
+  --shadow-sm: 0 1px 2px rgba(13, 27, 52, 0.06), 0 1px 3px rgba(13, 27, 52, 0.04);
+  --shadow-md: 0 6px 20px rgba(13, 27, 52, 0.08);
+  --shadow-lg: 0 20px 50px rgba(13, 27, 52, 0.14);
+
+  --ease: cubic-bezier(0.22, 0.68, 0, 1);
+
+  --side-w: 252px;
+  --top-h: 68px;
+  /* The bottom tab bar exists only on small screens; its height is a token so
+     page padding and the bar itself can never drift apart. */
+  --tab-h: 62px;
+
+  --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--ink-2);
+  background: var(--surface-2);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  /* Stops the whole page rubber-banding on iOS while a panel scrolls inside. */
+  overscroll-behavior-y: none;
+}
+
+/* Set while the mobile drawer is open — without it iOS scrolls the page behind. */
+body.is-locked { overflow: hidden; }
+
+h1, h2, h3, h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+}
+p { margin: 0; }
+ul, ol, dl, dd { margin: 0; padding: 0; list-style: none; }
+
+a { color: inherit; text-decoration: none; }
+
+button {
+  font: inherit;
+  color: inherit;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+input, select, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+img { max-width: 100%; display: block; }
+
+table { border-collapse: collapse; width: 100%; }
+
+:focus-visible {
+  outline: 2px solid var(--brand-500);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip {
+  position: absolute;
+  left: -999px;
+  z-index: 100;
+  padding: 10px 16px;
+  background: #fff;
+  border-radius: var(--r-sm);
+  box-shadow: var(--shadow-md);
+}
+.skip:focus { left: 12px; top: 12px; }
+
+.muted { color: var(--muted); }
+.small { font-size: 0.86rem; }
+.lead { color: var(--ink-2); }
+.is-good { color: var(--good); }
+.is-bad { color: var(--bad); }
+.is-warn { color: var(--warn); }
+
+/* ------------------------------- buttons --------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 10px 16px;
+  border-radius: var(--r-sm);
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border: 1px solid transparent;
+  /* 44px is the smallest reliably tappable target on iOS and Android. */
+  min-height: 44px;
+  white-space: nowrap;
+  transition: background 0.18s var(--ease), border-color 0.18s var(--ease),
+    color 0.18s var(--ease), transform 0.12s var(--ease);
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+.btn--primary { background: var(--brand-600); color: #fff; box-shadow: var(--shadow-sm); }
+.btn--primary:hover:not(:disabled) { background: var(--brand-700); }
+
+.btn--ghost { background: #fff; border-color: var(--line-strong); color: var(--ink-2); }
+.btn--ghost:hover:not(:disabled) { border-color: var(--brand-400); color: var(--brand-700); }
+
+.btn--warn { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn); }
+.btn--warn:hover:not(:disabled) { background: #fef3c7; }
+
+.btn--danger { background: var(--bad-bg); border-color: var(--bad-line); color: var(--bad); }
+.btn--danger:hover:not(:disabled) { background: #fee2e2; }
+
+.btn--sm { padding: 7px 12px; min-height: 38px; font-size: 0.84rem; }
+.btn--lg { padding: 13px 20px; min-height: 50px; font-size: 0.96rem; }
+.btn--block { width: 100%; }
+
+.is-flipped { transform: rotate(180deg); }
+
+/* ------------------------------ responsive -------------------------------- */
+
+/* Paired helpers: hide-md disappears at the breakpoint, show-md appears there.
+   Used to swap the candidate table for cards rather than reflowing a table. */
+.show-md { display: none; }
+@media (max-width: 900px) {
+  .hide-md { display: none !important; }
+  .show-md { display: block; }
+}
+@media (max-width: 620px) {
+  .hide-sm { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

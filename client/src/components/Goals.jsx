@@ -18,7 +18,7 @@ export default function Goals() {
           <p className="lead">{t('goals.lead')}</p>
         </Reveal>
 
-        <div className="grid grid--3 goals">
+        <div className="grid grid--4 goals">
           {goalKeys.map((g, i) => (
             <Reveal key={g.key} delay={i * 90}>
               <article className={`goal card card--hover ${g.featured ? 'goal--featured' : ''}`}>

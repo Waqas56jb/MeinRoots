@@ -1,0 +1,39 @@
+[Unit]
+Description=MeinRoots API (Milestone 1)
+Documentation=file:/opt/meinroots/server/README.md
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=simple
+User=meinroots
+Group=meinroots
+WorkingDirectory=/opt/meinroots/server
+ExecStart=/usr/bin/node src/index.js
+Restart=always
+RestartSec=3
+# The API reads config from .env in WorkingDirectory; nothing secret belongs here.
+Environment=NODE_ENV=production
+
+# Logs go to the journal: journalctl -u meinroots-api -f
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=meinroots-api
+
+# Hardening. The service needs to write uploaded CVs and nothing else.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/meinroots/server/storage
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+LockPersonality=true
+
+# A runaway analysis loop must not take the database down with it.
+MemoryMax=2G
+
+[Install]
+WantedBy=multi-user.target

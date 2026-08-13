@@ -1,109 +1,163 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { ApiError, authApi } from '../lib/api.js'
 
 /**
- * Front-end auth for Milestone 1.
+ * Session state, backed by the API.
  *
- * There is no backend yet, so accounts live in localStorage and the "password"
- * is stored as a non-reversible digest only so the demo can compare logins.
- * When the API lands, swap the four functions below for real fetch calls —
- * nothing else in the app touches storage.
+ * There is deliberately no token in localStorage: the access and refresh tokens
+ * are httpOnly cookies the API sets, so no script — including an injected one —
+ * can read them. What lives here is only the public user object, and it is
+ * re-fetched on mount rather than trusted from storage.
  */
-
-const USERS_KEY = 'meinroots.users'
-const SESSION_KEY = 'meinroots.session'
 
 const AuthContext = createContext(null)
 
-const read = (key, fallback) => {
-  try {
-    const raw = window.localStorage.getItem(key)
-    return raw ? JSON.parse(raw) : fallback
-  } catch {
-    return fallback
+/** Turns any failure into the { ok, error } shape every form in the app expects. */
+const toResult = (err) => {
+  if (err instanceof ApiError) {
+    return { ok: false, error: err.code, details: err.details, status: err.status }
   }
+  return { ok: false, error: 'server_error' }
 }
-
-const write = (key, value) => {
-  try {
-    window.localStorage.setItem(key, JSON.stringify(value))
-  } catch {
-    /* private mode — the session simply won't survive a reload */
-  }
-}
-
-/** Stand-in for server-side hashing. Never use this for real credentials. */
-const digest = (value) => {
-  let h = 5381
-  for (let i = 0; i < value.length; i += 1) h = ((h << 5) + h + value.charCodeAt(i)) | 0
-  return `d${(h >>> 0).toString(36)}`
-}
-
-const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms))
-
-const publicUser = ({ id, name, email, goals, createdAt }) => ({ id, name, email, goals, createdAt })
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(() => read(SESSION_KEY, null))
+  const [user, setUser] = useState(null)
   const [busy, setBusy] = useState(false)
+  // Distinct from `busy`: the app must not decide someone is signed out while
+  // the first /me call is still in flight, or a refresh on /dashboard bounces
+  // to the login page every time.
+  const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    if (user) write(SESSION_KEY, user)
-    else window.localStorage.removeItem(SESSION_KEY)
-  }, [user])
+    let cancelled = false
+    authApi
+      .me()
+      .then((data) => {
+        if (!cancelled) setUser(data.user)
+      })
+      .catch(() => {
+        if (!cancelled) setUser(null)
+      })
+      .finally(() => {
+        if (!cancelled) setReady(true)
+      })
+    return () => {
+      cancelled = true
+    }
+  }, [])
 
-  const signup = useCallback(async ({ name, email, password, goals = [] }) => {
+  const run = useCallback(async (fn) => {
     setBusy(true)
-    await wait(650) // stands in for the network round-trip
     try {
-      const users = read(USERS_KEY, [])
-      const normalised = email.trim().toLowerCase()
-      if (users.some((u) => u.email === normalised)) {
-        return { ok: false, error: 'exists' }
-      }
-      const created = {
-        id: `u_${Date.now().toString(36)}`,
-        name: name.trim(),
-        email: normalised,
-        password: digest(password),
-        goals,
-        createdAt: new Date().toISOString(),
-      }
-      write(USERS_KEY, [...users, created])
-      setUser(publicUser(created))
-      return { ok: true, user: publicUser(created) }
+      return await fn()
     } finally {
       setBusy(false)
     }
   }, [])
 
-  const login = useCallback(async ({ email, password }) => {
-    setBusy(true)
-    await wait(650)
+  const signup = useCallback(
+    ({ name, email, password, goals, locale, gdprConsent }) =>
+      run(async () => {
+        try {
+          const data = await authApi.register({ name, email, password, goals, locale, gdprConsent })
+          setUser(data.user)
+          return { ok: true, user: data.user }
+        } catch (err) {
+          return toResult(err)
+        }
+      }),
+    [run],
+  )
+
+  const login = useCallback(
+    ({ email, password }) =>
+      run(async () => {
+        try {
+          const data = await authApi.login({ email, password })
+          setUser(data.user)
+          return { ok: true, user: data.user }
+        } catch (err) {
+          return toResult(err)
+        }
+      }),
+    [run],
+  )
+
+  const logout = useCallback(
+    () =>
+      run(async () => {
+        try {
+          await authApi.logout()
+        } finally {
+          // Even if the call fails, the local session must end — otherwise the
+          // UI claims someone is signed in when they asked not to be.
+          setUser(null)
+        }
+      }),
+    [run],
+  )
+
+  const requestReset = useCallback(
+    (email) =>
+      run(async () => {
+        try {
+          await authApi.requestReset(email)
+          return { ok: true, email }
+        } catch (err) {
+          // A rate limit is worth surfacing; anything else still reports success,
+          // because whether the address exists is not the caller's business.
+          const result = toResult(err)
+          return result.error === 'too_many_attempts' ? result : { ok: true, email }
+        }
+      }),
+    [run],
+  )
+
+  const resetPassword = useCallback(
+    ({ token, password }) =>
+      run(async () => {
+        try {
+          await authApi.resetPassword({ token, password })
+          return { ok: true }
+        } catch (err) {
+          return toResult(err)
+        }
+      }),
+    [run],
+  )
+
+  const updateGoals = useCallback(async (goals) => {
     try {
-      const users = read(USERS_KEY, [])
-      const normalised = email.trim().toLowerCase()
-      const found = users.find((u) => u.email === normalised && u.password === digest(password))
-      if (!found) return { ok: false, error: 'credentials' }
-      setUser(publicUser(found))
-      return { ok: true, user: publicUser(found) }
-    } finally {
-      setBusy(false)
+      const data = await authApi.updateGoals(goals)
+      setUser(data.user)
+      return { ok: true, user: data.user }
+    } catch (err) {
+      return toResult(err)
     }
   }, [])
 
-  const requestReset = useCallback(async (email) => {
-    setBusy(true)
-    await wait(700)
-    setBusy(false)
-    // Always reports success: revealing whether an address exists leaks accounts.
-    return { ok: true, email: email.trim().toLowerCase() }
+  /** Fire-and-forget: a failed locale sync must never interrupt the UI. */
+  const syncLocale = useCallback((locale) => {
+    authApi.updateLocale(locale).catch(() => {})
   }, [])
-
-  const logout = useCallback(() => setUser(null), [])
 
   const value = useMemo(
-    () => ({ user, isAuthenticated: Boolean(user), busy, signup, login, logout, requestReset }),
-    [user, busy, signup, login, logout, requestReset],
+    () => ({
+      user,
+      isAuthenticated: Boolean(user),
+      // No isAdmin here on purpose: this application has no admin surface at
+      // all, so nothing in it should branch on staff roles.
+      ready,
+      busy,
+      signup,
+      login,
+      logout,
+      requestReset,
+      resetPassword,
+      updateGoals,
+      syncLocale,
+    }),
+    [user, ready, busy, signup, login, logout, requestReset, resetPassword, updateGoals, syncLocale],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

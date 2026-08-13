@@ -469,28 +469,23 @@
   color: rgba(255, 255, 255, 0.84);
 }
 
-/* rotating word — every option shares one grid cell, so the box is always as
-   wide as the widest word and the gradient fill never gets clipped */
-.rotator {
-  display: inline-grid;
-  vertical-align: bottom;
-  perspective: 700px;
-}
-.rotator__word {
-  grid-area: 1 / 1;
+/* gradient half of the headline — kept on one line so the fill never breaks
+   mid-phrase; the padding stops italic-ish side bearings from clipping, since
+   background-clip: text paints nothing outside the element box */
+.hero__accent {
+  display: inline-block;
   white-space: nowrap;
-  opacity: 0;
-  transform: translateY(0.36em) rotateX(-45deg);
-  transform-origin: 50% 0;
-  transition: opacity 0.55s var(--ease), transform 0.55s var(--ease);
   background: linear-gradient(105deg, #ffffff 0%, #b7e0ff 45%, #7cc4ff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
-  /* a hair of horizontal padding so italic-ish side bearings never clip */
   padding-inline: 0.06em;
 }
-.rotator__word.is-in { opacity: 1; transform: none; }
+
+/* below ~620px the phrase is wider than the viewport — let it wrap instead */
+@media (max-width: 620px) {
+  .hero__accent { white-space: normal; }
+}
 
 .hero__cta { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 26px; }
 .hero__note {
@@ -688,6 +683,27 @@
   padding: 5px 11px;
   border-radius: var(--r-pill);
   z-index: 1;
+}
+
+/* Four work types share a row that was drawn for three, so the cards lose a
+   little padding and type size on the way down. Below 1180px four columns are
+   too narrow for the German titles — go 2×2 well before the generic 980px
+   grid breakpoint. */
+@media (max-width: 1240px) {
+  .goals .goal__body { padding: 36px 20px 22px; }
+  .goals .goal h3 { font-size: 1.1rem; }
+  .goals .goal p { font-size: 0.9rem; }
+  .goals .goal__points li { font-size: 0.84rem; }
+}
+@media (max-width: 1180px) {
+  .goals { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .goals .goal__body { padding: 40px 26px 26px; }
+  .goals .goal h3 { font-size: 1.22rem; }
+  .goals .goal p { font-size: 0.94rem; }
+  .goals .goal__points li { font-size: 0.88rem; }
+}
+@media (max-width: 620px) {
+  .goals { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ---------------------------- how it works ------------------------------ */

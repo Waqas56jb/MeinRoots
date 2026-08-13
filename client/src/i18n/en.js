@@ -16,6 +16,61 @@ export default {
     close: 'Close',
     backToTop: 'Back to top',
     primaryNav: 'Primary navigation',
+    loading: 'Loading',
+    yes: 'Yes',
+    no: 'No',
+  },
+
+  /**
+   * Keyed by the API's error codes. The server sends a stable code and an
+   * English message meant for logs; the interface translates the code itself so
+   * a candidate never reads a developer's sentence in the wrong language.
+   */
+  errors: {
+    generic: 'Something went wrong. Please try again.',
+    network_error: 'We could not reach the server. Check your connection and try again.',
+    server_error: 'Something went wrong on our side. Please try again shortly.',
+    validation_failed: 'Please check the highlighted fields.',
+    unauthorized: 'Please sign in to continue.',
+    forbidden: 'You do not have access to this.',
+    not_found: 'We could not find that.',
+    rate_limited: 'Too many requests — please slow down.',
+
+    email_taken: 'An account with this email already exists. Try logging in.',
+    invalid_credentials: 'Email or password is incorrect.',
+    account_locked: 'Too many failed attempts. Please try again in a few minutes.',
+    too_many_attempts: 'Too many attempts. Please try again in a few minutes.',
+    reset_invalid: 'This reset link is invalid or has expired. Request a new one.',
+    consent_required: 'Please accept the privacy notice to continue.',
+    session_expired: 'Your session has expired. Please sign in again.',
+
+    no_file: 'Please choose a CV file first.',
+    unsupported_file_type: 'Only PDF and .docx files are supported.',
+    file_too_large: 'That file is larger than 10 MB.',
+    cv_not_readable: 'We could not read any text from that file — it looks like a scan. Please upload a text PDF or a .docx.',
+    legacy_doc_format: 'Old .doc files cannot be read. Please save as PDF or .docx and upload again.',
+    upload_rate_limited: 'You have uploaded several CVs recently. Please try again later.',
+    already_running: 'This CV is already being analysed.',
+    analysis_failed: 'We could not analyse this CV. Please try uploading it again.',
+    document_not_found: 'We could not find that CV.',
+
+    profile_not_found: 'Upload a CV to build your profile first.',
+    no_cv: 'Upload a CV before recalculating.',
+    questionnaire_not_found: 'There is no questionnaire for you yet.',
+    questions_outstanding: 'Some required questions are still unanswered.',
+    invalid_answer: 'That answer is not in the expected format.',
+    invalid_option: 'Please choose one of the offered options.',
+    ai_not_configured: 'CV analysis is temporarily unavailable. Please try again later.',
+
+    name_required: 'Please enter your name.',
+    email_required: 'Please enter your email address.',
+    email_invalid: 'That doesn’t look like a valid email address.',
+    password_required: 'Please enter your password.',
+    password_short: 'Use at least 8 characters.',
+    password_long: 'That password is too long.',
+    goal_required: 'Choose at least one objective.',
+    nothing_to_update: 'Nothing to save.',
+    invalid_id: 'That reference is not valid.',
   },
 
   nav: {
@@ -37,7 +92,7 @@ export default {
     proof: 'Trusted by candidates from <b>40+ countries</b>',
     titleA: 'Talent has no borders.',
     titleB: 'Your future',
-    rotator: ['in Germany.', 'working remote.', 'as a freelancer.'],
+    titleC: 'Career in Germany.',
     lead: 'One CV upload. A structured profile, your professional domain and the exact skills you still need — in under a minute.',
     ctaPrimary: 'Upload your CV — free',
     ctaSecondary: 'See how it works',
@@ -97,6 +152,11 @@ export default {
         text: 'Project-based engagements matched to your strongest verified skills.',
         points: ['Rate & availability profile', 'Skill evidence scoring', 'Short-cycle projects'],
       },
+      ausbildung: {
+        title: 'Ausbildung',
+        text: 'Germany’s paid dual training: you work in a company and study at a vocational school at the same time.',
+        points: ['Training contract with an employer', 'German level A2–B1 to start', 'Recognised qualification in 2–3.5 years'],
+      },
     },
   },
 
@@ -108,7 +168,7 @@ export default {
     steps: {
       objective: {
         title: 'Set your objective',
-        text: 'Register and pick your goal: employment in Germany, remote work, freelance — or a combination.',
+        text: 'Register and pick your goal: employment in Germany, remote work, freelance, Ausbildung — or a combination.',
       },
       upload: {
         title: 'Upload your CV',
@@ -379,7 +439,7 @@ export default {
 
   footer: {
     tagline: 'Roots everywhere. Careers in Germany.',
-    about: 'Connecting global talent with employment in Germany, remote roles and freelance projects — AI qualification, human review.',
+    about: 'Connecting global talent with employment in Germany, remote roles, freelance projects and Ausbildung — AI qualification, human review.',
     legalLinks: ['Privacy policy', 'Terms of service', 'Imprint'],
     rights: 'All rights reserved.',
   },
@@ -476,5 +536,127 @@ export default {
       steps: ['Detecting language', 'Extracting structure', 'Classifying domain', 'Generating translations'],
       signedInAs: 'Signed in as',
     },
+  },
+
+  /** Everything behind the login: dashboard, questionnaire, admin console. */
+  app: {
+    nav: {
+      label: 'Account navigation',
+      dashboard: 'Dashboard',
+      questionnaire: 'Questions',
+      cv: 'My CV',
+    },
+
+    upload: {
+      seeProfile: 'See my profile',
+      answerQuestions: 'Answer the questions',
+      failedTitle: 'We could not analyse that CV',
+      tryAgain: 'Try again',
+      sending: 'Uploading — {percent}%',
+      keepOpen: 'This takes under a minute. You can leave this page — the analysis continues.',
+      stages: {
+        extracting_text: 'Reading the document',
+        analysing: 'Extracting your experience and skills',
+        classifying: 'Identifying your professional domain',
+        questionnaire: 'Preparing your questions',
+        readiness: 'Assessing readiness and gaps',
+        translating: 'Generating the other language versions',
+      },
+    },
+
+    dash: {
+      greeting: 'Hello {name}',
+      complete: 'complete',
+      noCvTitle: 'No CV yet',
+      noCvText: 'Upload your CV and we will build your structured profile, find your skill gaps and show what to do next.',
+      analysingTitle: 'Analysing your CV',
+      analysingText: 'This usually takes under a minute.',
+      failedTitle: 'Your last analysis failed',
+      failedText: 'Nothing was lost. Upload the CV again, or try a different file.',
+      questionsTitle: '{count} question(s) still to answer',
+      questionsText: 'These are the things your CV could not tell us. Answering them makes your readiness accurate.',
+      answerNow: 'Answer now',
+      flagsTitle: 'A few things need checking',
+    },
+
+    readiness: {
+      title: 'Your readiness',
+      hint: 'A status you can see the reasoning for — not a score we keep to ourselves.',
+      scoreLabel: 'Readiness score: {score} out of 100',
+      factorsTitle: 'What this is based on',
+      gapsTitle: 'What would move you forward',
+      recalculate: 'Recalculate',
+      recalculating: 'Recalculating…',
+      weeks: '≈{count} weeks',
+      bands: {
+        not_ready: 'Not ready yet',
+        developing: 'Developing',
+        nearly_ready: 'Nearly ready',
+        ready: 'Ready',
+      },
+      importance: {
+        critical: 'Blocking',
+        important: 'Important',
+        nice_to_have: 'Nice to have',
+      },
+    },
+
+    profile: {
+      title: 'Your structured profile',
+      hint: 'Extracted from your CV. Anything we were unsure about is marked, and a human checks those.',
+      experience: 'Experience',
+      education: 'Education',
+      certifications: 'Certifications',
+      skills: 'Skills',
+      languages: 'Languages',
+      present: 'present',
+      datesUnknown: 'Dates not stated',
+      unnamedDegree: 'Qualification',
+      recognised: 'Likely recognised in Germany',
+      recognitionUnclear: 'Recognition unclear',
+      evidencedHint: 'Demonstrated by your roles and projects:',
+      claimedHint: 'Listed on your CV, but not yet demonstrated:',
+      years: '{count} yrs',
+      levelUnknown: 'Level not stated',
+      selfReported: 'self-reported',
+      lowConfidenceHint: 'We were not fully confident reading this — a reviewer will check it.',
+    },
+
+    cv: {
+      title: 'Your CV in three languages',
+      hint: 'Your original file is stored exactly as you uploaded it. The other versions are generated from it.',
+      original: 'Original',
+      download: 'Download original',
+      aiGenerated: 'AI-generated — not yet reviewed by a person',
+      reviewed: 'Reviewed by our team',
+      stillTranslating: 'The other language versions are still being generated.',
+      notAvailable: 'This version is not available yet.',
+    },
+
+    questionnaire: {
+      title: 'A few things your CV did not say',
+      subtitle: '{count} short questions. Each one explains why we are asking.',
+      required: 'required',
+      outstanding: '{count} still to answer',
+      allAnswered: 'All questions answered',
+      saved: 'Saved',
+      saveDraft: 'Save for later',
+      submit: 'Submit answers',
+      emptyTitle: 'No questions yet',
+      emptyText: 'Your questionnaire is generated from your CV. Upload one to get started.',
+      completed: 'You have completed this questionnaire. You can still change your answers.',
+      placeholder: 'Your answer',
+      nothingToSave: 'Answer at least one question first.',
+    },
+
+    flags: {
+      low_confidence: 'Parts of your CV were hard to read',
+      no_experience: 'No work history could be extracted',
+      missing_dates: 'Some roles have no start date',
+      few_skills: 'Very few skills were found',
+      no_languages: 'No language levels were found',
+      uncertain_experience: 'At least one role was read with low confidence',
+    },
+
   },
 }

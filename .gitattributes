@@ -1,0 +1,18 @@
+# Normalise line endings to LF everywhere.
+#
+# This is not cosmetic. The server files in this repo are deployed to Linux —
+# systemd units and shell scripts break outright on CRLF, and a Windows checkout
+# with core.autocrlf=true would otherwise hand them back with CRLF endings. LF in
+# the repository and LF in the working tree keeps what is deployed identical to
+# what is committed, on either operating system.
+* text=auto eol=lf
+
+# Binary files must never be touched by end-of-line conversion.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary

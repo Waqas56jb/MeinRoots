@@ -1,7 +1,7 @@
 # MeinRoots — Client
 
-Candidate-facing front end for the MeinRoots recruitment platform: landing page, the
-full auth flow (login / sign up / reset password) and the gated CV upload screen.
+Front end for the MeinRoots recruitment platform: landing page, the full auth flow, the
+gated CV upload, the candidate dashboard and the admin review console.
 
 React 18 + Vite + React Router, plain JavaScript, hand-written CSS (no UI framework)
 and Lucide icons via react-icons. White-and-blue theme derived from the logo.
@@ -10,11 +10,31 @@ and Lucide icons via react-icons. White-and-blue theme derived from the logo.
 
 ```bash
 cd client
+cp .env.example .env   # point VITE_API_URL at the API
 npm install
 npm run dev      # http://localhost:5173
 npm run build    # production build → dist/
 npm run preview  # serve the production build
 ```
+
+The API must be running too — see [../server/README.md](../server/README.md).
+
+## Talking to the API
+
+Everything goes through [`src/lib/api.js`](src/lib/api.js); nothing else calls `fetch`.
+That one file owns three things that are easy to get subtly wrong in several places:
+
+- **Cookies are always sent** (`credentials: 'include'`). The session is two httpOnly
+  cookies set by the API, so no script — including an injected one — can read the tokens.
+- **An expired access token refreshes once, transparently.** Concurrent 401s share a
+  single refresh; four parallel dashboard requests would otherwise rotate the refresh
+  token four times and invalidate their own session.
+- **Failures arrive as an `ApiError` with a stable `code`.** The UI renders in three
+  languages, so it translates the code itself via `useApiMessage` and never displays the
+  server's English message.
+
+`VITE_API_URL` may be set to an empty string, which means same-origin — the deployment
+where nginx serves this build and proxies `/api` to the Node process.
 
 ## Deploying to Vercel
 
@@ -102,8 +122,20 @@ added to `script-src` / `connect-src` or they will be blocked.
 | `/` | public | Landing page |
 | `/login` | public | Log in — accepts `?next=` and `?gate=cv` |
 | `/signup` | public | Create account — accepts `?email=` and `?next=` |
-| `/reset-password` | public | Request a reset link |
-| `/upload` | **protected** | CV upload + AI analysis start |
+| `/reset-password` | public | Request a reset link; with `?token=` it becomes the "choose a new password" form |
+| `/upload` | **protected** | CV upload, live analysis progress |
+| `/dashboard` | **protected** | Structured profile, readiness per objective, skill gaps, the CV in three languages |
+| `/questionnaire` | **protected** | The questions the CV could not answer |
+
+`Protected` waits for the session check before deciding anything — redirecting while
+`/auth/me` is still in flight would bounce a signed-in user off their own dashboard on
+every refresh.
+
+There is no admin route here, and no link to one anywhere in this application. The
+[review console](../admin/README.md) is a separate app on a separate origin
+(`:8443`); none of it — not even behind a role check — is part of what a candidate
+downloads, and `/admin` on this origin returns 404. A candidate must not be able to
+discover that a review tool exists, let alone find its address.
 
 ## The CV upload rule
 
@@ -123,9 +155,9 @@ not signed in  → /login?next=/upload&gate=cv
 so typing the URL directly bounces to the same gate. The CTA email field short-circuits
 to `/signup?email=…` so the address is never typed twice.
 
-Auth currently runs against `localStorage` ([AuthContext](src/context/AuthContext.jsx)) —
-there is no API yet. Swap the four functions in that file for `fetch` calls when the
-backend lands; nothing else in the app touches storage.
+Auth runs against the API ([AuthContext](src/context/AuthContext.jsx)). Nothing is kept in
+`localStorage` except the chosen language — the session lives entirely in httpOnly cookies
+and the user object is re-fetched on mount rather than trusted from storage.
 
 ## Languages
 
@@ -155,10 +187,15 @@ client/
 └── src/
     ├── main.jsx                 # Router + I18nProvider + AuthProvider
     ├── App.jsx                  # routes, Protected wrapper, scroll reset
-    ├── pages/                   # LandingPage, Login, Signup, ResetPassword, Upload
+    ├── pages/                   # Landing, Login, Signup, ResetPassword, Upload,
+    │                            # Dashboard, Questionnaire, Admin, AdminCandidate
     ├── context/
     │   ├── I18nContext.jsx      # t(), RichText, locale persistence
-    │   └── AuthContext.jsx      # signup / login / logout / requestReset
+    │   └── AuthContext.jsx      # signup / login / logout / reset, backed by the API
+    ├── lib/
+    │   ├── api.js               # the only place that calls fetch
+    │   ├── apiMessage.js        # error code → translated sentence
+    │   └── markdown.js          # escapes, then renders, the AI CV versions
     ├── i18n/                    # en, de, fr + registry & locale resolution
     ├── data/content.js          # structural data only (icons, ids, tones, images)
     ├── hooks/
@@ -166,16 +203,28 @@ client/
     │   ├── useReveal.js         # scroll reveal + scroll position
     │   └── useCountUp.js        # stat counters
     ├── components/
-    │   ├── ui/                  # Icon (Lucide map), SmartImage, Reveal
-    │   ├── auth/                # AuthShell, Field, SocialRow, PasswordMeter
+    │   ├── ui/                  # Icon (Lucide map), SmartImage, Reveal, Spinner, EmptyState
+    │   ├── auth/                # AuthShell, Field, PasswordMeter
+    │   ├── app/                 # AppHeader, ReadinessCard, ProfileBlocks, CvVersions
     │   ├── Navbar · Hero · TrustBar · Goals · HowItWorks · Features
-    │   ├── Domains · Readiness · Languages · HumanLoop · Testimonials
+    │   ├── Domains · Gallery · Languages · HumanLoop · Testimonials
     │   └── Pricing · Faq · CallToAction · Footer · ScrollTop · LanguageSwitcher
     └── styles/
         ├── global.css           # tokens, reset, buttons, cards, grid, reveal
         ├── sections.css         # landing sections + breakpoints
-        └── auth.css             # auth pages + upload screen
+        ├── auth.css             # auth pages + upload screen
+        └── app.css              # dashboard, questionnaire, admin console
 ```
+
+## Where it is deployed
+
+`http://169.58.169.182` — nginx on the Contabo box serves this build and proxies `/api`
+to the Node process, so the front end and API are one origin. The review console is a
+different origin on the same box and is not reachable from here.
+
+The Vercel deployment cannot talk to that API yet: Vercel is HTTPS and the API is still
+plain HTTP, so the browser blocks the request as mixed content. Once a domain and a
+certificate are in place, either host works.
 
 ## Theme
 
@@ -198,9 +247,15 @@ blocked, so the layout never breaks offline.
 
 ## Not built yet
 
-CV parsing, AI analysis, translations of the uploaded document, the candidate dashboard,
-the admin console and all backend APIs. The upload screen accepts a file and shows the
-analysis stages, but nothing is sent anywhere.
+Job aggregation and matching, recruiter and candidate subscriptions, payments, messaging,
+employer access, courses and relocation support — all Milestone 2. The pricing table on
+the landing page is still indicative, and the placeholder figures ("40+ countries", the
+€19/€15 tiers) are unconfirmed.
+
+Candidates cannot yet edit the extracted experience or skills; only headline, summary,
+location, relocation willingness and notice period are editable, because rewriting the
+extracted rows without versioning would destroy the confidence data the admin queue
+depends on.
 
 ## Web fundamentals checklist
 

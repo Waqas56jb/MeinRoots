@@ -46,10 +46,15 @@ export const trustKeys = [
   { key: 'audit', icon: 'clipboard' },
 ]
 
+/**
+ * Work types a candidate can pursue. "ausbildung" stays the German word in every
+ * language (client decision) — only its description is translated.
+ */
 export const goalKeys = [
   { key: 'germany', icon: 'building', image: unsplash('1560969184-10fe8719e047', 800, 520) },
   { key: 'remote', icon: 'globe', featured: true, image: unsplash('1499750310107-5fef28a66643', 800, 520) },
   { key: 'freelance', icon: 'bolt', image: unsplash('1454165804606-c3d57bc86b40', 800, 520) },
+  { key: 'ausbildung', icon: 'graduation', image: unsplash('1541888946425-d81bb19240f5', 800, 520) },
 ]
 
 export const stepKeys = [

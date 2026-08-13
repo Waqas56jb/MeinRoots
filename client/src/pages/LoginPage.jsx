@@ -6,6 +6,7 @@ import Icon from '../components/ui/Icon.jsx'
 import { images } from '../data/content.js'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { useApiMessage } from '../lib/apiMessage.js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
@@ -14,8 +15,9 @@ export default function LoginPage() {
   const { login, busy } = useAuth()
   const navigate = useNavigate()
   const [params] = useSearchParams()
+  const apiMessage = useApiMessage()
 
-  const next = params.get('next') || '/'
+  const next = params.get('next') || '/dashboard'
   const gated = params.get('gate') === 'cv'
 
   const [email, setEmail] = useState('')
@@ -36,7 +38,7 @@ export default function LoginPage() {
     if (!validate()) return
     const result = await login({ email, password })
     if (!result.ok) {
-      setErrors({ form: t(`auth.errors.${result.error}`) })
+      setErrors({ form: apiMessage(result.error) })
       return
     }
     navigate(next, { replace: true })

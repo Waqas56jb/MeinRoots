@@ -16,6 +16,61 @@ export default {
     close: 'Schließen',
     backToTop: 'Nach oben',
     primaryNav: 'Hauptnavigation',
+    loading: 'Lädt',
+    yes: 'Ja',
+    no: 'Nein',
+  },
+
+  /**
+   * Nach den Fehlercodes der API benannt. Der Server sendet einen stabilen Code
+   * und eine englische Meldung für die Logs; die Oberfläche übersetzt den Code
+   * selbst, damit niemand einen Entwicklersatz in der falschen Sprache liest.
+   */
+  errors: {
+    generic: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
+    network_error: 'Wir konnten den Server nicht erreichen. Prüfe deine Verbindung und versuche es erneut.',
+    server_error: 'Bei uns ist etwas schiefgelaufen. Bitte versuche es gleich noch einmal.',
+    validation_failed: 'Bitte prüfe die markierten Felder.',
+    unauthorized: 'Bitte melde dich an, um fortzufahren.',
+    forbidden: 'Dafür fehlt dir die Berechtigung.',
+    not_found: 'Das konnten wir nicht finden.',
+    rate_limited: 'Zu viele Anfragen — bitte etwas langsamer.',
+
+    email_taken: 'Ein Konto mit dieser E-Mail existiert bereits. Versuche es mit der Anmeldung.',
+    invalid_credentials: 'E-Mail oder Passwort ist falsch.',
+    account_locked: 'Zu viele Fehlversuche. Bitte versuche es in ein paar Minuten erneut.',
+    too_many_attempts: 'Zu viele Versuche. Bitte versuche es in ein paar Minuten erneut.',
+    reset_invalid: 'Dieser Link ist ungültig oder abgelaufen. Fordere einen neuen an.',
+    consent_required: 'Bitte akzeptiere die Datenschutzhinweise, um fortzufahren.',
+    session_expired: 'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.',
+
+    no_file: 'Bitte wähle zuerst eine Datei aus.',
+    unsupported_file_type: 'Es werden nur PDF- und .docx-Dateien unterstützt.',
+    file_too_large: 'Diese Datei ist größer als 10 MB.',
+    cv_not_readable: 'Wir konnten keinen Text aus dieser Datei lesen — sie sieht wie ein Scan aus. Bitte lade ein Text-PDF oder eine .docx hoch.',
+    legacy_doc_format: 'Alte .doc-Dateien können nicht gelesen werden. Bitte als PDF oder .docx speichern und erneut hochladen.',
+    upload_rate_limited: 'Du hast zuletzt mehrere Lebensläufe hochgeladen. Bitte versuche es später erneut.',
+    already_running: 'Dieser Lebenslauf wird bereits analysiert.',
+    analysis_failed: 'Wir konnten diesen Lebenslauf nicht analysieren. Bitte lade ihn erneut hoch.',
+    document_not_found: 'Diesen Lebenslauf konnten wir nicht finden.',
+
+    profile_not_found: 'Lade zuerst einen Lebenslauf hoch, um dein Profil zu erstellen.',
+    no_cv: 'Lade einen Lebenslauf hoch, bevor du neu berechnest.',
+    questionnaire_not_found: 'Für dich gibt es noch keinen Fragebogen.',
+    questions_outstanding: 'Einige Pflichtfragen sind noch offen.',
+    invalid_answer: 'Diese Antwort hat nicht das erwartete Format.',
+    invalid_option: 'Bitte wähle eine der angebotenen Optionen.',
+    ai_not_configured: 'Die CV-Analyse ist vorübergehend nicht verfügbar. Bitte später erneut versuchen.',
+
+    name_required: 'Bitte gib deinen Namen ein.',
+    email_required: 'Bitte gib deine E-Mail-Adresse ein.',
+    email_invalid: 'Das sieht nicht nach einer gültigen E-Mail-Adresse aus.',
+    password_required: 'Bitte gib dein Passwort ein.',
+    password_short: 'Verwende mindestens 8 Zeichen.',
+    password_long: 'Dieses Passwort ist zu lang.',
+    goal_required: 'Wähle mindestens ein Ziel.',
+    nothing_to_update: 'Nichts zu speichern.',
+    invalid_id: 'Diese Referenz ist ungültig.',
   },
 
   nav: {
@@ -36,8 +91,8 @@ export default {
   hero: {
     proof: 'Genutzt von Kandidat:innen aus <b>40+ Ländern</b>',
     titleA: 'Talent kennt keine Grenzen.',
-    titleB: 'Deine Zukunft',
-    rotator: ['in Deutschland.', 'im Remote-Job.', 'als Freelancer:in.'],
+    titleB: 'Deine Zukunft:',
+    titleC: 'Karriere in Deutschland.',
     lead: 'Ein Upload. Ein strukturiertes Profil, dein Berufsfeld und die Skills, die dir noch fehlen — in unter einer Minute.',
     ctaPrimary: 'Lebenslauf hochladen — kostenlos',
     ctaSecondary: 'So funktioniert’s',
@@ -97,6 +152,11 @@ export default {
         text: 'Projektarbeit, passend zu deinen stärksten belegten Skills.',
         points: ['Honorar- & Verfügbarkeitsprofil', 'Bewertung von Skill-Nachweisen', 'Kurze Projektzyklen'],
       },
+      ausbildung: {
+        title: 'Ausbildung',
+        text: 'Die duale Ausbildung in Deutschland: Du arbeitest im Betrieb und lernst parallel in der Berufsschule.',
+        points: ['Ausbildungsvertrag im Betrieb', 'Deutsch A2–B1 zum Start', 'Anerkannter Abschluss in 2–3,5 Jahren'],
+      },
     },
   },
 
@@ -108,7 +168,7 @@ export default {
     steps: {
       objective: {
         title: 'Ziel festlegen',
-        text: 'Registriere dich und wähle dein Ziel: Anstellung in Deutschland, Remote-Arbeit, Freelance — oder eine Kombination.',
+        text: 'Registriere dich und wähle dein Ziel: Anstellung in Deutschland, Remote-Arbeit, Freelance, Ausbildung — oder eine Kombination.',
       },
       upload: {
         title: 'Lebenslauf hochladen',
@@ -379,7 +439,7 @@ export default {
 
   footer: {
     tagline: 'Wurzeln überall. Karriere in Deutschland.',
-    about: 'Wir verbinden globale Talente mit Jobs in Deutschland, Remote-Rollen und Freelance-Projekten — KI-Qualifizierung, menschliche Prüfung.',
+    about: 'Wir verbinden globale Talente mit Jobs in Deutschland, Remote-Rollen, Freelance-Projekten und der Ausbildung — KI-Qualifizierung, menschliche Prüfung.',
     legalLinks: ['Datenschutz', 'AGB', 'Impressum'],
     rights: 'Alle Rechte vorbehalten.',
   },
@@ -477,5 +537,127 @@ export default {
       steps: ['Sprache erkennen', 'Struktur extrahieren', 'Berufsfeld klassifizieren', 'Übersetzungen erzeugen'],
       signedInAs: 'Angemeldet als',
     },
+  },
+
+  /** Alles hinter dem Login: Dashboard, Fragebogen, Admin-Konsole. */
+  app: {
+    nav: {
+      label: 'Konto-Navigation',
+      dashboard: 'Übersicht',
+      questionnaire: 'Fragen',
+      cv: 'Mein Lebenslauf',
+    },
+
+    upload: {
+      seeProfile: 'Mein Profil ansehen',
+      answerQuestions: 'Fragen beantworten',
+      failedTitle: 'Wir konnten diesen Lebenslauf nicht analysieren',
+      tryAgain: 'Erneut versuchen',
+      sending: 'Wird hochgeladen — {percent}%',
+      keepOpen: 'Das dauert weniger als eine Minute. Du kannst die Seite verlassen — die Analyse läuft weiter.',
+      stages: {
+        extracting_text: 'Dokument wird gelesen',
+        analysing: 'Erfahrung und Skills werden extrahiert',
+        classifying: 'Berufsfeld wird bestimmt',
+        questionnaire: 'Deine Fragen werden vorbereitet',
+        readiness: 'Bereitschaft und Lücken werden bewertet',
+        translating: 'Andere Sprachversionen werden erzeugt',
+      },
+    },
+
+    dash: {
+      greeting: 'Hallo {name}',
+      complete: 'vollständig',
+      noCvTitle: 'Noch kein Lebenslauf',
+      noCvText: 'Lade deinen Lebenslauf hoch — wir erstellen dein strukturiertes Profil, finden deine Skill-Lücken und zeigen dir die nächsten Schritte.',
+      analysingTitle: 'Dein Lebenslauf wird analysiert',
+      analysingText: 'Das dauert meist weniger als eine Minute.',
+      failedTitle: 'Deine letzte Analyse ist fehlgeschlagen',
+      failedText: 'Es ist nichts verloren. Lade den Lebenslauf erneut hoch oder probiere eine andere Datei.',
+      questionsTitle: 'Noch {count} Frage(n) offen',
+      questionsText: 'Das sind die Punkte, die dein Lebenslauf nicht beantworten konnte. Mit deinen Antworten wird die Bewertung genau.',
+      answerNow: 'Jetzt beantworten',
+      flagsTitle: 'Ein paar Punkte sollten geprüft werden',
+    },
+
+    readiness: {
+      title: 'Deine Bereitschaft',
+      hint: 'Ein Status, dessen Begründung du siehst — keine Zahl, die wir für uns behalten.',
+      scoreLabel: 'Bereitschaftswert: {score} von 100',
+      factorsTitle: 'Worauf das beruht',
+      gapsTitle: 'Was dich weiterbringt',
+      recalculate: 'Neu berechnen',
+      recalculating: 'Wird berechnet…',
+      weeks: '≈{count} Wochen',
+      bands: {
+        not_ready: 'Noch nicht bereit',
+        developing: 'In Entwicklung',
+        nearly_ready: 'Fast bereit',
+        ready: 'Bereit',
+      },
+      importance: {
+        critical: 'Blockierend',
+        important: 'Wichtig',
+        nice_to_have: 'Wünschenswert',
+      },
+    },
+
+    profile: {
+      title: 'Dein strukturiertes Profil',
+      hint: 'Aus deinem Lebenslauf extrahiert. Alles Unsichere ist markiert und wird von einem Menschen geprüft.',
+      experience: 'Erfahrung',
+      education: 'Ausbildung',
+      certifications: 'Zertifikate',
+      skills: 'Skills',
+      languages: 'Sprachen',
+      present: 'heute',
+      datesUnknown: 'Zeitraum nicht angegeben',
+      unnamedDegree: 'Abschluss',
+      recognised: 'In Deutschland wahrscheinlich anerkannt',
+      recognitionUnclear: 'Anerkennung unklar',
+      evidencedHint: 'Durch deine Rollen und Projekte belegt:',
+      claimedHint: 'Im Lebenslauf genannt, aber noch nicht belegt:',
+      years: '{count} J.',
+      levelUnknown: 'Niveau nicht angegeben',
+      selfReported: 'Selbstauskunft',
+      lowConfidenceHint: 'Wir waren uns beim Lesen nicht ganz sicher — das prüft jemand nach.',
+    },
+
+    cv: {
+      title: 'Dein Lebenslauf in drei Sprachen',
+      hint: 'Deine Originaldatei bleibt genau so gespeichert, wie du sie hochgeladen hast. Die anderen Versionen entstehen daraus.',
+      original: 'Original',
+      download: 'Original herunterladen',
+      aiGenerated: 'KI-erzeugt — noch nicht von einem Menschen geprüft',
+      reviewed: 'Von unserem Team geprüft',
+      stillTranslating: 'Die anderen Sprachversionen werden noch erzeugt.',
+      notAvailable: 'Diese Version ist noch nicht verfügbar.',
+    },
+
+    questionnaire: {
+      title: 'Ein paar Dinge, die dein Lebenslauf nicht sagt',
+      subtitle: '{count} kurze Fragen. Bei jeder steht, warum wir sie stellen.',
+      required: 'Pflicht',
+      outstanding: 'Noch {count} offen',
+      allAnswered: 'Alle Fragen beantwortet',
+      saved: 'Gespeichert',
+      saveDraft: 'Für später speichern',
+      submit: 'Antworten absenden',
+      emptyTitle: 'Noch keine Fragen',
+      emptyText: 'Dein Fragebogen entsteht aus deinem Lebenslauf. Lade einen hoch, um zu starten.',
+      completed: 'Du hast diesen Fragebogen abgeschlossen. Du kannst deine Antworten weiterhin ändern.',
+      placeholder: 'Deine Antwort',
+      nothingToSave: 'Beantworte zuerst mindestens eine Frage.',
+    },
+
+    flags: {
+      low_confidence: 'Teile deines Lebenslaufs waren schwer zu lesen',
+      no_experience: 'Es konnte keine Berufserfahrung extrahiert werden',
+      missing_dates: 'Bei einigen Rollen fehlt das Startdatum',
+      few_skills: 'Es wurden nur sehr wenige Skills gefunden',
+      no_languages: 'Es wurden keine Sprachniveaus gefunden',
+      uncertain_experience: 'Mindestens eine Rolle wurde mit geringer Sicherheit gelesen',
+    },
+
   },
 }

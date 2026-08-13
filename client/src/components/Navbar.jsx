@@ -62,14 +62,14 @@ export default function Navbar() {
           <div className="nav__actions">
             <LanguageSwitcher />
             {isAuthenticated ? (
-              <div className="nav__user">
+              // Signed in on the marketing page: the useful link is into the
+              // product, not out of the session.
+              <Link to="/dashboard" className="nav__user">
                 <span className="nav__avatar" aria-hidden="true">
                   {user.name?.trim().charAt(0).toUpperCase() || 'M'}
                 </span>
-                <button type="button" className="nav__login" onClick={logout}>
-                  {t('nav.logout')}
-                </button>
-              </div>
+                <span className="nav__login">{t('app.nav.dashboard')}</span>
+              </Link>
             ) : (
               <Link to="/login" className="nav__login">{t('nav.login')}</Link>
             )}
@@ -110,13 +110,22 @@ export default function Navbar() {
             <span className="drawer__label">{t('nav.language')}</span>
             <LanguageSwitcher variant="inline" />
             {isAuthenticated ? (
-              <button
-                type="button"
-                className="btn btn--ghost btn--block"
-                onClick={() => { setOpen(false); logout() }}
-              >
-                {t('nav.logout')}
-              </button>
+              <>
+                <button
+                  type="button"
+                  className="btn btn--ghost btn--block"
+                  onClick={() => { setOpen(false); navigate('/dashboard') }}
+                >
+                  {t('app.nav.dashboard')}
+                </button>
+                <button
+                  type="button"
+                  className="btn btn--ghost btn--block"
+                  onClick={() => { setOpen(false); logout() }}
+                >
+                  {t('nav.logout')}
+                </button>
+              </>
             ) : (
               <button
                 type="button"

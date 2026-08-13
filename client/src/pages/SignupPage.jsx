@@ -7,14 +7,17 @@ import Icon from '../components/ui/Icon.jsx'
 import { goalKeys, images } from '../data/content.js'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { useApiMessage, useFieldErrors } from '../lib/apiMessage.js'
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 
 export default function SignupPage() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const { signup, busy } = useAuth()
   const navigate = useNavigate()
   const [params] = useSearchParams()
+  const apiMessage = useApiMessage()
+  const fieldErrors = useFieldErrors()
 
   const next = params.get('next') || '/upload'
 
@@ -48,9 +51,10 @@ export default function SignupPage() {
   const onSubmit = async (event) => {
     event.preventDefault()
     if (!validate()) return
-    const result = await signup({ name, email, password, goals })
+    const result = await signup({ name, email, password, goals, locale, gdprConsent: terms })
     if (!result.ok) {
-      setErrors({ form: t(`auth.errors.${result.error}`) })
+      // A 400 carries per-field codes; anything else is a single form-level message.
+      setErrors({ ...fieldErrors(result.details), form: apiMessage(result.error) })
       return
     }
     navigate(next, { replace: true })

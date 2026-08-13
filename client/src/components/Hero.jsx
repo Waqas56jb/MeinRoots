@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import Icon from './ui/Icon.jsx'
 import SmartImage from './ui/SmartImage.jsx'
 import Reveal from './ui/Reveal.jsx'
@@ -6,37 +5,6 @@ import { useCountUp } from '../hooks/useCountUp.js'
 import { useI18n, RichText } from '../context/I18nContext.jsx'
 import { useCvGate } from '../hooks/useCvGate.js'
 import { heroStatKeys, testimonialKeys, domainKeys, images } from '../data/content.js'
-
-/**
- * Headline word that swaps on a timer without shifting the layout.
- *
- * Every word is stacked in the same CSS grid cell, so the box is always as wide
- * as the widest word as the browser actually renders it. Reserving space from a
- * hidden "longest" string measured in characters was wrong — "working remote."
- * has fewer characters than "as a freelancer." but is physically wider, and the
- * overflow lost its gradient fill (background-clip: text paints nothing outside
- * the element box), so the last letters disappeared.
- */
-function Rotator({ words, interval = 2900 }) {
-  const [index, setIndex] = useState(0)
-
-  useEffect(() => {
-    setIndex(0)
-    const id = setInterval(() => setIndex((i) => (i + 1) % words.length), interval)
-    return () => clearInterval(id)
-  }, [words, interval])
-
-  return (
-    <span className="rotator">
-      <span className="sr-only">{words[index]}</span>
-      {words.map((w, i) => (
-        <span key={w} aria-hidden="true" className={`rotator__word ${i === index ? 'is-in' : ''}`}>
-          {w}
-        </span>
-      ))}
-    </span>
-  )
-}
 
 function Stat({ statKey }) {
   const { t } = useI18n()
@@ -55,7 +23,6 @@ function Stat({ statKey }) {
 export default function Hero() {
   const { t } = useI18n()
   const openCv = useCvGate()
-  const rotator = t('hero.rotator')
   const marquee = [...domainKeys, ...domainKeys]
 
   return (
@@ -95,7 +62,7 @@ export default function Hero() {
         <Reveal as="h1" delay={70} className="hero__title">
           <span className="hero__titleA">{t('hero.titleA')}</span>
           <span className="hero__titleB">
-            {t('hero.titleB')} <Rotator words={rotator} />
+            {t('hero.titleB')} <span className="hero__accent">{t('hero.titleC')}</span>
           </span>
         </Reveal>
 

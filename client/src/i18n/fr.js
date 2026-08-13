@@ -16,6 +16,62 @@ export default {
     close: 'Fermer',
     backToTop: 'Haut de page',
     primaryNav: 'Navigation principale',
+    loading: 'Chargement',
+    yes: 'Oui',
+    no: 'Non',
+  },
+
+  /**
+   * Indexé sur les codes d’erreur de l’API. Le serveur renvoie un code stable et
+   * un message anglais destiné aux journaux ; l’interface traduit le code
+   * elle-même, pour qu’aucun candidat ne lise une phrase de développeur dans la
+   * mauvaise langue.
+   */
+  errors: {
+    generic: 'Une erreur est survenue. Veuillez réessayer.',
+    network_error: 'Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.',
+    server_error: 'Une erreur est survenue de notre côté. Réessayez dans un instant.',
+    validation_failed: 'Veuillez vérifier les champs signalés.',
+    unauthorized: 'Connectez-vous pour continuer.',
+    forbidden: 'Vous n’avez pas accès à cette page.',
+    not_found: 'Introuvable.',
+    rate_limited: 'Trop de requêtes — veuillez ralentir.',
+
+    email_taken: 'Un compte existe déjà avec cette adresse. Essayez de vous connecter.',
+    invalid_credentials: 'Adresse e-mail ou mot de passe incorrect.',
+    account_locked: 'Trop de tentatives. Réessayez dans quelques minutes.',
+    too_many_attempts: 'Trop de tentatives. Réessayez dans quelques minutes.',
+    reset_invalid: 'Ce lien est invalide ou expiré. Demandez-en un nouveau.',
+    consent_required: 'Veuillez accepter la politique de confidentialité pour continuer.',
+    session_expired: 'Votre session a expiré. Veuillez vous reconnecter.',
+
+    no_file: 'Choisissez d’abord un fichier.',
+    unsupported_file_type: 'Seuls les fichiers PDF et .docx sont acceptés.',
+    file_too_large: 'Ce fichier dépasse 10 Mo.',
+    cv_not_readable: 'Nous n’avons extrait aucun texte de ce fichier — il semble s’agir d’un scan. Envoyez un PDF texte ou un .docx.',
+    legacy_doc_format: 'Les anciens fichiers .doc ne peuvent pas être lus. Enregistrez en PDF ou .docx puis réessayez.',
+    upload_rate_limited: 'Vous avez envoyé plusieurs CV récemment. Réessayez plus tard.',
+    already_running: 'Ce CV est déjà en cours d’analyse.',
+    analysis_failed: 'Nous n’avons pas pu analyser ce CV. Essayez de l’envoyer à nouveau.',
+    document_not_found: 'Ce CV est introuvable.',
+
+    profile_not_found: 'Envoyez d’abord un CV pour créer votre profil.',
+    no_cv: 'Envoyez un CV avant de recalculer.',
+    questionnaire_not_found: 'Aucun questionnaire n’est encore disponible.',
+    questions_outstanding: 'Certaines questions obligatoires restent sans réponse.',
+    invalid_answer: 'Cette réponse n’a pas le format attendu.',
+    invalid_option: 'Choisissez l’une des options proposées.',
+    ai_not_configured: 'L’analyse de CV est momentanément indisponible. Réessayez plus tard.',
+
+    name_required: 'Veuillez saisir votre nom.',
+    email_required: 'Veuillez saisir votre adresse e-mail.',
+    email_invalid: 'Cette adresse e-mail ne semble pas valide.',
+    password_required: 'Veuillez saisir votre mot de passe.',
+    password_short: 'Utilisez au moins 8 caractères.',
+    password_long: 'Ce mot de passe est trop long.',
+    goal_required: 'Choisissez au moins un objectif.',
+    nothing_to_update: 'Rien à enregistrer.',
+    invalid_id: 'Cette référence n’est pas valide.',
   },
 
   nav: {
@@ -36,8 +92,8 @@ export default {
   hero: {
     proof: 'Utilisé par des candidats de <b>40+ pays</b>',
     titleA: 'Le talent n’a pas de frontières.',
-    titleB: 'Votre avenir',
-    rotator: ['en Allemagne.', 'en télétravail.', 'en freelance.'],
+    titleB: 'Votre avenir :',
+    titleC: 'une carrière en Allemagne.',
     lead: 'Un seul CV. Un profil structuré, votre domaine professionnel et les compétences qui vous manquent — en moins d’une minute.',
     ctaPrimary: 'Téléverser mon CV — gratuit',
     ctaSecondary: 'Comment ça marche',
@@ -97,6 +153,11 @@ export default {
         text: 'Des missions au projet, alignées sur vos compétences les mieux prouvées.',
         points: ['Profil tarif & disponibilité', 'Évaluation des preuves de compétence', 'Cycles courts'],
       },
+      ausbildung: {
+        title: 'Ausbildung',
+        text: 'La formation duale rémunérée en Allemagne : vous travaillez en entreprise et suivez en parallèle les cours d’une école professionnelle.',
+        points: ['Contrat de formation en entreprise', 'Allemand A2–B1 pour commencer', 'Diplôme reconnu en 2 à 3,5 ans'],
+      },
     },
   },
 
@@ -108,7 +169,7 @@ export default {
     steps: {
       objective: {
         title: 'Définissez votre objectif',
-        text: 'Inscrivez-vous et choisissez : emploi en Allemagne, télétravail, freelance — ou une combinaison.',
+        text: 'Inscrivez-vous et choisissez : emploi en Allemagne, télétravail, freelance, Ausbildung — ou une combinaison.',
       },
       upload: {
         title: 'Téléversez votre CV',
@@ -379,7 +440,7 @@ export default {
 
   footer: {
     tagline: 'Des racines partout. Une carrière en Allemagne.',
-    about: 'Nous relions les talents du monde entier à l’emploi en Allemagne, au télétravail et aux missions freelance — qualification par IA, relecture humaine.',
+    about: 'Nous relions les talents du monde entier à l’emploi en Allemagne, au télétravail, aux missions freelance et à l’Ausbildung — qualification par IA, relecture humaine.',
     legalLinks: ['Confidentialité', 'Conditions d’utilisation', 'Mentions légales'],
     rights: 'Tous droits réservés.',
   },
@@ -477,5 +538,127 @@ export default {
       steps: ['Détection de la langue', 'Extraction de la structure', 'Classification du domaine', 'Génération des traductions'],
       signedInAs: 'Connecté en tant que',
     },
+  },
+
+  /** Tout ce qui se trouve derrière la connexion : tableau de bord, questionnaire, console admin. */
+  app: {
+    nav: {
+      label: 'Navigation du compte',
+      dashboard: 'Tableau de bord',
+      questionnaire: 'Questions',
+      cv: 'Mon CV',
+    },
+
+    upload: {
+      seeProfile: 'Voir mon profil',
+      answerQuestions: 'Répondre aux questions',
+      failedTitle: 'Nous n’avons pas pu analyser ce CV',
+      tryAgain: 'Réessayer',
+      sending: 'Envoi — {percent} %',
+      keepOpen: 'Cela prend moins d’une minute. Vous pouvez quitter cette page — l’analyse continue.',
+      stages: {
+        extracting_text: 'Lecture du document',
+        analysing: 'Extraction de votre expérience et de vos compétences',
+        classifying: 'Identification de votre domaine professionnel',
+        questionnaire: 'Préparation de vos questions',
+        readiness: 'Évaluation de la préparation et des écarts',
+        translating: 'Génération des autres versions linguistiques',
+      },
+    },
+
+    dash: {
+      greeting: 'Bonjour {name}',
+      complete: 'complet',
+      noCvTitle: 'Pas encore de CV',
+      noCvText: 'Envoyez votre CV : nous construisons votre profil structuré, identifions vos écarts de compétences et vous montrons la suite.',
+      analysingTitle: 'Analyse de votre CV',
+      analysingText: 'Cela prend généralement moins d’une minute.',
+      failedTitle: 'Votre dernière analyse a échoué',
+      failedText: 'Rien n’est perdu. Envoyez à nouveau le CV, ou essayez un autre fichier.',
+      questionsTitle: '{count} question(s) en attente',
+      questionsText: 'Ce sont les points que votre CV ne pouvait pas nous dire. Y répondre rend l’évaluation exacte.',
+      answerNow: 'Répondre maintenant',
+      flagsTitle: 'Quelques points à vérifier',
+    },
+
+    readiness: {
+      title: 'Votre préparation',
+      hint: 'Un statut dont vous voyez le raisonnement — pas une note que nous gardons pour nous.',
+      scoreLabel: 'Score de préparation : {score} sur 100',
+      factorsTitle: 'Sur quoi cela repose',
+      gapsTitle: 'Ce qui vous ferait avancer',
+      recalculate: 'Recalculer',
+      recalculating: 'Calcul en cours…',
+      weeks: '≈{count} semaines',
+      bands: {
+        not_ready: 'Pas encore prêt',
+        developing: 'En progression',
+        nearly_ready: 'Presque prêt',
+        ready: 'Prêt',
+      },
+      importance: {
+        critical: 'Bloquant',
+        important: 'Important',
+        nice_to_have: 'Souhaitable',
+      },
+    },
+
+    profile: {
+      title: 'Votre profil structuré',
+      hint: 'Extrait de votre CV. Tout ce dont nous n’étions pas sûrs est signalé et vérifié par une personne.',
+      experience: 'Expérience',
+      education: 'Formation',
+      certifications: 'Certifications',
+      skills: 'Compétences',
+      languages: 'Langues',
+      present: 'aujourd’hui',
+      datesUnknown: 'Dates non précisées',
+      unnamedDegree: 'Diplôme',
+      recognised: 'Probablement reconnu en Allemagne',
+      recognitionUnclear: 'Reconnaissance incertaine',
+      evidencedHint: 'Démontré par vos postes et projets :',
+      claimedHint: 'Mentionné sur votre CV, mais pas encore démontré :',
+      years: '{count} ans',
+      levelUnknown: 'Niveau non précisé',
+      selfReported: 'déclaratif',
+      lowConfidenceHint: 'Nous n’étions pas totalement sûrs à la lecture — une personne le vérifiera.',
+    },
+
+    cv: {
+      title: 'Votre CV en trois langues',
+      hint: 'Votre fichier original est conservé exactement tel que vous l’avez envoyé. Les autres versions en sont dérivées.',
+      original: 'Original',
+      download: 'Télécharger l’original',
+      aiGenerated: 'Généré par IA — pas encore relu par une personne',
+      reviewed: 'Relu par notre équipe',
+      stillTranslating: 'Les autres versions linguistiques sont encore en cours de génération.',
+      notAvailable: 'Cette version n’est pas encore disponible.',
+    },
+
+    questionnaire: {
+      title: 'Quelques points que votre CV ne dit pas',
+      subtitle: '{count} questions courtes. Chacune explique pourquoi nous la posons.',
+      required: 'obligatoire',
+      outstanding: '{count} en attente',
+      allAnswered: 'Toutes les questions ont une réponse',
+      saved: 'Enregistré',
+      saveDraft: 'Enregistrer pour plus tard',
+      submit: 'Envoyer mes réponses',
+      emptyTitle: 'Pas encore de questions',
+      emptyText: 'Votre questionnaire est généré à partir de votre CV. Envoyez-en un pour commencer.',
+      completed: 'Vous avez terminé ce questionnaire. Vous pouvez encore modifier vos réponses.',
+      placeholder: 'Votre réponse',
+      nothingToSave: 'Répondez d’abord à au moins une question.',
+    },
+
+    flags: {
+      low_confidence: 'Certaines parties de votre CV étaient difficiles à lire',
+      no_experience: 'Aucune expérience professionnelle n’a pu être extraite',
+      missing_dates: 'Certains postes n’ont pas de date de début',
+      few_skills: 'Très peu de compétences ont été trouvées',
+      no_languages: 'Aucun niveau de langue n’a été trouvé',
+      uncertain_experience: 'Au moins un poste a été lu avec une faible confiance',
+    },
+
   },
 }

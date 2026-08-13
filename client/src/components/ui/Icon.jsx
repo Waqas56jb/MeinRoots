@@ -21,6 +21,7 @@ import {
   LuFileText,
   LuGauge,
   LuGlobe,
+  LuGraduationCap,
   LuHeartPulse,
   LuImage,
   LuInfo,
@@ -101,6 +102,7 @@ const icons = {
   truck: LuTruck,
   wallet: LuWallet,
   building: LuBuilding2,
+  graduation: LuGraduationCap,
   cup: LuCoffee,
   megaphone: LuMegaphone,
 
