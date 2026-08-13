@@ -1,0 +1,17 @@
+[Unit]
+Description=MeinRoots backup (database + uploaded CVs)
+After=postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=oneshot
+ExecStart=/opt/meinroots/server/deploy/backup.sh
+# Runs as root: it reads the API's .env (chmod 600, owned by meinroots) and
+# writes to /opt/meinroots/backups.
+User=root
+Nice=10
+# Backing up must never starve the API of disk throughput.
+IOSchedulingClass=idle
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=meinroots-backup

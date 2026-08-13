@@ -131,6 +131,52 @@ router.get(
 )
 
 router.post(
+  '/email/verify',
+  authLimiter,
+  validateBody(z.object({ token: z.string().min(10, 'verification_invalid') })),
+  asyncHandler(async (req, res) => {
+    const { user } = await service.verifyEmail(req.body.token)
+    await audit(req, {
+      action: 'auth.email_verified',
+      entityType: 'user',
+      entityId: user.id,
+      actorId: user.id,
+    })
+    ok(res, { user })
+  }),
+)
+
+/**
+ * Re-sends the verification link.
+ *
+ * Requires a session rather than taking an address, so it cannot be used to
+ * discover which addresses hold accounts, or to send mail to a stranger.
+ */
+router.post(
+  '/email/verify/resend',
+  requireAuth,
+  authLimiter,
+  asyncHandler(async (req, res) => {
+    if (req.user.email_verified_at) {
+      return ok(res, { alreadyVerified: true })
+    }
+    await service.sendVerificationEmail(req.user)
+    await audit(req, { action: 'auth.verification_resent', entityType: 'user', entityId: req.user.id })
+    return ok(res, { sent: true })
+  }),
+)
+
+router.patch(
+  '/notifications',
+  requireAuth,
+  validateBody(z.object({ notifyByEmail: z.boolean() })),
+  asyncHandler(async (req, res) => {
+    const user = await service.updateNotifications(req.user.id, req.body.notifyByEmail)
+    ok(res, { user })
+  }),
+)
+
+router.post(
   '/password/reset-request',
   authLimiter,
   validateBody(resetRequestSchema),

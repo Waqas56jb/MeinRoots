@@ -299,9 +299,15 @@ function ProfileTab({ profile }) {
                   <div>
                     <h3>
                       {e.role}
-                      {e.confidence !== null && e.confidence < 0.7 && (
+                      {/* A corrected row is no longer the AI's reading, so the
+                          extractor's confidence is not shown for it. */}
+                      {e.source === 'candidate' ? (
+                        <span className="lowconf lowconf--mine">
+                          <Icon name="user" size={11} />{t('profile.editedByCandidate')}
+                        </span>
+                      ) : e.confidence !== null && e.confidence < 0.7 ? (
                         <span className="lowconf"><Icon name="alert" size={11} />{Math.round(e.confidence * 100)}%</span>
-                      )}
+                      ) : null}
                     </h3>
                     <p className="muted small">
                       {[e.company, e.location].filter(Boolean).join(' · ')}

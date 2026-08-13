@@ -1001,3 +1001,6 @@
   .login__aside { display: none; }
   .login__form { margin: 32px 0 auto; }
 }
+
+/* A row the candidate corrected: no longer the AI's reading. */
+.lowconf--mine { background: var(--brand-50); border-color: var(--brand-100); color: var(--brand-700); }

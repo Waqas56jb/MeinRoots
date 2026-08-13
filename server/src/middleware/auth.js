@@ -31,7 +31,8 @@ export const attachUser = async (req, _res, next) => {
     // Re-read the row rather than trusting the token's claims: a role change or
     // a deletion must take effect immediately, not when the token expires.
     const user = await one(
-      `SELECT id, full_name, email, role, locale, goals, gdpr_consent_at, created_at
+      `SELECT id, full_name, email, role, locale, goals, gdpr_consent_at,
+              email_verified_at, notify_by_email, created_at
          FROM users WHERE id = $1 AND deleted_at IS NULL`,
       [payload.sub],
     )

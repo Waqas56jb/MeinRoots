@@ -5,6 +5,7 @@ import { burnPasswordTime, hashPassword, verifyPassword } from '../../lib/passwo
 import { hashToken, newOpaqueToken, signAccessToken } from '../../lib/tokens.js'
 import { clientIp } from '../../lib/audit.js'
 import { logger } from '../../lib/logger.js'
+import { queueEmail } from '../../lib/mailer.js'
 
 /** The shape of a user the browser is allowed to see. Never includes the hash. */
 export const publicUser = (row) => ({
@@ -14,6 +15,10 @@ export const publicUser = (row) => ({
   role: row.role,
   locale: row.locale,
   goals: row.goals ?? [],
+  // A boolean, not the timestamp: the interface only ever asks "is it verified",
+  // and the exact moment is nobody's business but the audit log's.
+  emailVerified: Boolean(row.email_verified_at),
+  notifyByEmail: row.notify_by_email !== false,
   createdAt: row.created_at,
 })
 
@@ -53,8 +58,61 @@ export const register = async ({ name, email, password, goals, locale, gdprConse
     return created
   })
 
+  await sendVerificationEmail(user)
+
   const tokens = await createSession(user, req)
   return { user: publicUser(user), ...tokens }
+}
+
+/**
+ * Issues a fresh verification link and queues the email.
+ *
+ * Any outstanding link is invalidated first: leaving several valid at once means
+ * an old one from a forwarded message still works long after the candidate
+ * thought they had used it up.
+ */
+export const sendVerificationEmail = async (user) => {
+  const { token, hash } = newOpaqueToken()
+  const expires = new Date(Date.now() + config.security.verifyTtlHours * 3600_000)
+
+  await transaction(async (client) => {
+    await client.query(
+      'UPDATE email_verifications SET used_at = now() WHERE user_id = $1 AND used_at IS NULL',
+      [user.id],
+    )
+    await client.query(
+      'INSERT INTO email_verifications (user_id, email, token_hash, expires_at) VALUES ($1,$2,$3,$4)',
+      [user.id, user.email, hash, expires],
+    )
+  })
+
+  await queueEmail({
+    userId: user.id,
+    to: user.email,
+    template: 'verify_email',
+    locale: user.locale ?? 'en',
+    vars: { name: (user.full_name ?? '').split(' ')[0] || user.full_name },
+    url: `${config.appUrl}/verify-email?token=${token}`,
+  })
+
+  return { sent: true }
+}
+
+export const verifyEmail = async (token) => {
+  const record = await one(
+    `SELECT * FROM email_verifications
+      WHERE token_hash = $1 AND used_at IS NULL AND expires_at > now()`,
+    [hashToken(token)],
+  )
+  if (!record) throw unauthorized('verification_invalid', 'This link is invalid or has expired')
+
+  await transaction(async (client) => {
+    await client.query('UPDATE users SET email_verified_at = now() WHERE id = $1', [record.user_id])
+    await client.query('UPDATE email_verifications SET used_at = now() WHERE id = $1', [record.id])
+  })
+
+  const user = await one('SELECT * FROM users WHERE id = $1', [record.user_id])
+  return { user: publicUser(user) }
 }
 
 export const login = async ({ email, password }, req) => {
@@ -138,7 +196,7 @@ export const logoutEverywhere = (userId) =>
  * addresses hold accounts.
  */
 export const requestPasswordReset = async (email) => {
-  const user = await one('SELECT id, full_name, email FROM users WHERE email = $1 AND deleted_at IS NULL', [
+  const user = await one('SELECT id, full_name, email, locale FROM users WHERE email = $1 AND deleted_at IS NULL', [
     email,
   ])
   if (!user) return { sent: false }
@@ -152,10 +210,19 @@ export const requestPasswordReset = async (email) => {
   ])
 
   const link = `${config.appUrl}/reset-password?token=${token}`
-  // No mail transport is configured in Milestone 1 — the link is logged so it
-  // can be delivered by hand during testing. Wiring an SMTP sender here is the
-  // only change needed to make this real.
-  logger.info('password reset requested', { email: user.email, link })
+
+  await queueEmail({
+    userId: user.id,
+    to: user.email,
+    template: 'password_reset',
+    locale: user.locale ?? 'en',
+    vars: { name: (user.full_name ?? '').split(' ')[0] || user.full_name },
+    url: link,
+  })
+
+  logger.info('password reset requested', { userId: user.id })
+  // The link comes back only outside production, so a developer can follow it
+  // without a mail server. In production it exists solely in the email.
   return { sent: true, link: config.isProd ? undefined : link }
 }
 
@@ -185,6 +252,14 @@ export const updateGoals = async (userId, goals) => {
     'UPDATE users SET goals = $2::work_goal[] WHERE id = $1 RETURNING *',
     [userId, goals],
   )
+  return publicUser(row)
+}
+
+export const updateNotifications = async (userId, notifyByEmail) => {
+  const row = await one('UPDATE users SET notify_by_email = $2 WHERE id = $1 RETURNING *', [
+    userId,
+    notifyByEmail,
+  ])
   return publicUser(row)
 }
 

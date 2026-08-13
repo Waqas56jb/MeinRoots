@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import AppHeader from '../components/app/AppHeader.jsx'
 import ReadinessCard from '../components/app/ReadinessCard.jsx'
 import CvVersions from '../components/app/CvVersions.jsx'
+import VerifyBanner from '../components/app/VerifyBanner.jsx'
 import {
   EducationList,
   ExperienceList,
@@ -143,6 +144,8 @@ export default function DashboardPage() {
             <p className="banner banner--bad"><Icon name="alert" size={16} />{error}</p>
           )}
 
+          <VerifyBanner />
+
           {!document && (
             <EmptyState
               icon="upload"
@@ -232,16 +235,21 @@ export default function DashboardPage() {
           {hasProfileData && (
             <section className="dash__section">
               <h2>{t('app.profile.title')}</h2>
-              <p className="dash__sectionHint">{t('app.profile.hint')}</p>
+              <p className="dash__sectionHint">{t('app.profile.editHint')}</p>
 
               <div className="dash__cols">
                 <div>
-                  <ExperienceList items={profile.experiences} />
-                  <EducationList items={profile.education} certifications={profile.certifications} />
+                  <ExperienceList items={profile.experiences} editable onSaved={setProfile} />
+                  <EducationList
+                    items={profile.education}
+                    certifications={profile.certifications}
+                    editable
+                    onSaved={setProfile}
+                  />
                 </div>
                 <div>
-                  <SkillsBlock skills={profile.skills} />
-                  <LanguagesBlock languages={profile.languages} />
+                  <SkillsBlock skills={profile.skills} editable onSaved={setProfile} />
+                  <LanguagesBlock languages={profile.languages} editable onSaved={setProfile} />
                   <CvVersions documentId={document?.id} pending={Boolean(status?.translationsPending)} />
                 </div>
               </div>

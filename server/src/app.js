@@ -13,6 +13,7 @@ import { generalLimiter } from './middleware/rateLimit.js'
 import authRoutes from './modules/auth/routes.js'
 import cvRoutes from './modules/cv/routes.js'
 import profileRoutes from './modules/profile/routes.js'
+import profileEditRoutes from './modules/profile/editRoutes.js'
 import questionnaireRoutes from './modules/questionnaire/routes.js'
 import adminRoutes from './modules/admin/routes.js'
 
@@ -89,6 +90,9 @@ export const createApp = () => {
   app.use('/api/auth', authRoutes)
   app.use('/api/cv', cvRoutes)
   app.use('/api/profile', profileRoutes)
+  // Mounted after the fixed routes above so /me/readiness is matched by its own
+  // handler before /me/:section could ever claim it.
+  app.use('/api/profile', profileEditRoutes)
   app.use('/api/questionnaire', questionnaireRoutes)
   app.use('/api/admin', adminRoutes)
 

@@ -1,0 +1,14 @@
+[Unit]
+Description=Daily MeinRoots backup
+Documentation=file:/opt/meinroots/server/deploy/backup.sh
+
+[Timer]
+# 03:20 rather than 03:00 — every other cron job on every other box runs on the
+# hour, and this one competes with the database for I/O.
+OnCalendar=*-*-* 03:20:00
+# A machine that was off at 03:20 still gets its backup when it comes back.
+Persistent=true
+RandomizedDelaySec=300
+
+[Install]
+WantedBy=timers.target

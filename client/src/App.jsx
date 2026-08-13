@@ -4,6 +4,7 @@ import LandingPage from './pages/LandingPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import SignupPage from './pages/SignupPage.jsx'
 import ResetPasswordPage from './pages/ResetPasswordPage.jsx'
+import VerifyEmailPage from './pages/VerifyEmailPage.jsx'
 import UploadPage from './pages/UploadPage.jsx'
 import DashboardPage from './pages/DashboardPage.jsx'
 import QuestionnairePage from './pages/QuestionnairePage.jsx'
@@ -52,6 +53,8 @@ export default function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
+        {/* Opened from the confirmation email; works signed in or out. */}
+        <Route path="/verify-email" element={<VerifyEmailPage />} />
 
         <Route
           path="/upload"

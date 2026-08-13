@@ -18,6 +18,7 @@ import {
   generateQuestionnaire,
   translateCv,
 } from '../../ai/steps.js'
+import { queueEmail } from '../../lib/mailer.js'
 import { setProgress } from '../queue.js'
 
 const LANGUAGES = ['en', 'de', 'fr']
@@ -164,6 +165,11 @@ export const analyseCv = async (job) => {
     }
   }
 
+  // ------------------------------------------------------- 8. tell them
+  // Sent last, once everything the email promises actually exists. The upload
+  // screen tells the candidate they will be notified; this is that promise.
+  await notifyProfileReady({ userId: user.id, profileId, classification })
+
   await stage('done')
   const versions = await many('SELECT language FROM cv_versions WHERE document_id = $1', [documentId])
 
@@ -173,6 +179,50 @@ export const analyseCv = async (job) => {
     domain: classification?.domain ?? null,
     goals,
     versions: versions.map((v) => v.language),
+  }
+}
+
+/**
+ * "Your profile is ready" — the one email the analysis sends.
+ *
+ * Never throws: a mail problem must not fail a job whose real work is already
+ * finished and already visible to the candidate.
+ */
+const notifyProfileReady = async ({ userId, profileId, classification }) => {
+  try {
+    const user = await one(
+      'SELECT id, full_name, email, locale, notify_by_email FROM users WHERE id = $1 AND deleted_at IS NULL',
+      [userId],
+    )
+    if (!user || user.notify_by_email === false) return
+
+    const counts = await one(
+      `SELECT count(*)::int AS outstanding
+         FROM questionnaires q
+         JOIN questionnaire_questions qq ON qq.questionnaire_id = q.id
+         LEFT JOIN questionnaire_answers qa ON qa.question_id = qq.id
+        WHERE q.profile_id = $1 AND qa.id IS NULL AND qq.is_required`,
+      [profileId],
+    )
+
+    const domain = classification?.domain
+      ? await one('SELECT label_en, label_de, label_fr FROM domains WHERE code = $1', [classification.domain])
+      : null
+
+    await queueEmail({
+      userId: user.id,
+      to: user.email,
+      template: 'profile_ready',
+      locale: user.locale ?? 'en',
+      vars: {
+        name: (user.full_name ?? '').split(' ')[0] || user.full_name,
+        domain: domain?.[`label_${user.locale ?? 'en'}`] ?? domain?.label_en ?? null,
+        questions: counts?.outstanding ?? 0,
+      },
+      url: `${config.appUrl}/dashboard`,
+    })
+  } catch (err) {
+    logger.warn('profile-ready notification failed', { userId, message: err.message })
   }
 }
 

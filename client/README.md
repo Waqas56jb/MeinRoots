@@ -126,6 +126,7 @@ added to `script-src` / `connect-src` or they will be blocked.
 | `/upload` | **protected** | CV upload, live analysis progress |
 | `/dashboard` | **protected** | Structured profile, readiness per objective, skill gaps, the CV in three languages |
 | `/questionnaire` | **protected** | The questions the CV could not answer |
+| `/verify-email` | public | Opened from the confirmation email; verifies once, signed in or out |
 
 `Protected` waits for the session check before deciding anything — redirecting while
 `/auth/me` is still in flight would bounce a signed-in user off their own dashboard on
@@ -250,12 +251,7 @@ blocked, so the layout never breaks offline.
 Job aggregation and matching, recruiter and candidate subscriptions, payments, messaging,
 employer access, courses and relocation support — all Milestone 2. The pricing table on
 the landing page is still indicative, and the placeholder figures ("40+ countries", the
-€19/€15 tiers) are unconfirmed.
-
-Candidates cannot yet edit the extracted experience or skills; only headline, summary,
-location, relocation willingness and notice period are editable, because rewriting the
-extracted rows without versioning would destroy the confidence data the admin queue
-depends on.
+€19/€15 tiers) are unconfirmed — they need real content from MeinRoots before launch.
 
 ## Web fundamentals checklist
 

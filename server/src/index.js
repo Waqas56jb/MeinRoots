@@ -2,6 +2,7 @@ import config from './config.js'
 import { createApp } from './app.js'
 import { closePool, one } from './db/pool.js'
 import { logger } from './lib/logger.js'
+import { verifyMailer } from './lib/mailer.js'
 import { ensureStorage } from './modules/cv/storage.js'
 import { startWorker, stopWorker } from './worker/index.js'
 
@@ -18,6 +19,12 @@ const boot = async () => {
   if (!config.openai.enabled) {
     logger.warn('OPENAI_API_KEY is not set — uploads will queue but analysis will fail')
   }
+
+  // Checks the SMTP handshake now rather than on the first password reset. A
+  // misconfigured mail server otherwise looks identical to a working one until
+  // somebody is locked out and waiting for a link that will never arrive.
+  if (config.mail.enabled) await verifyMailer()
+  else logger.warn('SMTP is not configured — emails will be recorded and their links logged')
 
   let server = null
   if (!config.worker.only) {

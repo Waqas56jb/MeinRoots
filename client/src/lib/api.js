@@ -109,6 +109,7 @@ export const api = {
   get: (path, options) => request(path, options),
   post: (path, body, options) => request(path, { ...options, method: 'POST', body }),
   patch: (path, body, options) => request(path, { ...options, method: 'PATCH', body }),
+  put: (path, body, options) => request(path, { ...options, method: 'PUT', body }),
   del: (path, options) => request(path, { ...options, method: 'DELETE' }),
   upload: (path, formData, options) =>
     // No Content-Type header: the browser must set the multipart boundary.
@@ -127,6 +128,9 @@ export const authApi = {
   resetPassword: (payload) => api.post('/api/auth/password/reset', payload),
   updateGoals: (goals) => api.patch('/api/auth/goals', { goals }),
   updateLocale: (locale) => api.patch('/api/auth/locale', { locale }),
+  verifyEmail: (token) => api.post('/api/auth/email/verify', { token }),
+  resendVerification: () => api.post('/api/auth/email/verify/resend'),
+  updateNotifications: (notifyByEmail) => api.patch('/api/auth/notifications', { notifyByEmail }),
 }
 
 export const cvApi = {
@@ -151,6 +155,14 @@ export const profileApi = {
   me: () => api.get('/api/profile/me'),
   update: (payload) => api.patch('/api/profile/me', payload),
   refreshReadiness: () => api.post('/api/profile/me/readiness/refresh'),
+
+  // Section editing. Every call returns the whole profile back, so the screen
+  // re-renders from one source of truth instead of patching local state and
+  // slowly drifting away from the server.
+  createEntry: (section, payload) => api.post(`/api/profile/me/${section}`, payload),
+  updateEntry: (section, id, payload) => api.put(`/api/profile/me/${section}/${id}`, payload),
+  deleteEntry: (section, id) => api.del(`/api/profile/me/${section}/${id}`),
+  edits: () => api.get('/api/profile/me/edits'),
 }
 
 export const questionnaireApi = {

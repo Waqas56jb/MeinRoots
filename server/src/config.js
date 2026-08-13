@@ -96,6 +96,21 @@ export const config = {
     maxFailedLogins: int('MAX_FAILED_LOGINS', 8),
     lockMinutes: int('LOGIN_LOCK_MINUTES', 15),
     resetTtlMinutes: int('RESET_TTL_MINUTES', 60),
+    verifyTtlHours: int('VERIFY_TTL_HOURS', 48),
+  },
+
+  mail: {
+    // Without a host there is no transport: messages are recorded as skipped and
+    // their links logged, so the platform keeps working while SMTP is pending.
+    enabled: Boolean(optional('SMTP_HOST', '')),
+    host: optional('SMTP_HOST', ''),
+    port: int('SMTP_PORT', 587),
+    // 465 is implicit TLS, 587 upgrades with STARTTLS — the default follows the
+    // port so this is right without being set.
+    secure: bool('SMTP_SECURE', int('SMTP_PORT', 587) === 465),
+    user: optional('SMTP_USER', ''),
+    pass: optional('SMTP_PASS', ''),
+    from: optional('MAIL_FROM', 'MeinRoots <no-reply@meinroots.com>'),
   },
 
   appUrl: optional('APP_URL', 'http://localhost:5173'),

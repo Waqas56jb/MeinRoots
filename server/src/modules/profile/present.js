@@ -15,6 +15,8 @@ export const presentSkill = (row) => ({
   evidence: row.evidence,
   isEvidenced: row.is_evidenced,
   confidence: row.confidence,
+  source: row.source ?? 'ai',
+  editedAt: row.edited_at ?? null,
 })
 
 export const presentExperience = (row) => ({
@@ -30,6 +32,8 @@ export const presentExperience = (row) => ({
   description: row.description,
   skills: row.skills ?? [],
   confidence: row.confidence,
+  source: row.source ?? 'ai',
+  editedAt: row.edited_at ?? null,
 })
 
 export const presentEducation = (row) => ({
@@ -42,6 +46,8 @@ export const presentEducation = (row) => ({
   endYear: row.end_year,
   likelyRecognisedInGermany: row.likely_recognised_in_de,
   confidence: row.confidence,
+  source: row.source ?? 'ai',
+  editedAt: row.edited_at ?? null,
 })
 
 export const presentCertification = (row) => ({
@@ -52,6 +58,8 @@ export const presentCertification = (row) => ({
   expiresOn: row.expires_on,
   credentialId: row.credential_id,
   confidence: row.confidence,
+  source: row.source ?? 'ai',
+  editedAt: row.edited_at ?? null,
 })
 
 export const presentLanguage = (row) => ({
@@ -61,6 +69,8 @@ export const presentLanguage = (row) => ({
   isSelfReported: row.is_self_reported,
   certificate: row.certificate,
   confidence: row.confidence,
+  source: row.source ?? 'ai',
+  editedAt: row.edited_at ?? null,
 })
 
 export const presentGap = (row) => ({

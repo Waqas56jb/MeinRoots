@@ -3,6 +3,7 @@ import config from '../config.js'
 import { logger } from '../lib/logger.js'
 import { claim, fail, reclaimStale, succeed } from './queue.js'
 import { analyseCv, onAnalyseFailed } from './handlers/analyseCv.js'
+import { deliverEmail } from '../lib/mailer.js'
 
 /**
  * Job type → handler. `onFail` runs once the queue has decided the job is
@@ -10,6 +11,9 @@ import { analyseCv, onAnalyseFailed } from './handlers/analyseCv.js'
  */
 const HANDLERS = {
   'cv.analyse': { run: analyseCv, onFail: onAnalyseFailed },
+  // Delivery is retried with the queue's backoff; a mail server refusing a
+  // connection for a minute should not cost a candidate their reset link.
+  'email.send': { run: (job) => deliverEmail(job.payload) },
 }
 
 const WORKER_ID = `${hostname()}:${process.pid}`

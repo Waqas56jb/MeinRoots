@@ -12,7 +12,8 @@
     "migrate:status": "node src/db/migrate.js status",
     "create-admin": "node src/scripts/create-admin.js",
     "smoke": "node src/scripts/smoke.js",
-    "e2e": "node src/scripts/e2e.js"
+    "e2e": "node src/scripts/e2e.js",
+    "test": "node --test \"src/tests/**/*.test.js\""
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -25,6 +26,7 @@
     "jsonwebtoken": "^9.0.2",
     "mammoth": "^1.9.0",
     "multer": "^2.2.0",
+    "nodemailer": "^9.0.5",
     "openai": "^4.77.0",
     "pdf-parse": "^1.1.1",
     "pg": "^8.13.1",

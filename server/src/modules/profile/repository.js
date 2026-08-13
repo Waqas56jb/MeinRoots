@@ -40,6 +40,10 @@ export const saveExtraction = async ({ userId, documentId, extraction }) =>
       (await client.query('INSERT INTO candidate_profiles (user_id) VALUES ($1) RETURNING id', [userId]))
         .rows[0].id
 
+    // Only the AI's own rows are replaced. Anything the candidate wrote or
+    // corrected survives a re-analysis — otherwise uploading a new CV would
+    // silently destroy their corrections, which is the fastest way to make
+    // someone stop trusting the profile.
     for (const table of [
       'profile_experiences',
       'profile_education',
@@ -47,7 +51,7 @@ export const saveExtraction = async ({ userId, documentId, extraction }) =>
       'profile_skills',
       'profile_languages',
     ]) {
-      await client.query(`DELETE FROM ${table} WHERE profile_id = $1`, [profileId])
+      await client.query(`DELETE FROM ${table} WHERE profile_id = $1 AND source = 'ai'`, [profileId])
     }
 
     const experiences = extraction.experiences ?? []

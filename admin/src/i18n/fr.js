@@ -301,6 +301,7 @@ export default {
     recognitionUnclear: 'Reconnaissance incertaine',
     empty: 'Rien d’extrait.',
     lowConfidence: 'Faible confiance',
+    editedByCandidate: 'modifié',
   },
 
   flags: {

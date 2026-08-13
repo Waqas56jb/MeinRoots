@@ -136,6 +136,37 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
+  const verifyEmail = useCallback(async (token) => {
+    try {
+      const data = await authApi.verifyEmail(token)
+      // The session may already be open in this tab; reflect the new state
+      // rather than making the candidate sign out and back in to see it.
+      setUser((current) => (current ? { ...current, emailVerified: true } : data.user))
+      return { ok: true }
+    } catch (err) {
+      return toResult(err)
+    }
+  }, [])
+
+  const resendVerification = useCallback(async () => {
+    try {
+      await authApi.resendVerification()
+      return { ok: true }
+    } catch (err) {
+      return toResult(err)
+    }
+  }, [])
+
+  const setEmailNotifications = useCallback(async (enabled) => {
+    try {
+      const data = await authApi.updateNotifications(enabled)
+      setUser(data.user)
+      return { ok: true }
+    } catch (err) {
+      return toResult(err)
+    }
+  }, [])
+
   /** Fire-and-forget: a failed locale sync must never interrupt the UI. */
   const syncLocale = useCallback((locale) => {
     authApi.updateLocale(locale).catch(() => {})
@@ -156,8 +187,14 @@ export function AuthProvider({ children }) {
       resetPassword,
       updateGoals,
       syncLocale,
+      verifyEmail,
+      resendVerification,
+      setEmailNotifications,
     }),
-    [user, ready, busy, signup, login, logout, requestReset, resetPassword, updateGoals, syncLocale],
+    [
+      user, ready, busy, signup, login, logout, requestReset, resetPassword,
+      updateGoals, syncLocale, verifyEmail, resendVerification, setEmailNotifications,
+    ],
   )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

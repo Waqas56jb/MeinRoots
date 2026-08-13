@@ -40,6 +40,7 @@ npm run dev               # http://localhost:4000
 | `npm run create-admin` | Create or promote an admin |
 | `npm run smoke` | 27 checks against a running API — free, no OpenAI calls |
 | `npm run e2e`¹ | Full pipeline with a generated CV — **spends OpenAI tokens** |
+| `npm test` | 25 unit tests. No database, no network, no API keys |
 
 ¹ `node src/scripts/e2e.js`
 
@@ -58,7 +59,9 @@ the front end translates it; the `message` is English and meant for logs.
 | GET | `/me` | Current user |
 | POST | `/password/reset-request` | Always reports success |
 | POST | `/password/reset` | Revokes every other session |
-| PATCH | `/goals`, `/locale` | |
+| PATCH | `/goals`, `/locale`, `/notifications` | |
+| POST | `/email/verify` | Single-use token from the confirmation email |
+| POST | `/email/verify/resend` | Session required, so it cannot probe which addresses exist |
 
 ### CV — `/api/cv`
 | Method | Path | Notes |
@@ -73,6 +76,10 @@ the front end translates it; the `message` is English and meant for logs.
 
 ### Profile — `/api/profile`
 `GET /me`, `PATCH /me`, `GET /me/readiness`, `POST /me/readiness/refresh`
+
+Section editing — `experiences`, `education`, `certifications`, `skills`, `languages`:
+`POST /me/:section`, `PUT /me/:section/:id`, `DELETE /me/:section/:id`,
+`PATCH /me/:section/order`, `GET /me/edits`.
 
 ### Questionnaire — `/api/questionnaire`
 `GET /current`, `POST /answers`, `POST /complete`
@@ -112,6 +119,19 @@ no retry loop for malformed output.
 `storage/cvs/<user-id>/<uuid>.<ext>`, sha256 recorded at upload, and the e2e test asserts the
 downloaded bytes still match what was sent.
 
+**A candidate edit is not the same as an extraction.** Correcting a row sets
+`source = 'candidate'`, clears its confidence and records the full before/after in
+`profile_edits`. A hand-typed row must never look like a confidently parsed one to the
+review queue, and an admin must still be able to see what the AI originally read. A
+re-analysis replaces only `source = 'ai'` rows, so uploading a new CV never destroys
+corrections.
+
+**Email is a database row first, then a job.** A slow SMTP server must not hold up the
+request that triggered it, and having no SMTP configured is a supported state — messages
+are recorded as `skipped` and their links logged, so the platform stays usable. Every
+attempt lands in `outbound_emails`, because "did the candidate get the reset link?" has to
+be answerable.
+
 **Tokens are httpOnly cookies.** A short access JWT plus a rotating refresh token whose sha256
 — never the token — is stored, so a database dump cannot be replayed as live sessions.
 
@@ -147,8 +167,9 @@ code change. Both are written out as comments in `deploy/nginx.conf`.
    in `.env` and restart. Until then cookies travel in clear.
 2. **Rotate the credentials** that were shared over chat: the OpenAI key and the server's root
    password. Then disable root password login in favour of an SSH key.
-3. **Backups.** Nothing backs up the database or `storage/` yet, and neither can be
-   reconstructed. `pg_dump` on a timer plus an off-box copy is the minimum.
-4. **Email.** Password reset currently logs its link instead of sending it — see
-   `requestPasswordReset` in `src/modules/auth/service.js`. Wiring an SMTP sender there is the
-   only change needed.
+3. **Off-server backup copies.** `deploy/backup.sh` runs nightly at 03:20 through
+   `meinroots-backup.timer`: it dumps the database, archives the uploaded CVs, verifies both
+   are readable, and prunes to 14 days plus 6 monthly keepers. Restore steps are at the
+   bottom of that script, and restoring has been tested into a scratch database. What
+   remains is copying `/opt/meinroots/backups` off this machine — today they sit on the same
+   disk as the data they protect, which covers a bad deploy but not a dead server.

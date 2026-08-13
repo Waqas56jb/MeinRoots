@@ -301,6 +301,7 @@ export default {
     recognitionUnclear: 'Anerkennung unklar',
     empty: 'Nichts extrahiert.',
     lowConfidence: 'Geringe Sicherheit',
+    editedByCandidate: 'bearbeitet',
   },
 
   flags: {
