@@ -1,0 +1,318 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import AppShell from '../components/app/AppShell.jsx'
+import Icon from '../components/ui/Icon.jsx'
+import { Badge, Card, Note } from '../components/app/widgets.jsx'
+import { goalKeys } from '../data/content.js'
+import { useI18n } from '../context/I18nContext.jsx'
+import { useAuth } from '../context/AuthContext.jsx'
+import { useWorkspace } from '../context/WorkspaceContext.jsx'
+import { authApi } from '../lib/api.js'
+import { useApiMessage } from '../lib/apiMessage.js'
+
+/**
+ * Account settings.
+ *
+ * Only settings that are actually backed by an endpoint appear here: language,
+ * objectives, email notifications, password, and erasure. Nothing decorative.
+ */
+export default function SettingsPage() {
+  const { t, locale, setLocale, locales } = useI18n()
+  const { user, updateGoals, setEmailNotifications, resendVerification, syncLocale, logout } = useAuth()
+  const apiMessage = useApiMessage()
+  const ws = useWorkspace()
+  const navigate = useNavigate()
+
+  const [goals, setGoals] = useState(user?.goals ?? [])
+  const [saved, setSaved] = useState('')
+  const [error, setError] = useState('')
+  const [busy, setBusy] = useState(false)
+
+  const flash = (key) => {
+    setSaved(key)
+    setError('')
+    setTimeout(() => setSaved(''), 2500)
+  }
+
+  const saveGoals = async () => {
+    if (!goals.length) return setError(t('errors.goal_required'))
+    setBusy(true)
+    const result = await updateGoals(goals)
+    setBusy(false)
+    if (!result.ok) return setError(apiMessage(result.error))
+    flash('goals')
+    return ws.reload({ quiet: true })
+  }
+
+  const toggleNotifications = async (enabled) => {
+    const result = await setEmailNotifications(enabled)
+    if (!result.ok) setError(apiMessage(result.error))
+    else flash('notifications')
+  }
+
+  return (
+    <AppShell
+      eyebrow={t('app.nav.settings')}
+      title={t('app.settings.title')}
+      subtitle={t('app.settings.subtitle')}
+      badges={{ questionnaire: ws.outstandingQuestions }}
+    >
+      {error && <Note tone="bad">{error}</Note>}
+      {saved && <Note tone="good" icon="check">{t(`app.settings.saved.${saved}`)}</Note>}
+
+      <div className="wgrid wgrid--2">
+        <Card icon="mail" title={t('app.settings.account')}>
+          <dl className="wfacts">
+            <div className="wfact">
+              <dt>{t('auth.fullName')}</dt>
+              <dd>{user?.name}</dd>
+            </div>
+            <div className="wfact">
+              <dt>{t('auth.email')}</dt>
+              <dd className="settings__email">
+                {user?.email}
+                {user?.emailVerified ? (
+                  <Badge tone="good" icon="check">{t('app.settings.verified')}</Badge>
+                ) : (
+                  <Badge tone="warn" icon="alert">{t('app.settings.unverified')}</Badge>
+                )}
+              </dd>
+            </div>
+          </dl>
+
+          {!user?.emailVerified && (
+            <button
+              type="button"
+              className="btn btn--ghost btn--sm"
+              style={{ marginTop: 'var(--s-3)' }}
+              onClick={async () => {
+                const result = await resendVerification()
+                if (result.ok) flash('verification')
+                else setError(apiMessage(result.error))
+              }}
+            >
+              <Icon name="mail" size={15} /> {t('app.verify.resend')}
+            </button>
+          )}
+        </Card>
+
+        <Card icon="globe" title={t('app.settings.language')} hint={t('app.settings.languageHint')}>
+          <div className="settings__langs">
+            {locales.map((l) => (
+              <button
+                key={l.code}
+                type="button"
+                className={`settings__lang ${l.code === locale ? 'is-on' : ''}`}
+                onClick={() => {
+                  setLocale(l.code)
+                  syncLocale(l.code)
+                  flash('language')
+                }}
+                aria-pressed={l.code === locale}
+              >
+                <span aria-hidden="true">{l.flag}</span>
+                {l.native}
+                {l.code === locale && <Icon name="check" size={15} />}
+              </button>
+            ))}
+          </div>
+        </Card>
+
+        <Card icon="target" title={t('app.settings.goals')} hint={t('app.settings.goalsHint')}>
+          <div className="upgoals__row">
+            {goalKeys.map((g) => (
+              <button
+                key={g.key}
+                type="button"
+                className={`upgoals__chip ${goals.includes(g.key) ? 'is-on' : ''}`}
+                aria-pressed={goals.includes(g.key)}
+                onClick={() =>
+                  setGoals((s) => (s.includes(g.key) ? s.filter((x) => x !== g.key) : [...s, g.key]))
+                }
+              >
+                <Icon name={g.icon} size={16} />
+                {t(`goals.items.${g.key}.title`)}
+              </button>
+            ))}
+          </div>
+          <button
+            type="button"
+            className="btn btn--primary btn--sm"
+            style={{ marginTop: 'var(--s-4)' }}
+            onClick={saveGoals}
+            disabled={busy || JSON.stringify(goals) === JSON.stringify(user?.goals ?? [])}
+          >
+            {busy ? t('auth.processing') : t('app.edit.save')}
+          </button>
+          <p className="wcard__hint" style={{ marginTop: 'var(--s-3)', marginBottom: 0 }}>
+            {t('app.settings.goalsNote')}
+          </p>
+        </Card>
+
+        <Card icon="bell" title={t('app.settings.notifications')}>
+          <label className="settings__toggle">
+            <input
+              type="checkbox"
+              checked={user?.notifyByEmail !== false}
+              onChange={(e) => toggleNotifications(e.target.checked)}
+            />
+            <span>
+              <strong>{t('app.settings.notifyTitle')}</strong>
+              <small>{t('app.settings.notifyText')}</small>
+            </span>
+          </label>
+        </Card>
+      </div>
+
+      <PasswordCard onSaved={() => flash('password')} onError={setError} />
+
+      <DangerCard
+        onDeleted={async () => {
+          await logout()
+          navigate('/', { replace: true })
+        }}
+      />
+    </AppShell>
+  )
+}
+
+function PasswordCard({ onSaved, onError }) {
+  const { t } = useI18n()
+  const apiMessage = useApiMessage()
+  const [values, setValues] = useState({ currentPassword: '', newPassword: '', confirm: '' })
+  const [busy, setBusy] = useState(false)
+  const [errors, setErrors] = useState({})
+
+  const set = (k, v) => {
+    setValues((s) => ({ ...s, [k]: v }))
+    setErrors((e) => ({ ...e, [k]: undefined }))
+  }
+
+  const submit = async (e) => {
+    e.preventDefault()
+    const next = {}
+    if (!values.currentPassword) next.currentPassword = t('errors.password_required')
+    if (values.newPassword.length < 8) next.newPassword = t('errors.password_short')
+    if (values.confirm !== values.newPassword) next.confirm = t('auth.errors.mismatch')
+    setErrors(next)
+    if (Object.keys(next).length) return
+
+    setBusy(true)
+    try {
+      await authApi.changePassword({
+        currentPassword: values.currentPassword,
+        newPassword: values.newPassword,
+      })
+      setValues({ currentPassword: '', newPassword: '', confirm: '' })
+      onSaved()
+    } catch (err) {
+      if (err.code === 'wrong_password') setErrors({ currentPassword: apiMessage(err.code) })
+      else onError(apiMessage(err.code))
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <Card icon="lock" title={t('app.settings.password')} hint={t('app.settings.passwordHint')}>
+      <form className="editform wcard--flat" onSubmit={submit} style={{ background: 'transparent', border: 0, padding: 0, margin: 0 }}>
+        <div className="editform__grid">
+          <label className="editfield is-wide">
+            <span className="editfield__label">{t('app.settings.currentPassword')}</span>
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={values.currentPassword}
+              onChange={(e) => set('currentPassword', e.target.value)}
+            />
+            {errors.currentPassword && <span className="ffield__err">{errors.currentPassword}</span>}
+          </label>
+          <label className="editfield">
+            <span className="editfield__label">{t('app.settings.newPassword')}</span>
+            <input
+              type="password"
+              autoComplete="new-password"
+              value={values.newPassword}
+              onChange={(e) => set('newPassword', e.target.value)}
+            />
+            {errors.newPassword && <span className="ffield__err">{errors.newPassword}</span>}
+          </label>
+          <label className="editfield">
+            <span className="editfield__label">{t('auth.confirm')}</span>
+            <input
+              type="password"
+              autoComplete="new-password"
+              value={values.confirm}
+              onChange={(e) => set('confirm', e.target.value)}
+            />
+            {errors.confirm && <span className="ffield__err">{errors.confirm}</span>}
+          </label>
+        </div>
+        <div className="editform__actions">
+          <button type="submit" className="btn btn--primary btn--sm" disabled={busy}>
+            {busy ? t('auth.processing') : t('app.settings.changePassword')}
+          </button>
+        </div>
+      </form>
+    </Card>
+  )
+}
+
+/**
+ * Erasure asks for the password, not a yes/no. A confirm dialog is muscle
+ * memory; typing a password is a deliberate act.
+ */
+function DangerCard({ onDeleted }) {
+  const { t } = useI18n()
+  const apiMessage = useApiMessage()
+  const [open, setOpen] = useState(false)
+  const [password, setPassword] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [error, setError] = useState('')
+
+  const submit = async (e) => {
+    e.preventDefault()
+    setBusy(true)
+    setError('')
+    try {
+      await authApi.deleteAccount(password)
+      await onDeleted()
+    } catch (err) {
+      setError(apiMessage(err.code))
+      setBusy(false)
+    }
+  }
+
+  return (
+    <Card icon="trash" title={t('app.settings.danger')} className="danger">
+      <p className="wcard__hint">{t('app.settings.dangerText')}</p>
+
+      {!open ? (
+        <button type="button" className="btn btn--danger btn--sm" onClick={() => setOpen(true)}>
+          <Icon name="trash" size={15} /> {t('app.settings.deleteAccount')}
+        </button>
+      ) : (
+        <form onSubmit={submit} className="editform">
+          {error && <p className="ffield__err"><Icon name="alert" size={14} />{error}</p>}
+          <label className="editfield is-wide">
+            <span className="editfield__label">{t('app.settings.confirmPassword')}</span>
+            <input
+              type="password"
+              autoComplete="current-password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+          <div className="editform__actions">
+            <button type="button" className="btn btn--ghost btn--sm" onClick={() => setOpen(false)} disabled={busy}>
+              {t('app.edit.cancel')}
+            </button>
+            <button type="submit" className="btn btn--danger btn--sm" disabled={busy || !password}>
+              {busy ? t('auth.processing') : t('app.settings.deleteForever')}
+            </button>
+          </div>
+        </form>
+      )}
+    </Card>
+  )
+}

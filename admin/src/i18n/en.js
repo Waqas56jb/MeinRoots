@@ -1,7 +1,10 @@
 export default {
   code: 'en',
+
   name: 'English',
+
   native: 'English',
+
   flag: '🇬🇧',
 
   app: {
@@ -202,6 +205,46 @@ export default {
       succeeded: 'Succeeded',
       failed: 'Failed',
       dead: 'Gave up',
+    },
+    showDetail: 'Technical detail',
+    hideDetail: 'Hide detail',
+    errors: {
+      pdf_unreadable: {
+        title: 'The PDF could not be fully read',
+        text: 'Its internal structure is damaged or unusual. Retry the analysis; if it fails again, ask the candidate to re-export the file or upload a .docx.',
+      },
+      no_text: {
+        title: 'No text could be extracted',
+        text: 'The file is almost certainly a scan or an image-only export. The candidate needs to upload a text PDF or a .docx.',
+      },
+      legacy_doc: {
+        title: 'Old .doc format',
+        text: 'Legacy binary .doc files cannot be read. The candidate needs to save as PDF or .docx.',
+      },
+      too_long: {
+        title: 'The document was too long for one pass',
+        text: 'The model hit its output limit. Retrying usually works; a very long CV may need shortening.',
+      },
+      rate_limited: {
+        title: 'The AI provider rate-limited us',
+        text: 'Too many requests in a short window. Wait a minute and retry — nothing is lost.',
+      },
+      timeout: {
+        title: 'The connection timed out',
+        text: 'A network or provider hiccup rather than a problem with the CV. Retry.',
+      },
+      ai_auth: {
+        title: 'The AI provider rejected our credentials',
+        text: 'The OpenAI key is missing, expired or out of quota. This needs fixing in the server configuration before any retry will work.',
+      },
+      gone: {
+        title: 'The record no longer exists',
+        text: 'The candidate or their CV was deleted while the job was queued. Nothing to retry.',
+      },
+      unknown: {
+        title: 'The analysis did not complete',
+        text: 'Retry the job. If it keeps failing, the technical detail below is what the developer needs.',
+      },
     },
   },
 

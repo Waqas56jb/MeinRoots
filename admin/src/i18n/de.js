@@ -1,7 +1,10 @@
 export default {
   code: 'de',
+
   name: 'German',
+
   native: 'Deutsch',
+
   flag: '🇩🇪',
 
   app: {
@@ -202,6 +205,46 @@ export default {
       succeeded: 'Erfolgreich',
       failed: 'Fehlgeschlagen',
       dead: 'Abgebrochen',
+    },
+    showDetail: 'Technische Details',
+    hideDetail: 'Details ausblenden',
+    errors: {
+      pdf_unreadable: {
+        title: 'Das PDF konnte nicht vollständig gelesen werden',
+        text: 'Seine interne Struktur ist beschädigt oder ungewöhnlich. Analyse erneut starten; scheitert sie wieder, sollte die Datei neu exportiert oder eine .docx hochgeladen werden.',
+      },
+      no_text: {
+        title: 'Es konnte kein Text extrahiert werden',
+        text: 'Die Datei ist fast sicher ein Scan oder ein reiner Bild-Export. Es wird ein Text-PDF oder eine .docx benötigt.',
+      },
+      legacy_doc: {
+        title: 'Altes .doc-Format',
+        text: 'Alte binäre .doc-Dateien können nicht gelesen werden. Die Datei muss als PDF oder .docx gespeichert werden.',
+      },
+      too_long: {
+        title: 'Das Dokument war für einen Durchlauf zu lang',
+        text: 'Das Modell hat sein Ausgabelimit erreicht. Ein erneuter Versuch hilft meist; ein sehr langer Lebenslauf muss eventuell gekürzt werden.',
+      },
+      rate_limited: {
+        title: 'Der KI-Anbieter hat uns gedrosselt',
+        text: 'Zu viele Anfragen in kurzer Zeit. Eine Minute warten und erneut starten — nichts geht verloren.',
+      },
+      timeout: {
+        title: 'Zeitüberschreitung der Verbindung',
+        text: 'Ein Netz- oder Anbieterproblem, nicht der Lebenslauf. Erneut versuchen.',
+      },
+      ai_auth: {
+        title: 'Der KI-Anbieter hat unsere Zugangsdaten abgelehnt',
+        text: 'Der OpenAI-Schlüssel fehlt, ist abgelaufen oder das Kontingent ist aufgebraucht. Das muss in der Serverkonfiguration behoben werden, bevor ein Neustart hilft.',
+      },
+      gone: {
+        title: 'Der Datensatz existiert nicht mehr',
+        text: 'Person oder Lebenslauf wurden gelöscht, während der Job wartete. Kein erneuter Versuch nötig.',
+      },
+      unknown: {
+        title: 'Die Analyse wurde nicht abgeschlossen',
+        text: 'Job erneut starten. Scheitert er weiterhin, sind die technischen Details unten das, was die Entwicklung braucht.',
+      },
     },
   },
 

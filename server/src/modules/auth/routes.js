@@ -166,6 +166,48 @@ router.post(
   }),
 )
 
+router.post(
+  '/password/change',
+  requireAuth,
+  authLimiter,
+  validateBody(
+    z.object({
+      currentPassword: z.string().min(1, 'password_required'),
+      newPassword: passwordField,
+    }),
+  ),
+  asyncHandler(async (req, res) => {
+    await service.changePassword({ userId: req.user.id, ...req.body })
+    // The candidate's own session was revoked with the rest; give them a new
+    // one so changing a password does not silently sign them out.
+    const tokens = await service.createSession(req.user, req)
+    setAuthCookies(res, tokens)
+    await audit(req, { action: 'auth.password_changed', entityType: 'user', entityId: req.user.id })
+    ok(res, { changed: true })
+  }),
+)
+
+/** Self-service GDPR erasure. Irreversible, so it asks for the password. */
+router.delete(
+  '/account',
+  requireAuth,
+  authLimiter,
+  validateBody(z.object({ password: z.string().min(1, 'password_required') })),
+  asyncHandler(async (req, res) => {
+    const { id, role } = req.user
+    await service.deleteAccount({ userId: id, password: req.body.password })
+    clearAuthCookies(res)
+    await audit(req, {
+      action: 'auth.account_deleted',
+      entityType: 'user',
+      entityId: id,
+      actorId: null, // the actor no longer exists; the entity id is the record
+      actorRole: role,
+    })
+    ok(res, { erased: true })
+  }),
+)
+
 router.patch(
   '/notifications',
   requireAuth,

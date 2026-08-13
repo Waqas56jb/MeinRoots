@@ -131,6 +131,8 @@ export const authApi = {
   verifyEmail: (token) => api.post('/api/auth/email/verify', { token }),
   resendVerification: () => api.post('/api/auth/email/verify/resend'),
   updateNotifications: (notifyByEmail) => api.patch('/api/auth/notifications', { notifyByEmail }),
+  changePassword: (payload) => api.post('/api/auth/password/change', payload),
+  deleteAccount: (password) => request('/api/auth/account', { method: 'DELETE', body: { password } }),
 }
 
 export const cvApi = {

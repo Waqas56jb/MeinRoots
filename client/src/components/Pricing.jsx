@@ -12,7 +12,7 @@ export default function Pricing() {
   const navigate = useNavigate()
   const { isAuthenticated } = useAuth()
 
-  const start = () => navigate(isAuthenticated ? '/upload' : '/signup')
+  const start = () => navigate(isAuthenticated ? '/cv' : '/signup')
 
   return (
     <section className="section" id="plans">

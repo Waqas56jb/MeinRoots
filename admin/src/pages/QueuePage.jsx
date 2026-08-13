@@ -12,6 +12,49 @@ const STATUSES = ['queued', 'running', 'succeeded', 'failed', 'dead']
 const TONE = { queued: 'info', running: 'info', succeeded: 'good', failed: 'warn', dead: 'bad' }
 const REFRESH_MS = 8000
 
+/**
+ * Technical failure text, translated into something an operator can act on.
+ *
+ * "bad XRef entry" is a PDF-parser internal; it tells an admin nothing about
+ * what to do. The raw text stays available behind a toggle, because when it
+ * does matter it matters exactly as written.
+ */
+const ERROR_PATTERNS = [
+  { match: /bad xref|xref|invalid pdf|pdf structure/i, key: 'pdf_unreadable' },
+  { match: /no text could be read|cv_not_readable|scan/i, key: 'no_text' },
+  { match: /legacy_doc|old \.doc/i, key: 'legacy_doc' },
+  { match: /token ceiling|max_tokens|length/i, key: 'too_long' },
+  { match: /rate limit|429|quota/i, key: 'rate_limited' },
+  { match: /timeout|etimedout|econnreset|socket hang up/i, key: 'timeout' },
+  { match: /api key|401|unauthor/i, key: 'ai_auth' },
+  { match: /no longer exists/i, key: 'gone' },
+]
+
+const friendlyError = (raw) => {
+  if (!raw) return null
+  const hit = ERROR_PATTERNS.find((p) => p.match.test(raw))
+  return hit ? hit.key : 'unknown'
+}
+
+/** A readable explanation, with the raw text one click away. */
+function JobError({ raw }) {
+  const { t } = useI18n()
+  const [open, setOpen] = useState(false)
+  const key = friendlyError(raw)
+
+  return (
+    <div className="job__err">
+      <strong>{t(`queue.errors.${key}.title`)}</strong>
+      <span>{t(`queue.errors.${key}.text`)}</span>
+      <button type="button" onClick={() => setOpen((v) => !v)}>
+        <Icon name={open ? 'chevronDown' : 'chevronRight'} size={13} />
+        {open ? t('queue.hideDetail') : t('queue.showDetail')}
+      </button>
+      {open && <code>{raw}</code>}
+    </div>
+  )
+}
+
 export default function QueuePage() {
   const { t, tError, locale } = useI18n()
   const toast = useToast()
@@ -129,7 +172,7 @@ export default function QueuePage() {
                     <span className="muted">{formatDateTime(job.created_at, locale)}</span>
                   </div>
 
-                  {job.last_error && <p className="job__err">{job.last_error}</p>}
+                  {job.last_error && <JobError raw={job.last_error} />}
                 </div>
 
                 {(job.status === 'dead' || job.status === 'failed') && (

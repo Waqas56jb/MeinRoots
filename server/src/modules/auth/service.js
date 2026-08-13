@@ -255,6 +255,53 @@ export const updateGoals = async (userId, goals) => {
   return publicUser(row)
 }
 
+/**
+ * Change password while signed in.
+ *
+ * The current password is required even though the session already proves
+ * identity: a session can be an unattended laptop, and this is the one change
+ * that would lock the real owner out.
+ */
+export const changePassword = async ({ userId, currentPassword, newPassword }) => {
+  const user = await one('SELECT * FROM users WHERE id = $1 AND deleted_at IS NULL', [userId])
+  if (!user) throw unauthorized('unauthorized', 'Session no longer valid')
+
+  const ok = await verifyPassword(currentPassword, user.password_hash)
+  if (!ok) throw unauthorized('wrong_password', 'Your current password is not correct')
+
+  const passwordHash = await hashPassword(newPassword)
+  await transaction(async (client) => {
+    await client.query('UPDATE users SET password_hash = $2 WHERE id = $1', [userId, passwordHash])
+    // Every other session ends. Changing a password is what someone does when
+    // they think it is known, so leaving the other sessions alive defeats it.
+    await client.query('UPDATE sessions SET revoked_at = now() WHERE user_id = $1 AND revoked_at IS NULL', [
+      userId,
+    ])
+  })
+  return { changed: true }
+}
+
+/**
+ * Self-service erasure — the GDPR right the candidate exercises themselves.
+ *
+ * Identical in effect to the admin path: the row is deleted, the cascade takes
+ * profile, CVs, sessions and answers with it, the files are unlinked, and only
+ * an anonymised audit entry survives to record that an erasure happened.
+ */
+export const deleteAccount = async ({ userId, password }) => {
+  const user = await one('SELECT * FROM users WHERE id = $1 AND deleted_at IS NULL', [userId])
+  if (!user) throw unauthorized('unauthorized', 'Session no longer valid')
+
+  const ok = await verifyPassword(password, user.password_hash)
+  if (!ok) throw unauthorized('wrong_password', 'Your password is not correct')
+
+  const { deleteUserFiles } = await import('../cv/storage.js')
+  await deleteUserFiles(userId)
+  await query('DELETE FROM users WHERE id = $1', [userId])
+
+  return { erased: true, email: user.email }
+}
+
 export const updateNotifications = async (userId, notifyByEmail) => {
   const row = await one('UPDATE users SET notify_by_email = $2 WHERE id = $1 RETURNING *', [
     userId,

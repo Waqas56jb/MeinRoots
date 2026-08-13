@@ -62,6 +62,8 @@ the front end translates it; the `message` is English and meant for logs.
 | PATCH | `/goals`, `/locale`, `/notifications` | |
 | POST | `/email/verify` | Single-use token from the confirmation email |
 | POST | `/email/verify/resend` | Session required, so it cannot probe which addresses exist |
+| POST | `/password/change` | Requires the current password; ends every other session |
+| DELETE | `/account` | Self-service GDPR erasure; requires the password |
 
 ### CV — `/api/cv`
 | Method | Path | Notes |

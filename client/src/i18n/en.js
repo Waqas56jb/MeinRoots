@@ -1,14 +1,17 @@
 export default {
   code: 'en',
+
   name: 'English',
+
   native: 'English',
+
   flag: '🇬🇧',
+
   dir: 'ltr',
 
   meta: {
     title: 'MeinRoots — Your roots. Your future in Germany.',
-    description:
-      'Upload your CV in English, German or French. AI structures your profile, finds your skill gaps and shows exactly what to do next.',
+    description: 'Upload your CV in English, German or French. AI structures your profile, finds your skill gaps and shows exactly what to do next.',
   },
 
   common: {
@@ -19,13 +22,9 @@ export default {
     loading: 'Loading',
     yes: 'Yes',
     no: 'No',
+    none: '—',
   },
 
-  /**
-   * Keyed by the API's error codes. The server sends a stable code and an
-   * English message meant for logs; the interface translates the code itself so
-   * a candidate never reads a developer's sentence in the wrong language.
-   */
   errors: {
     generic: 'Something went wrong. Please try again.',
     network_error: 'We could not reach the server. Check your connection and try again.',
@@ -35,7 +34,6 @@ export default {
     forbidden: 'You do not have access to this.',
     not_found: 'We could not find that.',
     rate_limited: 'Too many requests — please slow down.',
-
     email_taken: 'An account with this email already exists. Try logging in.',
     invalid_credentials: 'Email or password is incorrect.',
     account_locked: 'Too many failed attempts. Please try again in a few minutes.',
@@ -43,7 +41,6 @@ export default {
     reset_invalid: 'This reset link is invalid or has expired. Request a new one.',
     consent_required: 'Please accept the privacy notice to continue.',
     session_expired: 'Your session has expired. Please sign in again.',
-
     no_file: 'Please choose a CV file first.',
     unsupported_file_type: 'Only PDF and .docx files are supported.',
     file_too_large: 'That file is larger than 10 MB.',
@@ -53,7 +50,6 @@ export default {
     already_running: 'This CV is already being analysed.',
     analysis_failed: 'We could not analyse this CV. Please try uploading it again.',
     document_not_found: 'We could not find that CV.',
-
     profile_not_found: 'Upload a CV to build your profile first.',
     no_cv: 'Upload a CV before recalculating.',
     questionnaire_not_found: 'There is no questionnaire for you yet.',
@@ -61,8 +57,7 @@ export default {
     invalid_answer: 'That answer is not in the expected format.',
     invalid_option: 'Please choose one of the offered options.',
     ai_not_configured: 'CV analysis is temporarily unavailable. Please try again later.',
-
-    name_required: 'Please enter your name.',
+    name_required: 'Enter a name.',
     email_required: 'Please enter your email address.',
     email_invalid: 'That doesn’t look like a valid email address.',
     password_required: 'Please enter your password.',
@@ -77,9 +72,9 @@ export default {
     unknown_section: 'That section cannot be edited.',
     invalid_date: 'Use the date picker, or the format YYYY-MM-DD.',
     role_required: 'Enter a job title.',
-    name_required: 'Enter a name.',
     language_required: 'Enter a language.',
     not_orderable: 'This section cannot be reordered.',
+    wrong_password: 'That password is not correct.',
   },
 
   nav: {
@@ -96,7 +91,6 @@ export default {
     logout: 'Log out',
   },
 
-
   hero: {
     proof: 'Trusted by candidates from <b>40+ countries</b>',
     titleA: 'Talent has no borders.',
@@ -108,9 +102,19 @@ export default {
     note: 'No cost to start · Your original CV is never modified · GDPR-ready',
     scroll: 'Scroll to explore',
     stats: {
-      languages: { value: '3', label: 'CV languages parsed', hint: 'EN · DE · FR' },
-      speed: { value: '< 60s', label: 'To a structured profile' },
-      domains: { value: '12+', label: 'Professional domains' },
+      languages: {
+        value: '3',
+        label: 'CV languages parsed',
+        hint: 'EN · DE · FR',
+      },
+      speed: {
+        value: '< 60s',
+        label: 'To a structured profile',
+      },
+      domains: {
+        value: '12+',
+        label: 'Professional domains',
+      },
     },
   },
 
@@ -141,8 +145,7 @@ export default {
   goals: {
     eyebrow: 'Step one',
     title: 'Start with your objective',
-    lead:
-      'Everything that follows — parsing, classification, readiness, recommendations — adapts to the goal you choose here. You can select more than one.',
+    lead: 'Everything that follows — parsing, classification, readiness, recommendations — adapts to the goal you choose here. You can select more than one.',
     choose: 'Choose this path',
     mostChosen: 'Most chosen',
     items: {
@@ -164,7 +167,11 @@ export default {
       ausbildung: {
         title: 'Ausbildung',
         text: 'Germany’s paid dual training: you work in a company and study at a vocational school at the same time.',
-        points: ['Training contract with an employer', 'German level A2–B1 to start', 'Recognised qualification in 2–3.5 years'],
+        points: [
+          'Training contract with an employer',
+          'German level A2–B1 to start',
+          'Recognised qualification in 2–3.5 years',
+        ],
       },
     },
   },
@@ -172,8 +179,7 @@ export default {
   how: {
     eyebrow: 'The journey',
     title: 'From CV to clarity in four steps',
-    lead:
-      'No long forms before you see value. Upload first — the questionnaire only asks for what the AI could not already establish from your CV.',
+    lead: 'No long forms before you see value. Upload first — the questionnaire only asks for what the AI could not already establish from your CV.',
     steps: {
       objective: {
         title: 'Set your objective',
@@ -246,22 +252,44 @@ export default {
   domains: {
     eyebrow: 'Professional domains',
     title: 'Classified into the field you actually work in',
-    lead:
-      'Each profile receives one or more domains plus a specialisation, with a confidence indicator. Categories are configurable by the admin — new fields are added without a redeployment.',
+    lead: 'Each profile receives one or more domains plus a specialisation, with a confidence indicator. Categories are configurable by the admin — new fields are added without a redeployment.',
     foot: 'Need a domain that isn’t listed? Admins add, rename or deactivate categories from the console.',
     specialisations: 'specialisations',
     items: {
-      it: { name: 'IT & Software', spec: 'Front-end · Back-end · Data · DevOps' },
-      health: { name: 'Healthcare / Pflege', spec: 'Nursing · Care · Therapy · Medical' },
-      engineering: { name: 'Engineering', spec: 'Mechanical · Electrical · Automotive' },
-      logistics: { name: 'Logistics', spec: 'Warehouse · Supply chain · Transport' },
-      finance: { name: 'Finance', spec: 'Accounting · Controlling · Audit' },
-      construction: { name: 'Construction', spec: 'Site · Planning · Skilled trades' },
-      hospitality: { name: 'Hospitality', spec: 'Hotel · Kitchen · Service' },
-      sales: { name: 'Sales & Marketing', spec: 'B2B sales · Growth · Content' },
+      it: {
+        name: 'IT & Software',
+        spec: 'Front-end · Back-end · Data · DevOps',
+      },
+      health: {
+        name: 'Healthcare / Pflege',
+        spec: 'Nursing · Care · Therapy · Medical',
+      },
+      engineering: {
+        name: 'Engineering',
+        spec: 'Mechanical · Electrical · Automotive',
+      },
+      logistics: {
+        name: 'Logistics',
+        spec: 'Warehouse · Supply chain · Transport',
+      },
+      finance: {
+        name: 'Finance',
+        spec: 'Accounting · Controlling · Audit',
+      },
+      construction: {
+        name: 'Construction',
+        spec: 'Site · Planning · Skilled trades',
+      },
+      hospitality: {
+        name: 'Hospitality',
+        spec: 'Hotel · Kitchen · Service',
+      },
+      sales: {
+        name: 'Sales & Marketing',
+        spec: 'B2B sales · Growth · Content',
+      },
     },
   },
-
 
   languages: {
     eyebrow: 'Multilingual by default',
@@ -308,24 +336,20 @@ export default {
   testimonials: {
     eyebrow: 'Stories',
     title: 'Clarity is what people remember',
-    lead:
-      'Candidates rarely fail because they are unqualified. They fail because nobody told them what was missing.',
+    lead: 'Candidates rarely fail because they are unqualified. They fail because nobody told them what was missing.',
     items: {
       amina: {
-        quote:
-          'I uploaded a French CV on a Sunday evening. By the time I finished the questionnaire I had a German version, a clear domain and three skills to work on. Nobody had ever told me exactly what was missing before.',
+        quote: 'I uploaded a French CV on a Sunday evening. By the time I finished the questionnaire I had a German version, a clear domain and three skills to work on. Nobody had ever told me exactly what was missing before.',
         name: 'Amina D.',
         role: 'Front-end Developer · Casablanca → Berlin',
       },
       rajesh: {
-        quote:
-          'The readiness view is the part that changed things for me. It explained why I was not ready yet — German level and one certification — instead of just rejecting my application silently.',
+        quote: 'The readiness view is the part that changed things for me. It explained why I was not ready yet — German level and one certification — instead of just rejecting my application silently.',
         name: 'Rajesh K.',
         role: 'Registered Nurse · Kochi → Munich',
       },
       lena: {
-        quote:
-          'As an admin I used to open every single CV. Now I only review the flagged ones. The structured profiles are consistent enough that filtering actually works.',
+        quote: 'As an admin I used to open every single CV. Now I only review the flagged ones. The structured profiles are consistent enough that filtering actually works.',
         name: 'Lena Hoffmann',
         role: 'Recruitment Lead · MeinRoots',
       },
@@ -335,8 +359,7 @@ export default {
   pricing: {
     eyebrow: 'Plans',
     title: 'Free to find out where you stand',
-    lead:
-      'CV analysis, your structured profile and a readiness overview never cost anything. Paid tiers exist for the work that comes after — closing gaps and getting hired.',
+    lead: 'CV analysis, your structured profile and a readiness overview never cost anything. Paid tiers exist for the work that comes after — closing gaps and getting hired.',
     note: 'Pricing and feature gates shown are indicative for Milestone 1 and confirmed with MeinRoots before launch.',
     popular: 'Most popular',
     monthly: 'Monthly',
@@ -442,8 +465,7 @@ export default {
     emailPlaceholder: 'you@email.com',
     submit: 'Create my free profile',
     done: 'Thanks — we’ll send your invite to',
-    legal:
-      'By continuing you agree to our privacy notice. Your data is processed under GDPR and shared with a recruiter only after you consent.',
+    legal: 'By continuing you agree to our privacy notice. Your data is processed under GDPR and shared with a recruiter only after you consent.',
   },
 
   footer: {
@@ -527,8 +549,13 @@ export default {
         text: 'Reset links are single-use and expire quickly. We never send passwords by email.',
         points: ['Single-use link', 'Expires in 30 minutes', 'Account activity is logged'],
       },
+      newTitle: 'Choose a new password',
+      newSubtitle: 'Pick something you have not used here before.',
+      newSubmit: 'Save new password',
+      doneTitle: 'Password changed',
+      doneText: 'You can now sign in with your new password. Every other device has been signed out.',
     },
-verify: {
+    verify: {
       checkingTitle: 'Confirming your email…',
       doneTitle: 'Email confirmed',
       doneText: 'Thank you. We can now send you your analysis results and account notices.',
@@ -536,16 +563,6 @@ verify: {
       missingText: 'This link is missing its confirmation code. Open the link from the email again, or request a new one from your dashboard.',
       goToAccount: 'Go to my dashboard',
     },
-
-verify: {
-      checkingTitle: 'Confirming your email…',
-      doneTitle: 'Email confirmed',
-      doneText: 'Thank you. We can now send you your analysis results and account notices.',
-      failedTitle: 'We could not confirm this link',
-      missingText: 'This link is missing its confirmation code. Open the link from the email again, or request a new one from your dashboard.',
-      goToAccount: 'Go to my dashboard',
-    },
-
     upload: {
       title: 'Upload your CV',
       subtitle: 'PDF or DOCX, up to 10 MB. Your original file is stored untouched.',
@@ -557,15 +574,13 @@ verify: {
       submit: 'Start AI analysis',
       analysing: 'Analysing your CV…',
       successTitle: 'Analysis started',
-      successText:
-        'We are parsing your CV, classifying your domain and generating the other language versions. You’ll be notified when your profile is ready.',
+      successText: 'We are parsing your CV, classifying your domain and generating the other language versions. You’ll be notified when your profile is ready.',
       backHome: 'Back to home',
       steps: ['Detecting language', 'Extracting structure', 'Classifying domain', 'Generating translations'],
       signedInAs: 'Signed in as',
     },
   },
 
-  /** Everything behind the login: dashboard, questionnaire, admin console. */
   app: {
     verify: {
       title: 'Confirm your email address',
@@ -573,7 +588,6 @@ verify: {
       resent: 'Sent. Check {email}, including the spam folder.',
       resend: 'Resend',
     },
-
     edit: {
       add: 'Add',
       edit: 'Edit',
@@ -642,8 +656,11 @@ verify: {
       dashboard: 'Dashboard',
       questionnaire: 'Questions',
       cv: 'My CV',
+      profile: 'My profile',
+      readiness: 'Readiness',
+      recommendations: 'Next steps',
+      settings: 'Settings',
     },
-
     upload: {
       seeProfile: 'See my profile',
       answerQuestions: 'Answer the questions',
@@ -659,8 +676,10 @@ verify: {
         readiness: 'Assessing readiness and gaps',
         translating: 'Generating the other language versions',
       },
+      cardTitle: 'Upload your CV',
+      cardHint: 'One file. We never modify it — everything else is built alongside it.',
+      formats: 'PDF or DOCX, up to {max} MB',
     },
-
     dash: {
       greeting: 'Hello {name}',
       complete: 'complete',
@@ -674,8 +693,30 @@ verify: {
       questionsText: 'These are the things your CV could not tell us. Answering them makes your readiness accurate.',
       answerNow: 'Answer now',
       flagsTitle: 'A few things need checking',
+      subtitle: 'Your profile, readiness and what to do next.',
+      viewAll: 'View all',
+      nextTitle: 'What happens next',
+      nextHint: 'Four steps, under a minute, all automatic.',
+      next: {
+        read: 'We read your CV and detect its language',
+        structure: 'Your experience, education and skills become a structured profile',
+        gaps: 'We identify the skills you already prove and the ones you are missing',
+        readiness: 'You get a readiness score for each objective, with the reasons behind it',
+      },
+      profileTitle: 'Professional profile',
+      completeTitle: 'Profile completeness',
+      completeHint: 'Answering your questions and filling the gaps below raises this.',
+      stat: {
+        completeness: 'Profile complete',
+        completenessHint: 'Across every section',
+        readiness: 'Best readiness',
+        readinessHint: 'Upload a CV to see this',
+        skills: 'Skills',
+        skillsHint: '{count} proven by your roles',
+        experience: 'Experience',
+        experienceHint: '{count} role(s) on record',
+      },
     },
-
     readiness: {
       title: 'Your readiness',
       hint: 'A status you can see the reasoning for — not a score we keep to ourselves.',
@@ -696,8 +737,13 @@ verify: {
         important: 'Important',
         nice_to_have: 'Nice to have',
       },
+      of100: 'of 100',
+      emptyText: 'Upload your CV and we will assess your readiness for each objective you chose.',
+      recalculated: 'Readiness recalculated with your latest answers.',
+      answerFirstTitle: 'Answer your questions first',
+      answerFirstText: '{count} question(s) are still open. Your readiness cannot be accurate until they are answered.',
+      empty: 'No readiness assessment yet',
     },
-
     profile: {
       title: 'Your structured profile',
       hint: 'Extracted from your CV. Anything we were unsure about is marked, and a human checks those.',
@@ -718,8 +764,17 @@ verify: {
       selfReported: 'self-reported',
       lowConfidenceHint: 'We were not fully confident reading this — a reviewer will check it.',
       editHint: 'Extracted from your CV. Anything we were unsure about is marked — correct it and your readiness updates.',
+      domain: 'Professional domain',
+      specialisation: 'Specialisation',
+      location: 'Location',
+      noHeadline: 'Add a professional title',
+      headlineLabel: 'Professional title',
+      summaryLabel: 'Summary',
+      noticeLabel: 'Notice period (weeks)',
+      relocateLabel: 'Relocation',
+      willRelocate: 'Open to relocating',
+      notice: '{weeks} weeks notice',
     },
-
     cv: {
       title: 'Your CV in three languages',
       hint: 'Your original file is stored exactly as you uploaded it. The other versions are generated from it.',
@@ -729,8 +784,30 @@ verify: {
       reviewed: 'Reviewed by our team',
       stillTranslating: 'The other language versions are still being generated.',
       notAvailable: 'This version is not available yet.',
+      pageTitle: 'My CV',
+      pageSubtitle: 'Your original document, and the versions generated from it.',
+      uploaded: 'Uploaded',
+      size: 'Size',
+      pages: 'Pages',
+      status: 'Analysis',
+      statusAnalysed: 'Analysed',
+      statusFailed: 'Failed',
+      statusProcessing: 'Processing',
+      confidence: 'Extraction confidence',
+      replace: 'Replace CV',
+      reanalyse: 'Re-run analysis',
+      replaceTitle: 'Replacing your CV',
+      replaceHint: 'The new file becomes your current CV. Anything you corrected by hand is kept.',
+      originalNote: 'Your original file is stored exactly as you sent it and is never modified.',
+      originalShort: 'Original',
+      versionsTitle: 'Language versions',
+      versionsHint: 'Generated from your CV. The original is always marked.',
+      sourceLabel: 'This is your original CV',
+      sourceLabelText: 'The text below is what we read from the file you uploaded.',
+      aiGeneratedText: 'Generated by AI from your original. A member of our team has not checked it yet.',
+      reviewedText: 'Checked by our team.',
+      sourceLanguage: 'Source language',
     },
-
     questionnaire: {
       title: 'A few things your CV did not say',
       subtitle: '{count} short questions. Each one explains why we are asking.',
@@ -745,8 +822,19 @@ verify: {
       completed: 'You have completed this questionnaire. You can still change your answers.',
       placeholder: 'Your answer',
       nothingToSave: 'Answer at least one question first.',
+      position: 'Question {current} of {total}',
+      percent: '{percent}% complete',
+      next: 'Next',
+      previous: 'Back',
+      noAnswer: 'Not answered yet',
+      reviewing: 'Review your answers',
+      reviewTitle: 'Your answers',
+      backToQuestions: 'Back to questions',
+      doneTitle: 'Questions complete',
+      doneText: 'Thank you. Your readiness has been recalculated with your answers.',
+      seeReadiness: 'See my readiness',
+      reviewAnswers: 'Review my answers',
     },
-
     flags: {
       low_confidence: 'Parts of your CV were hard to read',
       no_experience: 'No work history could be extracted',
@@ -755,6 +843,111 @@ verify: {
       no_languages: 'No language levels were found',
       uncertain_experience: 'At least one role was read with low confidence',
     },
-
+    shell: {
+      workspace: 'Candidate workspace',
+      collapse: 'Collapse menu',
+      expand: 'Expand menu',
+    },
+    confidence: {
+      high: 'high confidence',
+      medium: 'medium confidence',
+      low: 'needs checking',
+    },
+    analysing: {
+      title: 'Analysing your CV',
+      subtitle: 'This usually takes under a minute. You can leave this page.',
+      keepOpen: 'The analysis continues in the background — we will email you when it is ready.',
+      retrying: 'A step did not succeed. Retrying — attempt {attempt} of {max}.',
+    },
+    recommendations: {
+      subtitle: 'Everything worth doing next, most important first.',
+      go: 'Go',
+      allDone: 'Nothing outstanding',
+      allDoneText: 'Your profile is complete and your questions are answered. Check your readiness for what would raise your score.',
+      priority: {
+        critical: 'Do this first',
+        important: 'Worth doing',
+        nice_to_have: 'Nice to have',
+      },
+      priorityHint: {
+        critical: 'These are blocking an accurate assessment.',
+        important: 'These noticeably improve your profile.',
+        nice_to_have: 'Small additions that help employers.',
+      },
+      items: {
+        upload_cv: {
+          title: 'Upload your CV',
+          text: 'Everything starts here — your profile is built from it.',
+        },
+        retry_cv: {
+          title: 'Your CV analysis failed',
+          text: 'Try uploading the file again, or use a different format.',
+        },
+        verify_email: {
+          title: 'Confirm your email address',
+          text: 'So we can send you your results and account notices.',
+        },
+        answer_questions: {
+          title: '{count} question(s) to answer',
+          text: 'These are the things your CV could not tell us.',
+        },
+        close_gap: {
+          title: 'Improve: {skill}',
+        },
+        add_summary: {
+          title: 'Add a professional summary',
+          text: 'Two or three sentences about what you do.',
+        },
+        add_languages: {
+          title: 'Add your languages',
+          text: 'Language level decides a lot for roles in Germany.',
+        },
+        add_certification: {
+          title: 'Add a certification',
+          text: 'Certificates are strong evidence for a skill.',
+        },
+        set_relocation: {
+          title: 'Say whether you can relocate',
+          text: 'Employers filter on this early.',
+        },
+        add_experience: {
+          title: 'Add your work history',
+          text: 'No roles were extracted from your CV.',
+        },
+      },
+      title: 'Next steps',
+    },
+    settings: {
+      title: 'Settings',
+      subtitle: 'Your account, language and notifications.',
+      account: 'Account',
+      verified: 'Confirmed',
+      unverified: 'Not confirmed',
+      language: 'Language',
+      languageHint: 'Changes the website and the emails we send you.',
+      goals: 'Employment objectives',
+      goalsHint: 'What you are looking for. Your readiness is assessed against each one.',
+      goalsNote: 'Changing these will re-assess your readiness the next time it is calculated.',
+      notifications: 'Email notifications',
+      notifyTitle: 'Tell me when my analysis is ready',
+      notifyText: 'One email when your profile has been built. Nothing else.',
+      password: 'Password',
+      passwordHint: 'Changing your password signs out every other device.',
+      currentPassword: 'Current password',
+      newPassword: 'New password',
+      changePassword: 'Change password',
+      danger: 'Delete my account',
+      dangerText: 'Permanently deletes your account, profile, CV files and every record derived from them. This cannot be undone.',
+      deleteAccount: 'Delete my account',
+      deleteForever: 'Delete permanently',
+      confirmPassword: 'Enter your password to confirm',
+      saved: {
+        goals: 'Objectives saved.',
+        language: 'Language saved.',
+        notifications: 'Notification preference saved.',
+        password: 'Password changed.',
+        verification: 'Confirmation email sent.',
+      },
+    },
   },
 }

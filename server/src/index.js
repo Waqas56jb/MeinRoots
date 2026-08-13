@@ -20,10 +20,14 @@ const boot = async () => {
     logger.warn('OPENAI_API_KEY is not set — uploads will queue but analysis will fail')
   }
 
-  // Checks the SMTP handshake now rather than on the first password reset. A
-  // misconfigured mail server otherwise looks identical to a working one until
-  // somebody is locked out and waiting for a link that will never arrive.
-  if (config.mail.enabled) await verifyMailer()
+  // Checks the SMTP handshake at boot rather than on the first password reset:
+  // a misconfigured mail server otherwise looks identical to a working one
+  // until somebody is locked out waiting for a link that will never arrive.
+  //
+  // Deliberately not awaited. A mail server that is slow to answer must not
+  // delay the API from accepting requests — email is not on the critical path
+  // for anything a candidate does in their first minute.
+  if (config.mail.enabled) verifyMailer().catch(() => {})
   else logger.warn('SMTP is not configured — emails will be recorded and their links logged')
 
   let server = null

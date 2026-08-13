@@ -21,10 +21,10 @@ export default function CallToAction() {
     e.preventDefault()
     if (!email) return
     if (isAuthenticated) {
-      navigate('/upload')
+      navigate('/cv')
       return
     }
-    navigate(`/signup?email=${encodeURIComponent(email)}&next=${encodeURIComponent('/upload')}`)
+    navigate(`/signup?email=${encodeURIComponent(email)}&next=${encodeURIComponent('/cv')}`)
   }
 
   return (

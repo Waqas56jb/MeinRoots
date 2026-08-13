@@ -19,7 +19,7 @@ export default function SignupPage() {
   const apiMessage = useApiMessage()
   const fieldErrors = useFieldErrors()
 
-  const next = params.get('next') || '/upload'
+  const next = params.get('next') || '/cv'
 
   const [name, setName] = useState('')
   const [email, setEmail] = useState(params.get('email') || '')

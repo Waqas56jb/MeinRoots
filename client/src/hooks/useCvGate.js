@@ -7,11 +7,11 @@ import { useAuth } from '../context/AuthContext.jsx'
  *
  * A CV is personal data, so it can only be uploaded by a signed-in candidate.
  * Any "upload your CV" control on the public site calls this handler:
- *   signed in      → straight to /upload
- *   not signed in  → /login?next=/upload&gate=cv, which shows the gate notice
- *                    and returns the candidate to /upload after authenticating.
+ *   signed in      → straight to /cv
+ *   not signed in  → /login?next=/cv&gate=cv, which shows the gate notice
+ *                    and returns the candidate to /cv after authenticating.
  */
-export function useCvGate(target = '/upload') {
+export function useCvGate(target = '/cv') {
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()

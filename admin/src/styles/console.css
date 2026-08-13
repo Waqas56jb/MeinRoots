@@ -1004,3 +1004,21 @@
 
 /* A row the candidate corrected: no longer the AI's reading. */
 .lowconf--mine { background: var(--brand-50); border-color: var(--brand-100); color: var(--brand-700); }
+
+/* Job failures, explained. The raw text stays available but does not lead. */
+.job__err { display: grid; gap: 4px; padding: 10px 12px; }
+.job__err strong { font-family: var(--font-display); font-size: 0.86rem; color: var(--bad); }
+.job__err span { font-size: 0.82rem; color: var(--ink-2); }
+.job__err button {
+  display: inline-flex; align-items: center; gap: 4px;
+  justify-self: start; margin-top: 2px;
+  font-size: 0.76rem; font-weight: 600; color: var(--muted);
+  min-height: 32px;
+}
+.job__err button:hover { color: var(--brand-700); }
+.job__err code {
+  display: block; margin-top: 4px; padding: 8px 10px;
+  border-radius: 8px; background: rgba(11, 23, 48, 0.06);
+  font-size: 0.74rem; word-break: break-word; white-space: pre-wrap;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}

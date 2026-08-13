@@ -57,6 +57,22 @@ import {
   LuWallet,
   LuX,
   LuZap,
+  LuLayoutDashboard,
+  LuCircleUser,
+  LuListChecks,
+  LuPanelLeftClose,
+  LuPanelLeftOpen,
+  LuDownload,
+  LuTrendingUp,
+  LuAward,
+  LuBriefcase,
+  LuCircleHelp,
+  LuRefreshCw,
+  LuArrowUpRight,
+  LuBell,
+  LuShieldAlert,
+  LuCircleDot,
+  LuLoader,
 } from 'react-icons/lu'
 
 /**
@@ -65,6 +81,23 @@ import {
  * set can be swapped in one place.
  */
 const icons = {
+  loader: LuLoader,
+  dot: LuCircleDot,
+  shieldAlert: LuShieldAlert,
+  bell: LuBell,
+  arrowUpRight: LuArrowUpRight,
+  refresh: LuRefreshCw,
+  help: LuCircleHelp,
+  graduationCap: LuGraduationCap,
+  briefcase: LuBriefcase,
+  award: LuAward,
+  trendingUp: LuTrendingUp,
+  download: LuDownload,
+  panelOpen: LuPanelLeftOpen,
+  panelClose: LuPanelLeftClose,
+  listChecks: LuListChecks,
+  userCircle: LuCircleUser,
+  layoutDashboard: LuLayoutDashboard,
   // brand / marketing
   sparkle: LuSparkles,
   bolt: LuZap,

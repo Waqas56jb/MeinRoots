@@ -1,14 +1,17 @@
 export default {
   code: 'fr',
+
   name: 'French',
+
   native: 'Français',
+
   flag: '🇫🇷',
+
   dir: 'ltr',
 
   meta: {
     title: 'MeinRoots — Vos racines. Votre avenir en Allemagne.',
-    description:
-      'Téléversez votre CV en anglais, allemand ou français. L’IA structure votre profil, identifie vos lacunes et vous indique la suite.',
+    description: 'Téléversez votre CV en anglais, allemand ou français. L’IA structure votre profil, identifie vos lacunes et vous indique la suite.',
   },
 
   common: {
@@ -19,14 +22,9 @@ export default {
     loading: 'Chargement',
     yes: 'Oui',
     no: 'Non',
+    none: '—',
   },
 
-  /**
-   * Indexé sur les codes d’erreur de l’API. Le serveur renvoie un code stable et
-   * un message anglais destiné aux journaux ; l’interface traduit le code
-   * elle-même, pour qu’aucun candidat ne lise une phrase de développeur dans la
-   * mauvaise langue.
-   */
   errors: {
     generic: 'Une erreur est survenue. Veuillez réessayer.',
     network_error: 'Impossible de joindre le serveur. Vérifiez votre connexion et réessayez.',
@@ -36,7 +34,6 @@ export default {
     forbidden: 'Vous n’avez pas accès à cette page.',
     not_found: 'Introuvable.',
     rate_limited: 'Trop de requêtes — veuillez ralentir.',
-
     email_taken: 'Un compte existe déjà avec cette adresse. Essayez de vous connecter.',
     invalid_credentials: 'Adresse e-mail ou mot de passe incorrect.',
     account_locked: 'Trop de tentatives. Réessayez dans quelques minutes.',
@@ -44,7 +41,6 @@ export default {
     reset_invalid: 'Ce lien est invalide ou expiré. Demandez-en un nouveau.',
     consent_required: 'Veuillez accepter la politique de confidentialité pour continuer.',
     session_expired: 'Votre session a expiré. Veuillez vous reconnecter.',
-
     no_file: 'Choisissez d’abord un fichier.',
     unsupported_file_type: 'Seuls les fichiers PDF et .docx sont acceptés.',
     file_too_large: 'Ce fichier dépasse 10 Mo.',
@@ -54,7 +50,6 @@ export default {
     already_running: 'Ce CV est déjà en cours d’analyse.',
     analysis_failed: 'Nous n’avons pas pu analyser ce CV. Essayez de l’envoyer à nouveau.',
     document_not_found: 'Ce CV est introuvable.',
-
     profile_not_found: 'Envoyez d’abord un CV pour créer votre profil.',
     no_cv: 'Envoyez un CV avant de recalculer.',
     questionnaire_not_found: 'Aucun questionnaire n’est encore disponible.',
@@ -62,8 +57,7 @@ export default {
     invalid_answer: 'Cette réponse n’a pas le format attendu.',
     invalid_option: 'Choisissez l’une des options proposées.',
     ai_not_configured: 'L’analyse de CV est momentanément indisponible. Réessayez plus tard.',
-
-    name_required: 'Veuillez saisir votre nom.',
+    name_required: 'Saisissez un nom.',
     email_required: 'Veuillez saisir votre adresse e-mail.',
     email_invalid: 'Cette adresse e-mail ne semble pas valide.',
     password_required: 'Veuillez saisir votre mot de passe.',
@@ -78,9 +72,9 @@ export default {
     unknown_section: 'Cette section n’est pas modifiable.',
     invalid_date: 'Utilisez le sélecteur de date, ou le format AAAA-MM-JJ.',
     role_required: 'Saisissez un intitulé de poste.',
-    name_required: 'Saisissez un nom.',
     language_required: 'Saisissez une langue.',
     not_orderable: 'Cette section ne peut pas être réordonnée.',
+    wrong_password: 'Ce mot de passe est incorrect.',
   },
 
   nav: {
@@ -97,7 +91,6 @@ export default {
     logout: 'Se déconnecter',
   },
 
-
   hero: {
     proof: 'Utilisé par des candidats de <b>40+ pays</b>',
     titleA: 'Le talent n’a pas de frontières.',
@@ -109,9 +102,19 @@ export default {
     note: 'Gratuit au démarrage · Votre CV original n’est jamais modifié · Conforme RGPD',
     scroll: 'Faites défiler',
     stats: {
-      languages: { value: '3', label: 'Langues de CV analysées', hint: 'EN · DE · FR' },
-      speed: { value: '< 60s', label: 'Vers un profil structuré' },
-      domains: { value: '12+', label: 'Domaines professionnels' },
+      languages: {
+        value: '3',
+        label: 'Langues de CV analysées',
+        hint: 'EN · DE · FR',
+      },
+      speed: {
+        value: '< 60s',
+        label: 'Vers un profil structuré',
+      },
+      domains: {
+        value: '12+',
+        label: 'Domaines professionnels',
+      },
     },
   },
 
@@ -142,15 +145,18 @@ export default {
   goals: {
     eyebrow: 'Première étape',
     title: 'Commencez par votre objectif',
-    lead:
-      'Tout ce qui suit — analyse, classification, préparation, recommandations — s’adapte à l’objectif choisi ici. Vous pouvez en sélectionner plusieurs.',
+    lead: 'Tout ce qui suit — analyse, classification, préparation, recommandations — s’adapte à l’objectif choisi ici. Vous pouvez en sélectionner plusieurs.',
     choose: 'Choisir cette voie',
     mostChosen: 'Le plus choisi',
     items: {
       germany: {
         title: 'Travailler en Allemagne',
         text: 'Des postes avec relocalisation, accompagnés dès le début sur le visa et la langue.',
-        points: ['Vérification visa & autorisation', 'Évaluation du niveau d’allemand', 'Préparation au déménagement'],
+        points: [
+          'Vérification visa & autorisation',
+          'Évaluation du niveau d’allemand',
+          'Préparation au déménagement',
+        ],
       },
       remote: {
         title: 'Travail à distance',
@@ -165,7 +171,11 @@ export default {
       ausbildung: {
         title: 'Ausbildung',
         text: 'La formation duale rémunérée en Allemagne : vous travaillez en entreprise et suivez en parallèle les cours d’une école professionnelle.',
-        points: ['Contrat de formation en entreprise', 'Allemand A2–B1 pour commencer', 'Diplôme reconnu en 2 à 3,5 ans'],
+        points: [
+          'Contrat de formation en entreprise',
+          'Allemand A2–B1 pour commencer',
+          'Diplôme reconnu en 2 à 3,5 ans',
+        ],
       },
     },
   },
@@ -173,8 +183,7 @@ export default {
   how: {
     eyebrow: 'Le parcours',
     title: 'Du CV à la clarté en quatre étapes',
-    lead:
-      'Pas de longs formulaires avant d’en voir l’intérêt. Téléversez d’abord — le questionnaire ne demande que ce que l’IA n’a pas pu déduire de votre CV.',
+    lead: 'Pas de longs formulaires avant d’en voir l’intérêt. Téléversez d’abord — le questionnaire ne demande que ce que l’IA n’a pas pu déduire de votre CV.',
     steps: {
       objective: {
         title: 'Définissez votre objectif',
@@ -247,22 +256,44 @@ export default {
   domains: {
     eyebrow: 'Domaines professionnels',
     title: 'Classé dans le métier que vous exercez vraiment',
-    lead:
-      'Chaque profil reçoit un ou plusieurs domaines et une spécialisation, avec un indice de confiance. Les catégories sont configurables par l’admin — sans redéploiement.',
+    lead: 'Chaque profil reçoit un ou plusieurs domaines et une spécialisation, avec un indice de confiance. Les catégories sont configurables par l’admin — sans redéploiement.',
     foot: 'Un domaine manque ? Les admins ajoutent, renomment ou désactivent les catégories depuis la console.',
     specialisations: 'spécialisations',
     items: {
-      it: { name: 'IT & Logiciel', spec: 'Front-end · Back-end · Data · DevOps' },
-      health: { name: 'Santé / Soins', spec: 'Infirmier · Aide-soignant · Thérapie · Médical' },
-      engineering: { name: 'Ingénierie', spec: 'Mécanique · Électrique · Automobile' },
-      logistics: { name: 'Logistique', spec: 'Entrepôt · Chaîne d’approvisionnement · Transport' },
-      finance: { name: 'Finance', spec: 'Comptabilité · Contrôle de gestion · Audit' },
-      construction: { name: 'Construction', spec: 'Chantier · Études · Métiers qualifiés' },
-      hospitality: { name: 'Hôtellerie-restauration', spec: 'Hôtel · Cuisine · Service' },
-      sales: { name: 'Vente & Marketing', spec: 'Vente B2B · Growth · Contenu' },
+      it: {
+        name: 'IT & Logiciel',
+        spec: 'Front-end · Back-end · Data · DevOps',
+      },
+      health: {
+        name: 'Santé / Soins',
+        spec: 'Infirmier · Aide-soignant · Thérapie · Médical',
+      },
+      engineering: {
+        name: 'Ingénierie',
+        spec: 'Mécanique · Électrique · Automobile',
+      },
+      logistics: {
+        name: 'Logistique',
+        spec: 'Entrepôt · Chaîne d’approvisionnement · Transport',
+      },
+      finance: {
+        name: 'Finance',
+        spec: 'Comptabilité · Contrôle de gestion · Audit',
+      },
+      construction: {
+        name: 'Construction',
+        spec: 'Chantier · Études · Métiers qualifiés',
+      },
+      hospitality: {
+        name: 'Hôtellerie-restauration',
+        spec: 'Hôtel · Cuisine · Service',
+      },
+      sales: {
+        name: 'Vente & Marketing',
+        spec: 'Vente B2B · Growth · Contenu',
+      },
     },
   },
-
 
   languages: {
     eyebrow: 'Multilingue par défaut',
@@ -309,24 +340,20 @@ export default {
   testimonials: {
     eyebrow: 'Témoignages',
     title: 'Ce qui marque, c’est la clarté',
-    lead:
-      'Les candidats échouent rarement par manque de qualification. Ils échouent parce que personne ne leur a dit ce qui manquait.',
+    lead: 'Les candidats échouent rarement par manque de qualification. Ils échouent parce que personne ne leur a dit ce qui manquait.',
     items: {
       amina: {
-        quote:
-          'J’ai téléversé un CV français un dimanche soir. À la fin du questionnaire, j’avais une version allemande, un domaine clair et trois compétences à travailler. Personne ne m’avait jamais dit précisément ce qui manquait.',
+        quote: 'J’ai téléversé un CV français un dimanche soir. À la fin du questionnaire, j’avais une version allemande, un domaine clair et trois compétences à travailler. Personne ne m’avait jamais dit précisément ce qui manquait.',
         name: 'Amina D.',
         role: 'Développeuse front-end · Casablanca → Berlin',
       },
       rajesh: {
-        quote:
-          'La vue de préparation a tout changé pour moi. Elle expliquait pourquoi je n’étais pas encore prêt — niveau d’allemand et une certification — au lieu de rejeter ma candidature en silence.',
+        quote: 'La vue de préparation a tout changé pour moi. Elle expliquait pourquoi je n’étais pas encore prêt — niveau d’allemand et une certification — au lieu de rejeter ma candidature en silence.',
         name: 'Rajesh K.',
         role: 'Infirmier diplômé · Kochi → Munich',
       },
       lena: {
-        quote:
-          'Comme admin, j’ouvrais chaque CV. Aujourd’hui je ne relis que ceux qui sont signalés. Les profils structurés sont assez cohérents pour que le filtrage fonctionne vraiment.',
+        quote: 'Comme admin, j’ouvrais chaque CV. Aujourd’hui je ne relis que ceux qui sont signalés. Les profils structurés sont assez cohérents pour que le filtrage fonctionne vraiment.',
         name: 'Lena Hoffmann',
         role: 'Responsable recrutement · MeinRoots',
       },
@@ -336,8 +363,7 @@ export default {
   pricing: {
     eyebrow: 'Offres',
     title: 'Gratuit pour savoir où vous en êtes',
-    lead:
-      'L’analyse du CV, votre profil structuré et l’aperçu de préparation ne coûtent jamais rien. Les offres payantes concernent la suite — combler les lacunes et être recruté.',
+    lead: 'L’analyse du CV, votre profil structuré et l’aperçu de préparation ne coûtent jamais rien. Les offres payantes concernent la suite — combler les lacunes et être recruté.',
     note: 'Les tarifs et limites affichés sont indicatifs pour le Milestone 1 et confirmés avec MeinRoots avant le lancement.',
     popular: 'Le plus populaire',
     monthly: 'Mensuel',
@@ -443,8 +469,7 @@ export default {
     emailPlaceholder: 'vous@email.com',
     submit: 'Créer mon profil gratuit',
     done: 'Merci — nous envoyons votre invitation à',
-    legal:
-      'En continuant, vous acceptez notre politique de confidentialité. Vos données sont traitées conformément au RGPD et transmises à un recruteur uniquement après votre consentement.',
+    legal: 'En continuant, vous acceptez notre politique de confidentialité. Vos données sont traitées conformément au RGPD et transmises à un recruteur uniquement après votre consentement.',
   },
 
   footer: {
@@ -497,7 +522,11 @@ export default {
       aside: {
         title: 'Votre profil travaille même quand vous vous arrêtez.',
         text: 'Traductions, classification et mises à jour de préparation tournent en arrière-plan. Connectez-vous pour voir ce qui a changé.',
-        points: ['Profil structuré en 3 langues', 'Score de préparation explicable', 'Feuille de route des compétences'],
+        points: [
+          'Profil structuré en 3 langues',
+          'Score de préparation explicable',
+          'Feuille de route des compétences',
+        ],
       },
     },
     signup: {
@@ -521,16 +550,20 @@ export default {
       submit: 'Envoyer le lien',
       backToLogin: 'Retour à la connexion',
       sentTitle: 'Consultez votre boîte mail',
-      sentText:
-        'Si un compte existe pour {email}, un lien est en route. Il expire dans 30 minutes.',
+      sentText: 'Si un compte existe pour {email}, un lien est en route. Il expire dans 30 minutes.',
       resend: 'Renvoyer',
       aside: {
         title: 'La sécurité d’abord.',
         text: 'Les liens sont à usage unique et expirent vite. Nous n’envoyons jamais de mot de passe par e-mail.',
         points: ['Lien à usage unique', 'Expire en 30 minutes', 'Activité du compte journalisée'],
       },
+      newTitle: 'Choisissez un nouveau mot de passe',
+      newSubtitle: 'Choisissez-en un que vous n’avez pas déjà utilisé ici.',
+      newSubmit: 'Enregistrer le nouveau mot de passe',
+      doneTitle: 'Mot de passe modifié',
+      doneText: 'Vous pouvez maintenant vous connecter avec le nouveau mot de passe. Tous les autres appareils ont été déconnectés.',
     },
-verify: {
+    verify: {
       checkingTitle: 'Confirmation de votre e-mail…',
       doneTitle: 'E-mail confirmé',
       doneText: 'Merci. Nous pouvons désormais vous envoyer vos résultats d’analyse et les avis de compte.',
@@ -538,16 +571,6 @@ verify: {
       missingText: 'Ce lien n’a pas de code de confirmation. Rouvrez le lien depuis l’e-mail, ou demandez-en un nouveau depuis votre tableau de bord.',
       goToAccount: 'Vers mon tableau de bord',
     },
-
-verify: {
-      checkingTitle: 'Confirmation de votre e-mail…',
-      doneTitle: 'E-mail confirmé',
-      doneText: 'Merci. Nous pouvons désormais vous envoyer vos résultats d’analyse et les avis de compte.',
-      failedTitle: 'Nous n’avons pas pu confirmer ce lien',
-      missingText: 'Ce lien n’a pas de code de confirmation. Rouvrez le lien depuis l’e-mail, ou demandez-en un nouveau depuis votre tableau de bord.',
-      goToAccount: 'Vers mon tableau de bord',
-    },
-
     upload: {
       title: 'Téléverser votre CV',
       subtitle: 'PDF ou DOCX, jusqu’à 10 Mo. Votre fichier original est conservé intact.',
@@ -559,15 +582,18 @@ verify: {
       submit: 'Lancer l’analyse IA',
       analysing: 'Analyse de votre CV…',
       successTitle: 'Analyse lancée',
-      successText:
-        'Nous analysons votre CV, classons votre domaine et générons les autres versions linguistiques. Vous serez prévenu dès que votre profil sera prêt.',
+      successText: 'Nous analysons votre CV, classons votre domaine et générons les autres versions linguistiques. Vous serez prévenu dès que votre profil sera prêt.',
       backHome: 'Retour à l’accueil',
-      steps: ['Détection de la langue', 'Extraction de la structure', 'Classification du domaine', 'Génération des traductions'],
+      steps: [
+        'Détection de la langue',
+        'Extraction de la structure',
+        'Classification du domaine',
+        'Génération des traductions',
+      ],
       signedInAs: 'Connecté en tant que',
     },
   },
 
-  /** Tout ce qui se trouve derrière la connexion : tableau de bord, questionnaire, console admin. */
   app: {
     verify: {
       title: 'Confirmez votre adresse e-mail',
@@ -575,7 +601,6 @@ verify: {
       resent: 'Envoyé. Vérifiez {email}, y compris les indésirables.',
       resend: 'Renvoyer',
     },
-
     edit: {
       add: 'Ajouter',
       edit: 'Modifier',
@@ -644,8 +669,11 @@ verify: {
       dashboard: 'Tableau de bord',
       questionnaire: 'Questions',
       cv: 'Mon CV',
+      profile: 'Mon profil',
+      readiness: 'Préparation',
+      recommendations: 'Prochaines étapes',
+      settings: 'Paramètres',
     },
-
     upload: {
       seeProfile: 'Voir mon profil',
       answerQuestions: 'Répondre aux questions',
@@ -661,8 +689,10 @@ verify: {
         readiness: 'Évaluation de la préparation et des écarts',
         translating: 'Génération des autres versions linguistiques',
       },
+      cardTitle: 'Envoyer votre CV',
+      cardHint: 'Un fichier. Nous ne le modifions jamais — tout le reste est construit à côté.',
+      formats: 'PDF ou DOCX, jusqu’à {max} Mo',
     },
-
     dash: {
       greeting: 'Bonjour {name}',
       complete: 'complet',
@@ -676,8 +706,30 @@ verify: {
       questionsText: 'Ce sont les points que votre CV ne pouvait pas nous dire. Y répondre rend l’évaluation exacte.',
       answerNow: 'Répondre maintenant',
       flagsTitle: 'Quelques points à vérifier',
+      subtitle: 'Votre profil, votre préparation et la suite.',
+      viewAll: 'Tout voir',
+      nextTitle: 'Ce qui se passe ensuite',
+      nextHint: 'Quatre étapes, moins d’une minute, tout automatique.',
+      next: {
+        read: 'Nous lisons votre CV et détectons sa langue',
+        structure: 'Expérience, formation et compétences deviennent un profil structuré',
+        gaps: 'Nous identifions les compétences prouvées et celles qui manquent',
+        readiness: 'Vous obtenez un score de préparation par objectif, avec ses raisons',
+      },
+      profileTitle: 'Profil professionnel',
+      completeTitle: 'Complétude du profil',
+      completeHint: 'Vos réponses et les manques ci-dessous font monter ce score.',
+      stat: {
+        completeness: 'Profil complété',
+        completenessHint: 'Toutes sections confondues',
+        readiness: 'Meilleure préparation',
+        readinessHint: 'Envoyez un CV pour la voir',
+        skills: 'Compétences',
+        skillsHint: '{count} prouvées par vos postes',
+        experience: 'Expérience',
+        experienceHint: '{count} poste(s) enregistré(s)',
+      },
     },
-
     readiness: {
       title: 'Votre préparation',
       hint: 'Un statut dont vous voyez le raisonnement — pas une note que nous gardons pour nous.',
@@ -698,8 +750,13 @@ verify: {
         important: 'Important',
         nice_to_have: 'Souhaitable',
       },
+      of100: 'sur 100',
+      emptyText: 'Envoyez votre CV : nous évaluerons votre préparation pour chaque objectif choisi.',
+      recalculated: 'Préparation recalculée avec vos dernières réponses.',
+      answerFirstTitle: 'Répondez d’abord à vos questions',
+      answerFirstText: '{count} question(s) encore ouverte(s). L’évaluation ne peut pas être exacte sans elles.',
+      empty: 'Pas encore d’évaluation',
     },
-
     profile: {
       title: 'Votre profil structuré',
       hint: 'Extrait de votre CV. Tout ce dont nous n’étions pas sûrs est signalé et vérifié par une personne.',
@@ -720,8 +777,17 @@ verify: {
       selfReported: 'déclaratif',
       lowConfidenceHint: 'Nous n’étions pas totalement sûrs à la lecture — une personne le vérifiera.',
       editHint: 'Extrait de votre CV. Tout ce dont nous n’étions pas sûrs est signalé — corrigez-le et votre préparation se met à jour.',
+      domain: 'Domaine professionnel',
+      specialisation: 'Spécialisation',
+      location: 'Localisation',
+      noHeadline: 'Ajoutez un intitulé professionnel',
+      headlineLabel: 'Intitulé professionnel',
+      summaryLabel: 'Résumé',
+      noticeLabel: 'Préavis (semaines)',
+      relocateLabel: 'Mobilité',
+      willRelocate: 'Ouvert à la mobilité',
+      notice: '{weeks} semaines de préavis',
     },
-
     cv: {
       title: 'Votre CV en trois langues',
       hint: 'Votre fichier original est conservé exactement tel que vous l’avez envoyé. Les autres versions en sont dérivées.',
@@ -731,8 +797,30 @@ verify: {
       reviewed: 'Relu par notre équipe',
       stillTranslating: 'Les autres versions linguistiques sont encore en cours de génération.',
       notAvailable: 'Cette version n’est pas encore disponible.',
+      pageTitle: 'Mon CV',
+      pageSubtitle: 'Votre document original, et les versions qui en sont issues.',
+      uploaded: 'Envoyé',
+      size: 'Taille',
+      pages: 'Pages',
+      status: 'Analyse',
+      statusAnalysed: 'Analysé',
+      statusFailed: 'Échec',
+      statusProcessing: 'En cours',
+      confidence: 'Confiance d’extraction',
+      replace: 'Remplacer le CV',
+      reanalyse: 'Relancer l’analyse',
+      replaceTitle: 'Remplacer votre CV',
+      replaceHint: 'Le nouveau fichier devient votre CV actuel. Vos corrections manuelles sont conservées.',
+      originalNote: 'Votre fichier original est conservé exactement tel que vous l’avez envoyé, et n’est jamais modifié.',
+      originalShort: 'Original',
+      versionsTitle: 'Versions linguistiques',
+      versionsHint: 'Générées à partir de votre CV. L’original est toujours signalé.',
+      sourceLabel: 'Ceci est votre CV original',
+      sourceLabelText: 'Le texte ci-dessous est ce que nous avons lu dans votre fichier.',
+      aiGeneratedText: 'Généré par IA à partir de votre original. Pas encore vérifié par notre équipe.',
+      reviewedText: 'Vérifié par notre équipe.',
+      sourceLanguage: 'Langue source',
     },
-
     questionnaire: {
       title: 'Quelques points que votre CV ne dit pas',
       subtitle: '{count} questions courtes. Chacune explique pourquoi nous la posons.',
@@ -747,8 +835,19 @@ verify: {
       completed: 'Vous avez terminé ce questionnaire. Vous pouvez encore modifier vos réponses.',
       placeholder: 'Votre réponse',
       nothingToSave: 'Répondez d’abord à au moins une question.',
+      position: 'Question {current} sur {total}',
+      percent: '{percent}% terminé',
+      next: 'Suivant',
+      previous: 'Retour',
+      noAnswer: 'Pas encore répondu',
+      reviewing: 'Vérifiez vos réponses',
+      reviewTitle: 'Vos réponses',
+      backToQuestions: 'Retour aux questions',
+      doneTitle: 'Questions terminées',
+      doneText: 'Merci. Votre préparation a été recalculée avec vos réponses.',
+      seeReadiness: 'Voir ma préparation',
+      reviewAnswers: 'Revoir mes réponses',
     },
-
     flags: {
       low_confidence: 'Certaines parties de votre CV étaient difficiles à lire',
       no_experience: 'Aucune expérience professionnelle n’a pu être extraite',
@@ -757,6 +856,111 @@ verify: {
       no_languages: 'Aucun niveau de langue n’a été trouvé',
       uncertain_experience: 'Au moins un poste a été lu avec une faible confiance',
     },
-
+    shell: {
+      workspace: 'Espace candidat',
+      collapse: 'Réduire le menu',
+      expand: 'Déployer le menu',
+    },
+    confidence: {
+      high: 'confiance élevée',
+      medium: 'confiance moyenne',
+      low: 'à vérifier',
+    },
+    analysing: {
+      title: 'Analyse de votre CV',
+      subtitle: 'Cela prend généralement moins d’une minute. Vous pouvez quitter la page.',
+      keepOpen: 'L’analyse continue en arrière-plan — nous vous enverrons un e-mail dès qu’elle est prête.',
+      retrying: 'Une étape a échoué. Nouvelle tentative — {attempt} sur {max}.',
+    },
+    recommendations: {
+      subtitle: 'Tout ce qui vaut la peine, le plus important d’abord.',
+      go: 'Aller',
+      allDone: 'Rien en attente',
+      allDoneText: 'Votre profil est complet et vos questions ont une réponse. Consultez votre préparation pour voir ce qui ferait monter le score.',
+      priority: {
+        critical: 'À faire en priorité',
+        important: 'Utile',
+        nice_to_have: 'Optionnel',
+      },
+      priorityHint: {
+        critical: 'Cela empêche une évaluation exacte.',
+        important: 'Cela améliore nettement votre profil.',
+        nice_to_have: 'De petits ajouts utiles aux employeurs.',
+      },
+      items: {
+        upload_cv: {
+          title: 'Envoyez votre CV',
+          text: 'Tout commence ici — votre profil en est issu.',
+        },
+        retry_cv: {
+          title: 'L’analyse de votre CV a échoué',
+          text: 'Réessayez avec le même fichier, ou un autre format.',
+        },
+        verify_email: {
+          title: 'Confirmez votre adresse e-mail',
+          text: 'Pour que nous puissions vous envoyer vos résultats.',
+        },
+        answer_questions: {
+          title: '{count} question(s) à répondre',
+          text: 'Ce sont les points que votre CV ne pouvait pas nous dire.',
+        },
+        close_gap: {
+          title: 'Améliorer : {skill}',
+        },
+        add_summary: {
+          title: 'Ajoutez un résumé professionnel',
+          text: 'Deux ou trois phrases sur ce que vous faites.',
+        },
+        add_languages: {
+          title: 'Ajoutez vos langues',
+          text: 'Le niveau de langue décide beaucoup pour l’Allemagne.',
+        },
+        add_certification: {
+          title: 'Ajoutez une certification',
+          text: 'Un certificat prouve solidement une compétence.',
+        },
+        set_relocation: {
+          title: 'Indiquez si vous pouvez déménager',
+          text: 'Les employeurs filtrent très tôt là-dessus.',
+        },
+        add_experience: {
+          title: 'Ajoutez votre expérience',
+          text: 'Aucun poste n’a été extrait de votre CV.',
+        },
+      },
+      title: 'Prochaines étapes',
+    },
+    settings: {
+      title: 'Paramètres',
+      subtitle: 'Votre compte, votre langue et vos notifications.',
+      account: 'Compte',
+      verified: 'Confirmée',
+      unverified: 'Non confirmée',
+      language: 'Langue',
+      languageHint: 'Change le site et les e-mails que nous vous envoyons.',
+      goals: 'Objectifs professionnels',
+      goalsHint: 'Ce que vous recherchez. Votre préparation est évaluée pour chacun.',
+      goalsNote: 'Une modification sera prise en compte au prochain calcul.',
+      notifications: 'Notifications par e-mail',
+      notifyTitle: 'Prévenez-moi quand mon analyse est prête',
+      notifyText: 'Un e-mail lorsque votre profil est construit. Rien d’autre.',
+      password: 'Mot de passe',
+      passwordHint: 'Changer votre mot de passe déconnecte tous les autres appareils.',
+      currentPassword: 'Mot de passe actuel',
+      newPassword: 'Nouveau mot de passe',
+      changePassword: 'Changer le mot de passe',
+      danger: 'Supprimer mon compte',
+      dangerText: 'Supprime définitivement votre compte, votre profil, vos fichiers CV et tous les enregistrements dérivés. Irréversible.',
+      deleteAccount: 'Supprimer mon compte',
+      deleteForever: 'Supprimer définitivement',
+      confirmPassword: 'Saisissez votre mot de passe pour confirmer',
+      saved: {
+        goals: 'Objectifs enregistrés.',
+        language: 'Langue enregistrée.',
+        notifications: 'Préférence enregistrée.',
+        password: 'Mot de passe modifié.',
+        verification: 'E-mail de confirmation envoyé.',
+      },
+    },
   },
 }

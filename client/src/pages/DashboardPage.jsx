@@ -1,262 +1,234 @@
-import { useCallback, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import AppHeader from '../components/app/AppHeader.jsx'
-import ReadinessCard from '../components/app/ReadinessCard.jsx'
-import CvVersions from '../components/app/CvVersions.jsx'
+import AppShell from '../components/app/AppShell.jsx'
 import VerifyBanner from '../components/app/VerifyBanner.jsx'
-import {
-  EducationList,
-  ExperienceList,
-  LanguagesBlock,
-  SkillsBlock,
-} from '../components/app/ProfileBlocks.jsx'
+import UploadCard from '../components/app/UploadCard.jsx'
+import AnalysisProgress from '../components/app/AnalysisProgress.jsx'
 import Icon from '../components/ui/Icon.jsx'
-import Spinner from '../components/ui/Spinner.jsx'
-import EmptyState from '../components/ui/EmptyState.jsx'
+import {
+  Badge, Card, Facts, Meter, Note, Ring, ScoreBadge, SectionHead, Skeleton, Stat, band,
+} from '../components/app/widgets.jsx'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
-import { cvApi, profileApi, questionnaireApi } from '../lib/api.js'
+import { buildRecommendations, useWorkspace } from '../context/WorkspaceContext.jsx'
 import { useApiMessage } from '../lib/apiMessage.js'
 
-const POLL_MS = 4000
+const monthsToYears = (months) => {
+  if (months === null || months === undefined) return null
+  const years = Math.floor(months / 12)
+  const rest = months % 12
+  if (!years) return `${rest}m`
+  return rest ? `${years}y ${rest}m` : `${years}y`
+}
 
 export default function DashboardPage() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const { user } = useAuth()
   const apiMessage = useApiMessage()
+  const ws = useWorkspace()
 
-  const [profile, setProfile] = useState(undefined) // undefined = loading, null = none yet
-  const [document, setDocument] = useState(null)
-  const [status, setStatus] = useState(null)
-  const [questionnaire, setQuestionnaire] = useState(null)
-  const [error, setError] = useState('')
-  const [refreshing, setRefreshing] = useState(false)
-
-  const load = useCallback(async () => {
-    try {
-      const [profileData, documentData, questionnaireData] = await Promise.all([
-        profileApi.me(),
-        cvApi.current(),
-        questionnaireApi.current().catch(() => ({ questionnaire: null, questions: [] })),
-      ])
-      setProfile(profileData.profile)
-      setDocument(documentData.document)
-      setQuestionnaire(questionnaireData.questionnaire)
-      return documentData.document
-    } catch (err) {
-      setError(apiMessage(err.code))
-      setProfile(null)
-      return null
-    }
-  }, [apiMessage])
-
-  useEffect(() => {
-    load()
-  }, [load])
-
-  // While a CV is still being analysed the dashboard is genuinely incomplete,
-  // so it keeps polling rather than showing a stale empty profile.
-  useEffect(() => {
-    if (!document?.id) return undefined
-    if (document.status === 'analysed' || document.status === 'failed') {
-      // Still ask once: translations continue after the document is analysed.
-      cvApi.status(document.id).then(setStatus).catch(() => {})
-      return undefined
-    }
-
-    let cancelled = false
-    const tick = async () => {
-      try {
-        const next = await cvApi.status(document.id)
-        if (cancelled) return
-        setStatus(next)
-        if (next.done) load()
-      } catch {
-        /* transient — the next tick tries again */
-      }
-    }
-    const timer = setInterval(tick, POLL_MS)
-    tick()
-    return () => {
-      cancelled = true
-      clearInterval(timer)
-    }
-  }, [document?.id, document?.status, load])
-
-  const onRefreshReadiness = async () => {
-    setRefreshing(true)
-    setError('')
-    try {
-      const data = await profileApi.refreshReadiness()
-      setProfile((p) => (p ? { ...p, assessments: data.assessments } : p))
-    } catch (err) {
-      setError(apiMessage(err.code))
-    } finally {
-      setRefreshing(false)
-    }
-  }
-
-  if (profile === undefined) {
-    return (
-      <div className="app">
-        <AppHeader />
-        <Spinner full />
-      </div>
-    )
-  }
-
-  const analysing = document && document.status !== 'analysed' && document.status !== 'failed'
-  const failed = document?.status === 'failed'
-  const outstanding = questionnaire?.outstandingRequired ?? 0
-  const hasProfileData = profile && (profile.experiences.length > 0 || profile.skills.length > 0)
+  const firstName = user?.name?.split(' ')[0] ?? ''
+  const best = (ws.profile?.assessments ?? []).reduce(
+    (acc, a) => (acc === null || a.score > acc.score ? a : acc),
+    null,
+  )
+  const recommendations = buildRecommendations({
+    profile: ws.profile,
+    document: ws.document,
+    outstandingQuestions: ws.outstandingQuestions,
+    user,
+  })
 
   return (
-    <div className="app">
-      <AppHeader />
+    <AppShell
+      eyebrow={t('app.nav.dashboard')}
+      title={t('app.dash.greeting', { name: firstName })}
+      subtitle={ws.profile?.headline ?? t('app.dash.subtitle')}
+      badges={{ questionnaire: ws.outstandingQuestions }}
+    >
+      {ws.error && <Note tone="bad" title={t('errors.generic')}>{apiMessage(ws.error)}</Note>}
+      <VerifyBanner />
 
-      <main className="app__main">
-        <div className="container">
-          <header className="dash__head">
-            <div>
-              <span className="eyebrow"><Icon name="gauge" />{t('app.nav.dashboard')}</span>
-              <h1>{t('app.dash.greeting', { name: user?.name?.split(' ')[0] ?? '' })}</h1>
-              {profile?.headline && <p className="lead">{profile.headline}</p>}
-            </div>
+      {ws.loading ? (
+        <Skeleton rows={4} />
+      ) : !ws.document ? (
+        /* ------------------------------ onboarding ------------------------ */
+        <div className="wgrid wgrid--main">
+          <UploadCard onDone={ws.reload} />
 
-            {profile && hasProfileData && (
-              <div className="dash__meta">
-                {profile.classification && (
-                  <span className="pill pill--brand">
-                    <Icon name="compass" size={14} />
-                    {profile.classification.label}
-                    {profile.classification.specialisation ? ` · ${profile.classification.specialisation}` : ''}
-                  </span>
-                )}
-                <span className="dash__completeness">
-                  <strong>{profile.completeness}%</strong>
-                  {t('app.dash.complete')}
-                </span>
-              </div>
-            )}
-          </header>
-
-          {error && (
-            <p className="banner banner--bad"><Icon name="alert" size={16} />{error}</p>
+          <Card icon="sparkle" title={t('app.dash.nextTitle')} hint={t('app.dash.nextHint')}>
+            <ol className="wsteps">
+              {['read', 'structure', 'gaps', 'readiness'].map((key, i) => (
+                <li key={key}>
+                  <span className="wsteps__mark">{i + 1}</span>
+                  <span>{t(`app.dash.next.${key}`)}</span>
+                </li>
+              ))}
+            </ol>
+            <p className="wcard__hint" style={{ marginTop: 'var(--s-4)', marginBottom: 0 }}>
+              <Icon name="lock" size={13} /> {t('cta.legal')}
+            </p>
+          </Card>
+        </div>
+      ) : ws.analysing ? (
+        /* ------------------------------ processing ------------------------ */
+        <AnalysisProgress />
+      ) : ws.failed ? (
+        <Note
+          tone="bad"
+          title={t('app.dash.failedTitle')}
+          action={<Link to="/cv" className="btn btn--primary btn--sm">{t('app.upload.tryAgain')}</Link>}
+        >
+          {t('app.dash.failedText')}
+        </Note>
+      ) : (
+        /* -------------------------------- overview ------------------------ */
+        <>
+          {ws.outstandingQuestions > 0 && (
+            <Note
+              tone="warn"
+              icon="clipboard"
+              title={t('app.dash.questionsTitle', { count: ws.outstandingQuestions })}
+              action={
+                <Link to="/questionnaire" className="btn btn--primary btn--sm">
+                  {t('app.dash.answerNow')} <Icon name="arrowRight" size={15} />
+                </Link>
+              }
+            >
+              {t('app.dash.questionsText')}
+            </Note>
           )}
 
-          <VerifyBanner />
-
-          {!document && (
-            <EmptyState
-              icon="upload"
-              title={t('app.dash.noCvTitle')}
-              text={t('app.dash.noCvText')}
-              actionLabel={t('nav.cta')}
-              actionTo="/upload"
+          <div className="wgrid wgrid--3">
+            <Stat
+              icon="gauge"
+              value={`${ws.profile?.completeness ?? 0}%`}
+              label={t('app.dash.stat.completeness')}
+              hint={t('app.dash.stat.completenessHint')}
+              tone={band(ws.profile?.completeness ?? 0) === 'great' ? 'good' : undefined}
             />
-          )}
+            <Stat
+              icon="target"
+              value={best ? `${best.score}` : '—'}
+              label={t('app.dash.stat.readiness')}
+              hint={best ? t(`goals.items.${best.goal}.title`) : t('app.dash.stat.readinessHint')}
+            />
+            <Stat
+              icon="sparkle"
+              value={ws.profile?.skills?.length ?? 0}
+              label={t('app.dash.stat.skills')}
+              hint={t('app.dash.stat.skillsHint', {
+                count: (ws.profile?.skills ?? []).filter((s) => s.isEvidenced).length,
+              })}
+            />
+            <Stat
+              icon="briefcase"
+              value={monthsToYears(ws.profile?.totalExperienceMonths) ?? '—'}
+              label={t('app.dash.stat.experience')}
+              hint={t('app.dash.stat.experienceHint', { count: ws.profile?.experiences?.length ?? 0 })}
+            />
+          </div>
 
-          {analysing && (
-            <div className="banner banner--info">
-              <Spinner />
-              <div>
-                <strong>{t('app.dash.analysingTitle')}</strong>
-                <p>
-                  {status?.job?.stage
-                    ? t(`app.upload.stages.${status.job.stage}`)
-                    : t('app.dash.analysingText')}
+          <div className="wgrid wgrid--main">
+            <div className="wsection">
+              <Card
+                icon="target"
+                title={t('app.readiness.title')}
+                actions={<Link to="/readiness" className="btn btn--ghost btn--sm">{t('app.dash.viewAll')} <Icon name="arrowRight" size={14} /></Link>}
+                hint={t('app.readiness.hint')}
+              >
+                {ws.profile?.assessments?.length ? (
+                  <div className="wgrid wgrid--2">
+                    {ws.profile.assessments.map((a) => (
+                      <div key={a.id} className="readsum">
+                        <Ring value={a.score} size={86} tone={band(a.score)} sublabel={t('app.readiness.of100')} />
+                        <div>
+                          <strong>{t(`goals.items.${a.goal}.title`)}</strong>
+                          <ScoreBadge score={a.score} />
+                          <p>{a.summary}</p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="wcard__hint">{t('app.readiness.empty')}</p>
+                )}
+              </Card>
+
+              <Card
+                icon="userCircle"
+                title={t('app.dash.profileTitle')}
+                actions={<Link to="/profile" className="btn btn--ghost btn--sm">{t('app.dash.viewAll')} <Icon name="arrowRight" size={14} /></Link>}
+              >
+                <Facts
+                  items={[
+                    {
+                      label: t('app.profile.domain'),
+                      value: ws.profile?.classification ? (
+                        <Badge tone="brand" icon="compass">{ws.profile.classification.label}</Badge>
+                      ) : null,
+                    },
+                    { label: t('app.profile.specialisation'), value: ws.profile?.classification?.specialisation },
+                    { label: t('app.profile.experience'), value: monthsToYears(ws.profile?.totalExperienceMonths) },
+                    { label: t('app.profile.location'), value: [ws.profile?.city, ws.profile?.country].filter(Boolean).join(', ') },
+                    { label: t('app.profile.education'), value: ws.profile?.education?.length || null },
+                    { label: t('app.profile.languages'), value: (ws.profile?.languages ?? []).map((l) => `${l.language}${l.level ? ` ${l.level}` : ''}`).join(' · ') || null },
+                  ]}
+                />
+              </Card>
+            </div>
+
+            <div className="wsection">
+              <Card icon="listChecks" title={t('app.dash.completeTitle')}>
+                <Ring
+                  value={ws.profile?.completeness ?? 0}
+                  size={128}
+                  stroke={10}
+                  sublabel={t('app.dash.complete')}
+                />
+                <p className="wcard__hint" style={{ marginTop: 'var(--s-4)' }}>
+                  {t('app.dash.completeHint')}
                 </p>
-              </div>
-            </div>
-          )}
-
-          {failed && (
-            <div className="banner banner--bad">
-              <Icon name="alert" size={18} />
-              <div>
-                <strong>{t('app.dash.failedTitle')}</strong>
-                <p>{t('app.dash.failedText')}</p>
-              </div>
-              <Link to="/upload" className="btn btn--ghost btn--sm">{t('app.upload.tryAgain')}</Link>
-            </div>
-          )}
-
-          {outstanding > 0 && (
-            <div className="banner banner--warn">
-              <Icon name="clipboard" size={18} />
-              <div>
-                <strong>{t('app.dash.questionsTitle', { count: outstanding })}</strong>
-                <p>{t('app.dash.questionsText')}</p>
-              </div>
-              <Link to="/questionnaire" className="btn btn--primary btn--sm">
-                {t('app.dash.answerNow')} <Icon name="arrowRight" size={15} />
-              </Link>
-            </div>
-          )}
-
-          {profile?.flags?.length > 0 && (
-            <div className="banner banner--warn">
-              <Icon name="info" size={18} />
-              <div>
-                <strong>{t('app.dash.flagsTitle')}</strong>
-                <ul className="banner__list">
-                  {profile.flags.map((flag) => (
-                    <li key={flag.id}>{t(`app.flags.${flag.code}`)}</li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          )}
-
-          {profile?.assessments?.length > 0 && (
-            <section className="dash__section">
-              <div className="dash__sectionHead">
-                <h2>{t('app.readiness.title')}</h2>
-                <button
-                  type="button"
-                  className="btn btn--ghost btn--sm"
-                  onClick={onRefreshReadiness}
-                  disabled={refreshing}
-                >
-                  <Icon name="activity" size={15} />
-                  {refreshing ? t('app.readiness.recalculating') : t('app.readiness.recalculate')}
-                </button>
-              </div>
-              <p className="dash__sectionHint">{t('app.readiness.hint')}</p>
-
-              <div className="dash__grid">
-                {profile.assessments.map((assessment) => (
-                  <ReadinessCard key={assessment.id} assessment={assessment} />
-                ))}
-              </div>
-            </section>
-          )}
-
-          {hasProfileData && (
-            <section className="dash__section">
-              <h2>{t('app.profile.title')}</h2>
-              <p className="dash__sectionHint">{t('app.profile.editHint')}</p>
-
-              <div className="dash__cols">
-                <div>
-                  <ExperienceList items={profile.experiences} editable onSaved={setProfile} />
-                  <EducationList
-                    items={profile.education}
-                    certifications={profile.certifications}
-                    editable
-                    onSaved={setProfile}
+                <div className="wlist" style={{ marginTop: 'var(--s-3)' }}>
+                  <Meter
+                    label={t('app.dash.stat.completeness')}
+                    value={ws.profile?.completeness ?? 0}
+                    tone={band(ws.profile?.completeness ?? 0) === 'great' ? 'good' : undefined}
                   />
                 </div>
-                <div>
-                  <SkillsBlock skills={profile.skills} editable onSaved={setProfile} />
-                  <LanguagesBlock languages={profile.languages} editable onSaved={setProfile} />
-                  <CvVersions documentId={document?.id} pending={Boolean(status?.translationsPending)} />
-                </div>
-              </div>
-            </section>
-          )}
-        </div>
-      </main>
-    </div>
+              </Card>
+
+              <Card
+                icon="listChecks"
+                title={t('app.recommendations.title')}
+                actions={<Link to="/recommendations" className="btn btn--ghost btn--sm">{t('app.dash.viewAll')} <Icon name="arrowRight" size={14} /></Link>}
+              >
+                {recommendations.length ? (
+                  <ul className="wlist">
+                    {recommendations.slice(0, 3).map((r, i) => (
+                      <li key={`${r.key}-${i}`} className="wlist__item">
+                        <span className="wstat__icon"><Icon name={r.icon} size={16} /></span>
+                        <div>
+                          <strong>
+                            {r.gap ? r.gap.skill : t(`app.recommendations.items.${r.key}.title`, { count: r.count })}
+                          </strong>
+                          <span>
+                            {r.gap ? r.gap.howToClose : t(`app.recommendations.items.${r.key}.text`)}
+                          </span>
+                        </div>
+                        <Link to={r.to} className="btn btn--ghost btn--sm" aria-label={t('app.dash.viewAll')}>
+                          <Icon name="arrowRight" size={15} />
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="wcard__hint">{t('app.recommendations.allDone')}</p>
+                )}
+              </Card>
+            </div>
+          </div>
+        </>
+      )}
+    </AppShell>
   )
 }

@@ -1,7 +1,10 @@
 export default {
   code: 'fr',
+
   name: 'French',
+
   native: 'Français',
+
   flag: '🇫🇷',
 
   app: {
@@ -202,6 +205,46 @@ export default {
       succeeded: 'Réussie',
       failed: 'Échouée',
       dead: 'Abandonnée',
+    },
+    showDetail: 'Détail technique',
+    hideDetail: 'Masquer le détail',
+    errors: {
+      pdf_unreadable: {
+        title: 'Le PDF n’a pas pu être lu entièrement',
+        text: 'Sa structure interne est endommagée ou inhabituelle. Relancez l’analyse ; en cas de nouvel échec, demandez un ré-export ou un .docx.',
+      },
+      no_text: {
+        title: 'Aucun texte n’a pu être extrait',
+        text: 'Le fichier est presque certainement un scan ou un export image. Il faut un PDF texte ou un .docx.',
+      },
+      legacy_doc: {
+        title: 'Ancien format .doc',
+        text: 'Les anciens fichiers .doc binaires ne peuvent pas être lus. Il faut enregistrer en PDF ou .docx.',
+      },
+      too_long: {
+        title: 'Le document était trop long pour un seul passage',
+        text: 'Le modèle a atteint sa limite de sortie. Relancer suffit généralement ; un CV très long peut devoir être raccourci.',
+      },
+      rate_limited: {
+        title: 'Le fournisseur d’IA nous a limités',
+        text: 'Trop de requêtes en peu de temps. Attendez une minute et relancez — rien n’est perdu.',
+      },
+      timeout: {
+        title: 'Délai de connexion dépassé',
+        text: 'Un incident réseau ou fournisseur, pas un problème de CV. Relancez.',
+      },
+      ai_auth: {
+        title: 'Le fournisseur d’IA a rejeté nos identifiants',
+        text: 'La clé OpenAI est absente, expirée ou hors quota. À corriger dans la configuration serveur avant toute relance.',
+      },
+      gone: {
+        title: 'L’enregistrement n’existe plus',
+        text: 'Le candidat ou son CV a été supprimé pendant l’attente. Rien à relancer.',
+      },
+      unknown: {
+        title: 'L’analyse ne s’est pas terminée',
+        text: 'Relancez la tâche. Si elle échoue encore, le détail technique ci-dessous est ce dont le développeur a besoin.',
+      },
     },
   },
 

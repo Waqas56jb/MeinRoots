@@ -1,14 +1,17 @@
 export default {
   code: 'de',
+
   name: 'German',
+
   native: 'Deutsch',
+
   flag: '🇩🇪',
+
   dir: 'ltr',
 
   meta: {
     title: 'MeinRoots — Deine Wurzeln. Deine Zukunft in Deutschland.',
-    description:
-      'Lade deinen Lebenslauf auf Englisch, Deutsch oder Französisch hoch. Die KI strukturiert dein Profil, erkennt Qualifikationslücken und zeigt dir den nächsten Schritt.',
+    description: 'Lade deinen Lebenslauf auf Englisch, Deutsch oder Französisch hoch. Die KI strukturiert dein Profil, erkennt Qualifikationslücken und zeigt dir den nächsten Schritt.',
   },
 
   common: {
@@ -19,13 +22,9 @@ export default {
     loading: 'Lädt',
     yes: 'Ja',
     no: 'Nein',
+    none: '—',
   },
 
-  /**
-   * Nach den Fehlercodes der API benannt. Der Server sendet einen stabilen Code
-   * und eine englische Meldung für die Logs; die Oberfläche übersetzt den Code
-   * selbst, damit niemand einen Entwicklersatz in der falschen Sprache liest.
-   */
   errors: {
     generic: 'Etwas ist schiefgelaufen. Bitte versuche es erneut.',
     network_error: 'Wir konnten den Server nicht erreichen. Prüfe deine Verbindung und versuche es erneut.',
@@ -35,7 +34,6 @@ export default {
     forbidden: 'Dafür fehlt dir die Berechtigung.',
     not_found: 'Das konnten wir nicht finden.',
     rate_limited: 'Zu viele Anfragen — bitte etwas langsamer.',
-
     email_taken: 'Ein Konto mit dieser E-Mail existiert bereits. Versuche es mit der Anmeldung.',
     invalid_credentials: 'E-Mail oder Passwort ist falsch.',
     account_locked: 'Zu viele Fehlversuche. Bitte versuche es in ein paar Minuten erneut.',
@@ -43,7 +41,6 @@ export default {
     reset_invalid: 'Dieser Link ist ungültig oder abgelaufen. Fordere einen neuen an.',
     consent_required: 'Bitte akzeptiere die Datenschutzhinweise, um fortzufahren.',
     session_expired: 'Deine Sitzung ist abgelaufen. Bitte melde dich erneut an.',
-
     no_file: 'Bitte wähle zuerst eine Datei aus.',
     unsupported_file_type: 'Es werden nur PDF- und .docx-Dateien unterstützt.',
     file_too_large: 'Diese Datei ist größer als 10 MB.',
@@ -53,7 +50,6 @@ export default {
     already_running: 'Dieser Lebenslauf wird bereits analysiert.',
     analysis_failed: 'Wir konnten diesen Lebenslauf nicht analysieren. Bitte lade ihn erneut hoch.',
     document_not_found: 'Diesen Lebenslauf konnten wir nicht finden.',
-
     profile_not_found: 'Lade zuerst einen Lebenslauf hoch, um dein Profil zu erstellen.',
     no_cv: 'Lade einen Lebenslauf hoch, bevor du neu berechnest.',
     questionnaire_not_found: 'Für dich gibt es noch keinen Fragebogen.',
@@ -61,8 +57,7 @@ export default {
     invalid_answer: 'Diese Antwort hat nicht das erwartete Format.',
     invalid_option: 'Bitte wähle eine der angebotenen Optionen.',
     ai_not_configured: 'Die CV-Analyse ist vorübergehend nicht verfügbar. Bitte später erneut versuchen.',
-
-    name_required: 'Bitte gib deinen Namen ein.',
+    name_required: 'Gib einen Namen ein.',
     email_required: 'Bitte gib deine E-Mail-Adresse ein.',
     email_invalid: 'Das sieht nicht nach einer gültigen E-Mail-Adresse aus.',
     password_required: 'Bitte gib dein Passwort ein.',
@@ -77,9 +72,9 @@ export default {
     unknown_section: 'Dieser Abschnitt kann nicht bearbeitet werden.',
     invalid_date: 'Nutze die Datumsauswahl oder das Format JJJJ-MM-TT.',
     role_required: 'Gib eine Position ein.',
-    name_required: 'Gib einen Namen ein.',
     language_required: 'Gib eine Sprache ein.',
     not_orderable: 'Dieser Abschnitt lässt sich nicht sortieren.',
+    wrong_password: 'Dieses Passwort ist nicht korrekt.',
   },
 
   nav: {
@@ -96,7 +91,6 @@ export default {
     logout: 'Abmelden',
   },
 
-
   hero: {
     proof: 'Genutzt von Kandidat:innen aus <b>40+ Ländern</b>',
     titleA: 'Talent kennt keine Grenzen.',
@@ -108,9 +102,19 @@ export default {
     note: 'Kostenloser Start · Dein Original bleibt unverändert · DSGVO-konform',
     scroll: 'Zum Entdecken scrollen',
     stats: {
-      languages: { value: '3', label: 'Sprachen für Lebensläufe', hint: 'EN · DE · FR' },
-      speed: { value: '< 60s', label: 'Bis zum strukturierten Profil' },
-      domains: { value: '12+', label: 'Berufsfelder' },
+      languages: {
+        value: '3',
+        label: 'Sprachen für Lebensläufe',
+        hint: 'EN · DE · FR',
+      },
+      speed: {
+        value: '< 60s',
+        label: 'Bis zum strukturierten Profil',
+      },
+      domains: {
+        value: '12+',
+        label: 'Berufsfelder',
+      },
     },
   },
 
@@ -141,8 +145,7 @@ export default {
   goals: {
     eyebrow: 'Schritt eins',
     title: 'Starte mit deinem Ziel',
-    lead:
-      'Alles Weitere — Analyse, Klassifizierung, Bereitschaft, Empfehlungen — richtet sich nach dem Ziel, das du hier wählst. Mehrfachauswahl ist möglich.',
+    lead: 'Alles Weitere — Analyse, Klassifizierung, Bereitschaft, Empfehlungen — richtet sich nach dem Ziel, das du hier wählst. Mehrfachauswahl ist möglich.',
     choose: 'Diesen Weg wählen',
     mostChosen: 'Am häufigsten gewählt',
     items: {
@@ -172,8 +175,7 @@ export default {
   how: {
     eyebrow: 'Der Weg',
     title: 'Vom Lebenslauf zur Klarheit in vier Schritten',
-    lead:
-      'Keine langen Formulare, bevor du einen Nutzen siehst. Lade zuerst hoch — der Fragebogen fragt nur, was die KI nicht schon aus deinem Lebenslauf ableiten konnte.',
+    lead: 'Keine langen Formulare, bevor du einen Nutzen siehst. Lade zuerst hoch — der Fragebogen fragt nur, was die KI nicht schon aus deinem Lebenslauf ableiten konnte.',
     steps: {
       objective: {
         title: 'Ziel festlegen',
@@ -246,22 +248,44 @@ export default {
   domains: {
     eyebrow: 'Berufsfelder',
     title: 'Eingeordnet in das Feld, in dem du wirklich arbeitest',
-    lead:
-      'Jedes Profil erhält ein oder mehrere Berufsfelder plus Spezialisierung, mit Konfidenzanzeige. Kategorien sind vom Admin konfigurierbar — neue Felder kommen ohne Deployment dazu.',
+    lead: 'Jedes Profil erhält ein oder mehrere Berufsfelder plus Spezialisierung, mit Konfidenzanzeige. Kategorien sind vom Admin konfigurierbar — neue Felder kommen ohne Deployment dazu.',
     foot: 'Ein Berufsfeld fehlt? Admins ergänzen, benennen um oder deaktivieren Kategorien direkt in der Konsole.',
     specialisations: 'Spezialisierungen',
     items: {
-      it: { name: 'IT & Software', spec: 'Frontend · Backend · Daten · DevOps' },
-      health: { name: 'Gesundheit / Pflege', spec: 'Pflege · Betreuung · Therapie · Medizin' },
-      engineering: { name: 'Ingenieurwesen', spec: 'Maschinenbau · Elektro · Automotive' },
-      logistics: { name: 'Logistik', spec: 'Lager · Supply Chain · Transport' },
-      finance: { name: 'Finanzen', spec: 'Buchhaltung · Controlling · Audit' },
-      construction: { name: 'Bau', spec: 'Baustelle · Planung · Handwerk' },
-      hospitality: { name: 'Gastgewerbe', spec: 'Hotel · Küche · Service' },
-      sales: { name: 'Vertrieb & Marketing', spec: 'B2B-Vertrieb · Growth · Content' },
+      it: {
+        name: 'IT & Software',
+        spec: 'Frontend · Backend · Daten · DevOps',
+      },
+      health: {
+        name: 'Gesundheit / Pflege',
+        spec: 'Pflege · Betreuung · Therapie · Medizin',
+      },
+      engineering: {
+        name: 'Ingenieurwesen',
+        spec: 'Maschinenbau · Elektro · Automotive',
+      },
+      logistics: {
+        name: 'Logistik',
+        spec: 'Lager · Supply Chain · Transport',
+      },
+      finance: {
+        name: 'Finanzen',
+        spec: 'Buchhaltung · Controlling · Audit',
+      },
+      construction: {
+        name: 'Bau',
+        spec: 'Baustelle · Planung · Handwerk',
+      },
+      hospitality: {
+        name: 'Gastgewerbe',
+        spec: 'Hotel · Küche · Service',
+      },
+      sales: {
+        name: 'Vertrieb & Marketing',
+        spec: 'B2B-Vertrieb · Growth · Content',
+      },
     },
   },
-
 
   languages: {
     eyebrow: 'Mehrsprachig von Haus aus',
@@ -308,24 +332,20 @@ export default {
   testimonials: {
     eyebrow: 'Erfahrungen',
     title: 'Was bleibt, ist Klarheit',
-    lead:
-      'Kandidat:innen scheitern selten an fehlender Qualifikation. Sie scheitern daran, dass ihnen niemand sagt, was fehlt.',
+    lead: 'Kandidat:innen scheitern selten an fehlender Qualifikation. Sie scheitern daran, dass ihnen niemand sagt, was fehlt.',
     items: {
       amina: {
-        quote:
-          'Ich habe an einem Sonntagabend einen französischen Lebenslauf hochgeladen. Als ich den Fragebogen fertig hatte, lag eine deutsche Version vor, ein klares Berufsfeld und drei Skills zum Nachlegen. Vorher hatte mir nie jemand gesagt, was genau fehlt.',
+        quote: 'Ich habe an einem Sonntagabend einen französischen Lebenslauf hochgeladen. Als ich den Fragebogen fertig hatte, lag eine deutsche Version vor, ein klares Berufsfeld und drei Skills zum Nachlegen. Vorher hatte mir nie jemand gesagt, was genau fehlt.',
         name: 'Amina D.',
         role: 'Frontend-Entwicklerin · Casablanca → Berlin',
       },
       rajesh: {
-        quote:
-          'Die Bereitschaftsanzeige hat für mich den Unterschied gemacht. Sie hat erklärt, warum ich noch nicht so weit war — Deutschniveau und ein Zertifikat — statt meine Bewerbung stillschweigend abzulehnen.',
+        quote: 'Die Bereitschaftsanzeige hat für mich den Unterschied gemacht. Sie hat erklärt, warum ich noch nicht so weit war — Deutschniveau und ein Zertifikat — statt meine Bewerbung stillschweigend abzulehnen.',
         name: 'Rajesh K.',
         role: 'Gesundheits- und Krankenpfleger · Kochi → München',
       },
       lena: {
-        quote:
-          'Als Admin habe ich früher jeden einzelnen Lebenslauf geöffnet. Heute prüfe ich nur noch die markierten. Die strukturierten Profile sind konsistent genug, dass Filtern wirklich funktioniert.',
+        quote: 'Als Admin habe ich früher jeden einzelnen Lebenslauf geöffnet. Heute prüfe ich nur noch die markierten. Die strukturierten Profile sind konsistent genug, dass Filtern wirklich funktioniert.',
         name: 'Lena Hoffmann',
         role: 'Recruiting-Leitung · MeinRoots',
       },
@@ -335,8 +355,7 @@ export default {
   pricing: {
     eyebrow: 'Tarife',
     title: 'Kostenlos herausfinden, wo du stehst',
-    lead:
-      'Lebenslaufanalyse, strukturiertes Profil und Bereitschaftsüberblick kosten nie etwas. Bezahlte Stufen gibt es für die Arbeit danach — Lücken schließen und eingestellt werden.',
+    lead: 'Lebenslaufanalyse, strukturiertes Profil und Bereitschaftsüberblick kosten nie etwas. Bezahlte Stufen gibt es für die Arbeit danach — Lücken schließen und eingestellt werden.',
     note: 'Preise und Funktionsgrenzen sind für Milestone 1 indikativ und werden vor dem Launch mit MeinRoots bestätigt.',
     popular: 'Am beliebtesten',
     monthly: 'Monatlich',
@@ -442,8 +461,7 @@ export default {
     emailPlaceholder: 'du@email.com',
     submit: 'Kostenloses Profil erstellen',
     done: 'Danke — wir senden deine Einladung an',
-    legal:
-      'Mit dem Fortfahren akzeptierst du unsere Datenschutzhinweise. Deine Daten werden nach DSGVO verarbeitet und erst nach deiner Einwilligung an Recruiter weitergegeben.',
+    legal: 'Mit dem Fortfahren akzeptierst du unsere Datenschutzhinweise. Deine Daten werden nach DSGVO verarbeitet und erst nach deiner Einwilligung an Recruiter weitergegeben.',
   },
 
   footer: {
@@ -520,16 +538,20 @@ export default {
       submit: 'Link senden',
       backToLogin: 'Zurück zur Anmeldung',
       sentTitle: 'Schau in dein Postfach',
-      sentText:
-        'Falls ein Konto für {email} existiert, ist ein Link unterwegs. Er läuft in 30 Minuten ab.',
+      sentText: 'Falls ein Konto für {email} existiert, ist ein Link unterwegs. Er läuft in 30 Minuten ab.',
       resend: 'Erneut senden',
       aside: {
         title: 'Sicherheit zuerst.',
         text: 'Links sind einmalig nutzbar und laufen schnell ab. Wir versenden niemals Passwörter per E-Mail.',
         points: ['Einmal-Link', 'Läuft in 30 Minuten ab', 'Kontoaktivität wird protokolliert'],
       },
+      newTitle: 'Neues Passwort wählen',
+      newSubtitle: 'Wähle etwas, das du hier noch nicht verwendet hast.',
+      newSubmit: 'Neues Passwort speichern',
+      doneTitle: 'Passwort geändert',
+      doneText: 'Du kannst dich jetzt mit dem neuen Passwort anmelden. Alle anderen Geräte wurden abgemeldet.',
     },
-verify: {
+    verify: {
       checkingTitle: 'E-Mail wird bestätigt…',
       doneTitle: 'E-Mail bestätigt',
       doneText: 'Danke. Wir können dir jetzt deine Analyseergebnisse und Kontohinweise schicken.',
@@ -537,16 +559,6 @@ verify: {
       missingText: 'Diesem Link fehlt der Bestätigungscode. Öffne den Link erneut aus der E-Mail oder fordere in deiner Übersicht einen neuen an.',
       goToAccount: 'Zu meiner Übersicht',
     },
-
-verify: {
-      checkingTitle: 'E-Mail wird bestätigt…',
-      doneTitle: 'E-Mail bestätigt',
-      doneText: 'Danke. Wir können dir jetzt deine Analyseergebnisse und Kontohinweise schicken.',
-      failedTitle: 'Dieser Link konnte nicht bestätigt werden',
-      missingText: 'Diesem Link fehlt der Bestätigungscode. Öffne den Link erneut aus der E-Mail oder fordere in deiner Übersicht einen neuen an.',
-      goToAccount: 'Zu meiner Übersicht',
-    },
-
     upload: {
       title: 'Lebenslauf hochladen',
       subtitle: 'PDF oder DOCX, bis 10 MB. Deine Originaldatei bleibt unberührt gespeichert.',
@@ -558,15 +570,13 @@ verify: {
       submit: 'KI-Analyse starten',
       analysing: 'Dein Lebenslauf wird analysiert…',
       successTitle: 'Analyse gestartet',
-      successText:
-        'Wir lesen deinen Lebenslauf aus, klassifizieren dein Berufsfeld und erzeugen die anderen Sprachversionen. Du wirst benachrichtigt, sobald dein Profil bereit ist.',
+      successText: 'Wir lesen deinen Lebenslauf aus, klassifizieren dein Berufsfeld und erzeugen die anderen Sprachversionen. Du wirst benachrichtigt, sobald dein Profil bereit ist.',
       backHome: 'Zurück zur Startseite',
       steps: ['Sprache erkennen', 'Struktur extrahieren', 'Berufsfeld klassifizieren', 'Übersetzungen erzeugen'],
       signedInAs: 'Angemeldet als',
     },
   },
 
-  /** Alles hinter dem Login: Dashboard, Fragebogen, Admin-Konsole. */
   app: {
     verify: {
       title: 'Bestätige deine E-Mail-Adresse',
@@ -574,7 +584,6 @@ verify: {
       resent: 'Gesendet. Prüfe {email}, auch den Spam-Ordner.',
       resend: 'Erneut senden',
     },
-
     edit: {
       add: 'Hinzufügen',
       edit: 'Bearbeiten',
@@ -643,8 +652,11 @@ verify: {
       dashboard: 'Übersicht',
       questionnaire: 'Fragen',
       cv: 'Mein Lebenslauf',
+      profile: 'Mein Profil',
+      readiness: 'Bereitschaft',
+      recommendations: 'Nächste Schritte',
+      settings: 'Einstellungen',
     },
-
     upload: {
       seeProfile: 'Mein Profil ansehen',
       answerQuestions: 'Fragen beantworten',
@@ -660,8 +672,10 @@ verify: {
         readiness: 'Bereitschaft und Lücken werden bewertet',
         translating: 'Andere Sprachversionen werden erzeugt',
       },
+      cardTitle: 'Lebenslauf hochladen',
+      cardHint: 'Eine Datei. Wir verändern sie nie — alles andere entsteht daneben.',
+      formats: 'PDF oder DOCX, bis zu {max} MB',
     },
-
     dash: {
       greeting: 'Hallo {name}',
       complete: 'vollständig',
@@ -675,8 +689,30 @@ verify: {
       questionsText: 'Das sind die Punkte, die dein Lebenslauf nicht beantworten konnte. Mit deinen Antworten wird die Bewertung genau.',
       answerNow: 'Jetzt beantworten',
       flagsTitle: 'Ein paar Punkte sollten geprüft werden',
+      subtitle: 'Dein Profil, deine Bereitschaft und die nächsten Schritte.',
+      viewAll: 'Alles ansehen',
+      nextTitle: 'Was als Nächstes passiert',
+      nextHint: 'Vier Schritte, unter einer Minute, alles automatisch.',
+      next: {
+        read: 'Wir lesen deinen Lebenslauf und erkennen die Sprache',
+        structure: 'Erfahrung, Ausbildung und Skills werden zu einem strukturierten Profil',
+        gaps: 'Wir erkennen belegte Skills und die, die dir noch fehlen',
+        readiness: 'Du bekommst je Ziel eine Bereitschaftsbewertung mit Begründung',
+      },
+      profileTitle: 'Berufliches Profil',
+      completeTitle: 'Profilvollständigkeit',
+      completeHint: 'Deine Antworten und die Lücken unten erhöhen diesen Wert.',
+      stat: {
+        completeness: 'Profil vollständig',
+        completenessHint: 'Über alle Abschnitte',
+        readiness: 'Beste Bereitschaft',
+        readinessHint: 'Lade einen Lebenslauf hoch',
+        skills: 'Skills',
+        skillsHint: '{count} durch deine Rollen belegt',
+        experience: 'Erfahrung',
+        experienceHint: '{count} Rolle(n) erfasst',
+      },
     },
-
     readiness: {
       title: 'Deine Bereitschaft',
       hint: 'Ein Status, dessen Begründung du siehst — keine Zahl, die wir für uns behalten.',
@@ -697,8 +733,13 @@ verify: {
         important: 'Wichtig',
         nice_to_have: 'Wünschenswert',
       },
+      of100: 'von 100',
+      emptyText: 'Lade deinen Lebenslauf hoch — wir bewerten deine Bereitschaft für jedes gewählte Ziel.',
+      recalculated: 'Bereitschaft mit deinen neuesten Antworten neu berechnet.',
+      answerFirstTitle: 'Beantworte zuerst deine Fragen',
+      answerFirstText: 'Noch {count} Frage(n) offen. Ohne sie kann die Bewertung nicht genau sein.',
+      empty: 'Noch keine Bereitschaftsbewertung',
     },
-
     profile: {
       title: 'Dein strukturiertes Profil',
       hint: 'Aus deinem Lebenslauf extrahiert. Alles Unsichere ist markiert und wird von einem Menschen geprüft.',
@@ -719,8 +760,17 @@ verify: {
       selfReported: 'Selbstauskunft',
       lowConfidenceHint: 'Wir waren uns beim Lesen nicht ganz sicher — das prüft jemand nach.',
       editHint: 'Aus deinem Lebenslauf extrahiert. Alles Unsichere ist markiert — korrigiere es, und deine Bewertung aktualisiert sich.',
+      domain: 'Berufsfeld',
+      specialisation: 'Spezialisierung',
+      location: 'Ort',
+      noHeadline: 'Berufsbezeichnung hinzufügen',
+      headlineLabel: 'Berufsbezeichnung',
+      summaryLabel: 'Kurzprofil',
+      noticeLabel: 'Kündigungsfrist (Wochen)',
+      relocateLabel: 'Umzug',
+      willRelocate: 'Umzugsbereit',
+      notice: '{weeks} Wochen Frist',
     },
-
     cv: {
       title: 'Dein Lebenslauf in drei Sprachen',
       hint: 'Deine Originaldatei bleibt genau so gespeichert, wie du sie hochgeladen hast. Die anderen Versionen entstehen daraus.',
@@ -730,8 +780,30 @@ verify: {
       reviewed: 'Von unserem Team geprüft',
       stillTranslating: 'Die anderen Sprachversionen werden noch erzeugt.',
       notAvailable: 'Diese Version ist noch nicht verfügbar.',
+      pageTitle: 'Mein Lebenslauf',
+      pageSubtitle: 'Dein Originaldokument und die daraus erzeugten Versionen.',
+      uploaded: 'Hochgeladen',
+      size: 'Größe',
+      pages: 'Seiten',
+      status: 'Analyse',
+      statusAnalysed: 'Analysiert',
+      statusFailed: 'Fehlgeschlagen',
+      statusProcessing: 'Wird verarbeitet',
+      confidence: 'Extraktionssicherheit',
+      replace: 'Lebenslauf ersetzen',
+      reanalyse: 'Analyse neu starten',
+      replaceTitle: 'Lebenslauf ersetzen',
+      replaceHint: 'Die neue Datei wird dein aktueller Lebenslauf. Deine eigenen Korrekturen bleiben erhalten.',
+      originalNote: 'Deine Originaldatei wird genau so gespeichert, wie du sie gesendet hast, und nie verändert.',
+      originalShort: 'Original',
+      versionsTitle: 'Sprachversionen',
+      versionsHint: 'Aus deinem Lebenslauf erzeugt. Das Original ist immer markiert.',
+      sourceLabel: 'Das ist dein Original-Lebenslauf',
+      sourceLabelText: 'Der Text unten ist das, was wir aus deiner Datei gelesen haben.',
+      aiGeneratedText: 'Von der KI aus deinem Original erzeugt. Noch nicht von unserem Team geprüft.',
+      reviewedText: 'Von unserem Team geprüft.',
+      sourceLanguage: 'Ausgangssprache',
     },
-
     questionnaire: {
       title: 'Ein paar Dinge, die dein Lebenslauf nicht sagt',
       subtitle: '{count} kurze Fragen. Bei jeder steht, warum wir sie stellen.',
@@ -746,8 +818,19 @@ verify: {
       completed: 'Du hast diesen Fragebogen abgeschlossen. Du kannst deine Antworten weiterhin ändern.',
       placeholder: 'Deine Antwort',
       nothingToSave: 'Beantworte zuerst mindestens eine Frage.',
+      position: 'Frage {current} von {total}',
+      percent: '{percent}% erledigt',
+      next: 'Weiter',
+      previous: 'Zurück',
+      noAnswer: 'Noch nicht beantwortet',
+      reviewing: 'Antworten prüfen',
+      reviewTitle: 'Deine Antworten',
+      backToQuestions: 'Zurück zu den Fragen',
+      doneTitle: 'Fragen abgeschlossen',
+      doneText: 'Danke. Deine Bereitschaft wurde mit deinen Antworten neu berechnet.',
+      seeReadiness: 'Meine Bereitschaft ansehen',
+      reviewAnswers: 'Antworten prüfen',
     },
-
     flags: {
       low_confidence: 'Teile deines Lebenslaufs waren schwer zu lesen',
       no_experience: 'Es konnte keine Berufserfahrung extrahiert werden',
@@ -756,6 +839,111 @@ verify: {
       no_languages: 'Es wurden keine Sprachniveaus gefunden',
       uncertain_experience: 'Mindestens eine Rolle wurde mit geringer Sicherheit gelesen',
     },
-
+    shell: {
+      workspace: 'Kandidatenbereich',
+      collapse: 'Menü einklappen',
+      expand: 'Menü ausklappen',
+    },
+    confidence: {
+      high: 'hohe Sicherheit',
+      medium: 'mittlere Sicherheit',
+      low: 'sollte geprüft werden',
+    },
+    analysing: {
+      title: 'Dein Lebenslauf wird analysiert',
+      subtitle: 'Das dauert meist weniger als eine Minute. Du kannst die Seite verlassen.',
+      keepOpen: 'Die Analyse läuft im Hintergrund weiter — wir schicken dir eine E-Mail, sobald sie fertig ist.',
+      retrying: 'Ein Schritt war nicht erfolgreich. Neuer Versuch — {attempt} von {max}.',
+    },
+    recommendations: {
+      subtitle: 'Alles Sinnvolle als Nächstes, Wichtigstes zuerst.',
+      go: 'Los',
+      allDone: 'Nichts offen',
+      allDoneText: 'Dein Profil ist vollständig und deine Fragen sind beantwortet. Schau in die Bereitschaft, was den Wert noch hebt.',
+      priority: {
+        critical: 'Zuerst erledigen',
+        important: 'Lohnt sich',
+        nice_to_have: 'Schön zu haben',
+      },
+      priorityHint: {
+        critical: 'Das blockiert eine genaue Bewertung.',
+        important: 'Das verbessert dein Profil deutlich.',
+        nice_to_have: 'Kleine Ergänzungen, die Arbeitgebern helfen.',
+      },
+      items: {
+        upload_cv: {
+          title: 'Lebenslauf hochladen',
+          text: 'Alles beginnt hier — dein Profil entsteht daraus.',
+        },
+        retry_cv: {
+          title: 'Deine Analyse ist fehlgeschlagen',
+          text: 'Lade die Datei erneut hoch oder nutze ein anderes Format.',
+        },
+        verify_email: {
+          title: 'E-Mail-Adresse bestätigen',
+          text: 'Damit wir dir Ergebnisse und Kontohinweise senden können.',
+        },
+        answer_questions: {
+          title: '{count} Frage(n) offen',
+          text: 'Das sind die Punkte, die dein Lebenslauf nicht sagen konnte.',
+        },
+        close_gap: {
+          title: 'Verbessern: {skill}',
+        },
+        add_summary: {
+          title: 'Kurzprofil hinzufügen',
+          text: 'Zwei bis drei Sätze darüber, was du machst.',
+        },
+        add_languages: {
+          title: 'Sprachen hinzufügen',
+          text: 'Das Sprachniveau entscheidet in Deutschland viel.',
+        },
+        add_certification: {
+          title: 'Zertifikat hinzufügen',
+          text: 'Zertifikate sind ein starker Beleg für einen Skill.',
+        },
+        set_relocation: {
+          title: 'Umzugsbereitschaft angeben',
+          text: 'Arbeitgeber filtern früh danach.',
+        },
+        add_experience: {
+          title: 'Berufserfahrung hinzufügen',
+          text: 'Aus deinem Lebenslauf wurden keine Rollen extrahiert.',
+        },
+      },
+      title: 'Nächste Schritte',
+    },
+    settings: {
+      title: 'Einstellungen',
+      subtitle: 'Dein Konto, deine Sprache und Benachrichtigungen.',
+      account: 'Konto',
+      verified: 'Bestätigt',
+      unverified: 'Nicht bestätigt',
+      language: 'Sprache',
+      languageHint: 'Ändert die Website und die E-Mails, die wir dir senden.',
+      goals: 'Berufsziele',
+      goalsHint: 'Was du suchst. Deine Bereitschaft wird je Ziel bewertet.',
+      goalsNote: 'Eine Änderung wird bei der nächsten Berechnung berücksichtigt.',
+      notifications: 'E-Mail-Benachrichtigungen',
+      notifyTitle: 'Benachrichtige mich, wenn meine Analyse fertig ist',
+      notifyText: 'Eine E-Mail, sobald dein Profil erstellt wurde. Sonst nichts.',
+      password: 'Passwort',
+      passwordHint: 'Eine Passwortänderung meldet alle anderen Geräte ab.',
+      currentPassword: 'Aktuelles Passwort',
+      newPassword: 'Neues Passwort',
+      changePassword: 'Passwort ändern',
+      danger: 'Konto löschen',
+      dangerText: 'Löscht dein Konto, Profil, deine Lebenslaufdateien und alle daraus abgeleiteten Daten endgültig. Nicht rückgängig zu machen.',
+      deleteAccount: 'Mein Konto löschen',
+      deleteForever: 'Endgültig löschen',
+      confirmPassword: 'Zur Bestätigung dein Passwort eingeben',
+      saved: {
+        goals: 'Ziele gespeichert.',
+        language: 'Sprache gespeichert.',
+        notifications: 'Einstellung gespeichert.',
+        password: 'Passwort geändert.',
+        verification: 'Bestätigungs-E-Mail gesendet.',
+      },
+    },
   },
 }

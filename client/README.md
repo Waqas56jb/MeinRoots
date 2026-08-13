@@ -123,10 +123,15 @@ added to `script-src` / `connect-src` or they will be blocked.
 | `/login` | public | Log in — accepts `?next=` and `?gate=cv` |
 | `/signup` | public | Create account — accepts `?email=` and `?next=` |
 | `/reset-password` | public | Request a reset link; with `?token=` it becomes the "choose a new password" form |
-| `/upload` | **protected** | CV upload, live analysis progress |
-| `/dashboard` | **protected** | Structured profile, readiness per objective, skill gaps, the CV in three languages |
-| `/questionnaire` | **protected** | The questions the CV could not answer |
 | `/verify-email` | public | Opened from the confirmation email; verifies once, signed in or out |
+| `/dashboard` | **protected** | Overview: completeness, readiness, next steps |
+| `/cv` | **protected** | Upload, analysis progress, the original file and its three language versions |
+| `/profile` | **protected** | The structured profile, fully editable |
+| `/readiness` | **protected** | Readiness per objective with its factors and skill gaps |
+| `/recommendations` | **protected** | What to do next, derived from the candidate’s own data |
+| `/questionnaire` | **protected** | The questions the CV could not answer, one at a time |
+| `/settings` | **protected** | Account, language, objectives, notifications, password, erasure |
+| `/upload` | — | Redirects to `/cv`; kept so older links still land somewhere |
 
 `Protected` waits for the session check before deciding anything — redirecting while
 `/auth/me` is still in flight would bounce a signed-in user off their own dashboard on
@@ -178,6 +183,23 @@ links, aria-labels, button titles and validation messages.
 
 Adding a language: copy `en.js`, translate the values, register it in
 [`src/i18n/index.js`](src/i18n/index.js). Nothing else needs to change.
+
+## The workspace
+
+Everything behind the login shares one shell and one data layer.
+
+`AppShell` renders three layouts from one markup: a labelled sidebar at ≥1180px, an
+icon-only sidebar below that, and a drawer under 900px. The collapse choice persists.
+
+`WorkspaceContext` loads the profile, the current CV and the questionnaire **once** for
+all six pages, and polls only while an analysis is actually running — an idle dashboard
+makes no requests at all. Before this, each page fetched its own copy and ran its own
+polling loop against the others.
+
+`buildRecommendations` derives the "next steps" list from real data only: a field that is
+genuinely empty, a question genuinely unanswered, or a gap the assessment itself produced.
+Every item links somewhere that can actually resolve it — there are no buttons that do
+nothing, and nothing on that page is invented to fill space.
 
 ## Structure
 
