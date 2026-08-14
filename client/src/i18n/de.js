@@ -95,6 +95,32 @@ export default {
     getStarted: 'Loslegen',
   },
 
+  hero: {
+    proof: 'Genutzt von Kandidat:innen aus <b>40+ Ländern</b>',
+    titleA: 'Talent kennt keine Grenzen.',
+    titleB: 'Deine Zukunft:',
+    titleC: 'Karriere in Deutschland.',
+    lead: 'Ein Upload. Ein strukturiertes Profil, dein Berufsfeld und die Skills, die dir noch fehlen — in unter einer Minute.',
+    ctaPrimary: 'Lebenslauf hochladen — kostenlos',
+    ctaSecondary: 'So funktioniert’s',
+    note: 'Kostenloser Start · Dein Original bleibt unverändert · DSGVO-konform',
+    scroll: 'Zum Entdecken scrollen',
+    stats: {
+      languages: {
+        value: '3',
+        label: 'Sprachen für Lebensläufe',
+        hint: 'EN · DE · FR',
+      },
+      speed: {
+        value: '< 60s',
+        label: 'Bis zum strukturierten Profil',
+      },
+      domains: {
+        value: '12+',
+        label: 'Berufsfelder',
+      },
+    },
+  },
 
   trust: {
     label: 'Für regulierte, grenzüberschreitende Personalgewinnung gebaut',

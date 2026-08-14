@@ -1,7 +1,7 @@
 import Navbar from '../components/Navbar.jsx'
 import Footer from '../components/Footer.jsx'
 import ScrollTop from '../components/ScrollTop.jsx'
-import Hero from '../components/home/Hero.jsx'
+import Hero from '../components/Hero.jsx'
 import TrustStrip from '../components/home/TrustStrip.jsx'
 import CareerPaths from '../components/home/CareerPaths.jsx'
 import HowItWorks from '../components/home/HowItWorks.jsx'
@@ -19,7 +19,7 @@ import { useI18n } from '../context/I18nContext.jsx'
  * The landing page tells one story, in the order a visitor actually asks the
  * questions:
  *
- *   what is this            Hero
+ *   what is this            Hero (the original one, unchanged)
  *   can I trust it          TrustStrip
  *   is it for my career     CareerPaths
  *   what happens to my CV   HowItWorks

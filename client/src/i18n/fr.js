@@ -95,6 +95,32 @@ export default {
     getStarted: 'Commencer',
   },
 
+  hero: {
+    proof: 'Utilisé par des candidats de <b>40+ pays</b>',
+    titleA: 'Le talent n’a pas de frontières.',
+    titleB: 'Votre avenir :',
+    titleC: 'une carrière en Allemagne.',
+    lead: 'Un seul CV. Un profil structuré, votre domaine professionnel et les compétences qui vous manquent — en moins d’une minute.',
+    ctaPrimary: 'Téléverser mon CV — gratuit',
+    ctaSecondary: 'Comment ça marche',
+    note: 'Gratuit au démarrage · Votre CV original n’est jamais modifié · Conforme RGPD',
+    scroll: 'Faites défiler',
+    stats: {
+      languages: {
+        value: '3',
+        label: 'Langues de CV analysées',
+        hint: 'EN · DE · FR',
+      },
+      speed: {
+        value: '< 60s',
+        label: 'Vers un profil structuré',
+      },
+      domains: {
+        value: '12+',
+        label: 'Domaines professionnels',
+      },
+    },
+  },
 
   trust: {
     label: 'Conçu pour le recrutement transfrontalier encadré',

@@ -95,6 +95,32 @@ export default {
     getStarted: 'Get started',
   },
 
+  hero: {
+    proof: 'Trusted by candidates from <b>40+ countries</b>',
+    titleA: 'Talent has no borders.',
+    titleB: 'Your future',
+    titleC: 'Career in Germany.',
+    lead: 'One CV upload. A structured profile, your professional domain and the exact skills you still need — in under a minute.',
+    ctaPrimary: 'Upload your CV — free',
+    ctaSecondary: 'See how it works',
+    note: 'No cost to start · Your original CV is never modified · GDPR-ready',
+    scroll: 'Scroll to explore',
+    stats: {
+      languages: {
+        value: '3',
+        label: 'CV languages parsed',
+        hint: 'EN · DE · FR',
+      },
+      speed: {
+        value: '< 60s',
+        label: 'To a structured profile',
+      },
+      domains: {
+        value: '12+',
+        label: 'Professional domains',
+      },
+    },
+  },
 
   trust: {
     label: 'Built for regulated, cross-border hiring',
