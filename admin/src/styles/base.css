@@ -3,6 +3,19 @@
    ========================================================================== */
 
 :root {
+  /* One spacing scale, matching the candidate app. Nothing should invent its
+     own margin — and an undefined token here does not shift a layout slightly,
+     it voids the whole declaration it appears in. */
+  --s-1: 4px;
+  --s-2: 8px;
+  --s-3: 12px;
+  --s-4: 16px;
+  --s-5: 20px;
+  --s-6: 24px;
+  --s-7: 32px;
+  --s-8: 40px;
+  --s-9: 56px;
+
   --brand: #2563eb;
   --brand-600: #2563eb;
   --brand-700: #1d4ed8;

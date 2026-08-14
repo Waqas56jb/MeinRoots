@@ -10,7 +10,7 @@
     radial-gradient(1000px 440px at 78% -20%, #12306e 0%, transparent 62%),
     linear-gradient(180deg, #0b1a38 0%, #071229 100%);
   color: #c3d2ea;
-  padding-block: clamp(38px, 4.5vw, 58px) calc(20px + env(safe-area-inset-bottom));
+  padding-block: clamp(38px, 4.5vw, 58px) calc(20px + env(safe-area-inset-bottom, 0px));
 }
 .footer__hairline {
   position: absolute;

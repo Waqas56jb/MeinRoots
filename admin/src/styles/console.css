@@ -20,7 +20,7 @@
   color: #fff;
   /* Safe-area padding so the brand is not under the notch and the footer not
      under the iPhone home indicator. */
-  padding: calc(18px + env(safe-area-inset-top)) 14px calc(16px + env(safe-area-inset-bottom));
+  padding: calc(18px + env(safe-area-inset-top, 0px)) 14px calc(16px + env(safe-area-inset-bottom, 0px));
 }
 .side--fixed {
   position: sticky;
@@ -128,7 +128,7 @@
   gap: 12px;
   min-height: var(--top-h);
   padding: 12px clamp(14px, 3vw, 30px);
-  padding-top: calc(12px + env(safe-area-inset-top));
+  padding-top: calc(12px + env(safe-area-inset-top, 0px));
   background: rgba(255, 255, 255, 0.88);
   backdrop-filter: saturate(180%) blur(12px);
   border-bottom: 1px solid var(--line);
@@ -163,7 +163,7 @@
 .main {
   flex: 1;
   padding: clamp(16px, 2.6vw, 28px) clamp(14px, 3vw, 30px);
-  padding-bottom: calc(40px + env(safe-area-inset-bottom));
+  padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   gap: 18px;
@@ -183,7 +183,7 @@
     background: rgba(255, 255, 255, 0.94);
     backdrop-filter: saturate(180%) blur(14px);
     border-top: 1px solid var(--line);
-    padding-bottom: env(safe-area-inset-bottom);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   .tabbar a {
     display: flex;
@@ -199,7 +199,7 @@
   .tabbar a.is-active { color: var(--brand-600); }
   .tabbar a.is-active svg { transform: translateY(-1px); }
   /* Content must clear the fixed bar, including the home-indicator inset. */
-  .main { padding-bottom: calc(var(--tab-h) + 24px + env(safe-area-inset-bottom)); }
+  .main { padding-bottom: calc(var(--tab-h) + 24px + env(safe-area-inset-bottom, 0px)); }
 }
 
 /* --------------------------------- cards --------------------------------- */
@@ -764,14 +764,14 @@
   position: fixed;
   z-index: 80;
   right: 16px;
-  bottom: calc(16px + env(safe-area-inset-bottom));
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   display: grid;
   gap: 8px;
   max-width: min(92vw, 400px);
 }
 @media (max-width: 760px) {
   /* Clear the bottom tab bar, and go full width so the text never truncates. */
-  .toasts { left: 12px; right: 12px; bottom: calc(var(--tab-h) + 14px + env(safe-area-inset-bottom)); max-width: none; }
+  .toasts { left: 12px; right: 12px; bottom: calc(var(--tab-h) + 14px + env(safe-area-inset-bottom, 0px)); max-width: none; }
 }
 .toast {
   display: flex;
@@ -975,10 +975,10 @@
   flex-direction: column;
   background: #fff;
   padding:
-    calc(var(--s-6) + env(safe-area-inset-top))
-    calc(env(safe-area-inset-right) + clamp(20px, 5vw, 56px))
-    calc(var(--s-6) + env(safe-area-inset-bottom))
-    calc(env(safe-area-inset-left) + clamp(20px, 5vw, 56px));
+    calc(var(--s-6) + env(safe-area-inset-top, 0px))
+    calc(env(safe-area-inset-right, 0px) + clamp(20px, 5vw, 56px))
+    calc(var(--s-6) + env(safe-area-inset-bottom, 0px))
+    calc(env(safe-area-inset-left, 0px) + clamp(20px, 5vw, 56px));
 }
 
 .login__top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
@@ -1078,7 +1078,7 @@
 }
 
 @media (max-width: 520px) {
-  .login__panel { padding-top: calc(var(--s-5) + env(safe-area-inset-top)); }
+  .login__panel { padding-top: calc(var(--s-5) + env(safe-area-inset-top, 0px)); }
   .login__brand small { display: none; }
   .login__form { margin-top: var(--s-6); padding-bottom: var(--s-6); }
   .login__form h1 { font-size: 1.5rem; }
