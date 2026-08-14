@@ -328,7 +328,8 @@
   border-radius: var(--r-sm);
   border: 1px solid var(--line-strong);
   background: #fff;
-  font-size: 0.86rem;
+  /* A select zooms the page on iOS just as a text input does. */
+  font-size: 16px;
   min-height: 44px;
   max-width: 100%;
 }

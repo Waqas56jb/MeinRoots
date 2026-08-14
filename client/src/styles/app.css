@@ -644,44 +644,7 @@
 .statcard--warn strong { color: #b45309; }
 .statcard--bad strong  { color: #b91c1c; }
 
-.adminbar { display: flex; flex-wrap: wrap; gap: 9px; margin-bottom: 16px; }
-.adminbar__search {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex: 1 1 240px;
-  padding: 0 13px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--line-strong);
-  background: #fff;
-}
-.adminbar__search svg { color: var(--muted-2); flex: none; }
-.adminbar__search input { flex: 1; border: 0; padding: 11px 0; font-size: 16px; font-family: inherit; background: none; }
-.adminbar__search input:focus { outline: none; }
-.adminbar select {
-  padding: 11px 13px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--line-strong);
-  background: #fff;
-  font-family: inherit;
-  font-size: 0.86rem;
-  color: var(--ink-2);
-}
-.adminbar__toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 11px 14px;
-  border-radius: var(--r-sm);
-  border: 1px solid var(--line-strong);
-  background: #fff;
-  font-size: 0.86rem;
-  font-weight: 600;
-  color: var(--ink-2);
-  cursor: pointer;
-}
-.adminbar__toggle input { accent-color: var(--blue-600); }
-.adminbar__toggle.is-on { background: #fffbeb; border-color: #fde68a; color: #b45309; }
+
 
 .tablewrap { overflow-x: auto; border-radius: var(--r-md); border: 1px solid var(--line); background: #fff; }
 .dtable { width: 100%; border-collapse: collapse; min-width: 860px; }
