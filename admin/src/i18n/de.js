@@ -53,6 +53,12 @@ export default {
     notAdmin: 'Dieses Konto ist kein Administrator.',
     aside: 'Nur die Profile, die die KI nicht selbst freigeben konnte, landen in dieser Warteschlange.',
     footnote: 'Internes Werkzeug — jede Aktion hier wird im Audit-Log festgehalten.',
+    internal: 'Interner Zugang',
+    showPassword: 'Passwort anzeigen',
+    hidePassword: 'Passwort verbergen',
+    point1: 'Die KI gibt frei, was sie kann — du öffnest nur, was sie nicht konnte',
+    point2: 'Jede Entscheidung wird mit Person und Zeitpunkt festgehalten',
+    point3: 'Schon das Öffnen einer Kandidatenakte wird protokolliert',
   },
 
   overview: {

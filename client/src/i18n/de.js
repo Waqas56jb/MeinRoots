@@ -575,6 +575,7 @@ export default {
       steps: ['Sprache erkennen', 'Struktur extrahieren', 'Berufsfeld klassifizieren', 'Übersetzungen erzeugen'],
       signedInAs: 'Angemeldet als',
     },
+    tagline: 'Kandidatenzugang',
   },
 
   app: {
@@ -946,5 +947,11 @@ export default {
       },
       memberSince: 'Mitglied seit {date}',
     },
+  },
+
+  notFound: {
+    title: 'Diese Seite konnten wir nicht finden',
+    text: 'Der Link ist womöglich veraltet oder die Adresse enthält einen Tippfehler. Mit deinem Konto ist alles in Ordnung.',
+    home: 'Zur Startseite',
   },
 }

@@ -592,6 +592,7 @@ export default {
       ],
       signedInAs: 'Connecté en tant que',
     },
+    tagline: 'Accès candidat',
   },
 
   app: {
@@ -963,5 +964,11 @@ export default {
       },
       memberSince: 'Membre depuis le {date}',
     },
+  },
+
+  notFound: {
+    title: 'Nous n’avons pas trouvé cette page',
+    text: 'Le lien est peut-être obsolète, ou l’adresse contient une faute de frappe. Votre compte n’a aucun problème.',
+    home: 'Aller à l’accueil',
   },
 }

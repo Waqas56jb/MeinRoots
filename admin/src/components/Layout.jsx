@@ -14,7 +14,14 @@ const NAV = [
   { to: '/audit', key: 'audit', icon: 'scroll' },
 ]
 
-function LanguageSwitcher({ variant = 'menu' }) {
+/**
+ * @param drop  Which way the list opens. The sidebar footer sits at the bottom
+ *              of the screen so it must open upward; anywhere near the top of a
+ *              page it must open downward, or the list renders above the
+ *              viewport and is simply invisible — which is exactly what
+ *              happened on the login screen.
+ */
+function LanguageSwitcher({ variant = 'menu', drop = 'down', align = 'left' }) {
   const { locale, setLocale, locales, t } = useI18n()
   const { syncLocale } = useAuth()
   const [open, setOpen] = useState(false)
@@ -64,7 +71,7 @@ function LanguageSwitcher({ variant = 'menu' }) {
   const current = locales.find((l) => l.code === locale)
 
   return (
-    <div className="langmenu" ref={ref}>
+    <div className={`langmenu langmenu--${drop} langmenu--${align}`} ref={ref}>
       <button
         type="button"
         className="langmenu__trigger"
@@ -163,7 +170,8 @@ export default function Layout({ title, subtitle, actions, children }) {
           </span>
         </div>
         <div className="side__footRow">
-          <LanguageSwitcher />
+          {/* Bottom of the sidebar: the only place the list must open upward. */}
+          <LanguageSwitcher drop="up" />
           <button type="button" className="btn btn--ghost btn--sm" onClick={onLogout}>
             <Icon name="logout" size={16} /> {t('common.logout')}
           </button>

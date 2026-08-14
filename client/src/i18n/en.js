@@ -579,6 +579,7 @@ export default {
       steps: ['Detecting language', 'Extracting structure', 'Classifying domain', 'Generating translations'],
       signedInAs: 'Signed in as',
     },
+    tagline: 'Candidate access',
   },
 
   app: {
@@ -950,5 +951,11 @@ export default {
       },
       memberSince: 'Member since {date}',
     },
+  },
+
+  notFound: {
+    title: 'We could not find that page',
+    text: 'The link may be out of date, or the address may have a typo in it. Nothing has gone wrong with your account.',
+    home: 'Go to the homepage',
   },
 }

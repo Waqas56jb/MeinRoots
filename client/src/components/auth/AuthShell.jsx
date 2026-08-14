@@ -1,57 +1,72 @@
 import { Link } from 'react-router-dom'
 import Icon from '../ui/Icon.jsx'
 import LanguageSwitcher from '../LanguageSwitcher.jsx'
-import { Brand } from '../Navbar.jsx'
 import { useI18n } from '../../context/I18nContext.jsx'
 
 /**
- * Shared frame for login / signup / reset.
- * Left: the brand panel. Right: the form. Collapses to a single column on
- * tablets and phones, where the panel becomes a short banner above the form.
+ * Shared frame for login / signup / reset / verify.
+ *
+ * Desktop: the form on the left where the eye starts, a quiet brand panel on
+ * the right. Phone: the panel goes entirely and the form gets the screen —
+ * every pixel spent on atmosphere is a pixel not spent on the fields, and this
+ * is where most candidates arrive.
+ *
+ * The panel is drawn rather than photographed. A full-bleed Ken Burns image was
+ * costing real frames on mid-range Android for decoration nobody reads.
  */
-export default function AuthShell({ image, asidePath, children }) {
+export default function AuthShell({ asidePath, children }) {
   const { t } = useI18n()
 
   return (
     <div className="auth">
-      <aside className="auth__aside">
-        <img src={image} alt="" className="auth__asideImg" loading="eager" referrerPolicy="no-referrer" />
-        <span className="auth__asideVeil" aria-hidden="true" />
-        <span className="auth__asideAurora" aria-hidden="true"><i /><i /></span>
-
-        <div className="auth__asideTop">
-          <Brand to="/" />
-        </div>
-
-        <div className="auth__asideBody">
-          <h2>{t(`${asidePath}.title`)}</h2>
-          <p>{t(`${asidePath}.text`)}</p>
-          <ul>
-            {t(`${asidePath}.points`).map((p) => (
-              <li key={p}><Icon name="checkCircle" size={17} />{p}</li>
-            ))}
-          </ul>
-        </div>
-
-        <div className="auth__asideFoot">
-          <span><Icon name="shield" size={14} /> {t('trust.items.gdpr')}</span>
-          <span><Icon name="lock" size={14} /> {t('trust.items.encrypted')}</span>
-        </div>
-      </aside>
-
-      <div className="auth__form">
+      <div className="auth__main">
         <header className="auth__bar">
-          <Link to="/" className="auth__back">
-            <Icon name="arrowRight" size={16} className="is-flipped" />
-            <span>{t('auth.backHome')}</span>
+          <Link to="/" className="auth__brand">
+            <img src="/logo.png" alt="" width="36" height="36" />
+            <span>
+              <strong>MeinRoots</strong>
+              <small>{t('auth.tagline')}</small>
+            </span>
           </Link>
           <LanguageSwitcher />
         </header>
 
-        <div className="auth__body">
+        <main className="auth__body">
           <div className="auth__card">{children}</div>
-        </div>
+        </main>
+
+        <footer className="auth__foot">
+          <Link to="/" className="auth__back">
+            <Icon name="arrowRight" size={15} className="is-flipped" />
+            {t('auth.backHome')}
+          </Link>
+          <span className="auth__trust">
+            <Icon name="shield" size={14} />
+            {t('trust.items.gdpr')}
+          </span>
+        </footer>
       </div>
+
+      <aside className="auth__aside" aria-hidden="true">
+        <span className="auth__glow" />
+        <div className="auth__asideInner">
+          <span className="auth__asideMark"><Icon name="sparkle" size={24} /></span>
+          <h2>{t(`${asidePath}.title`)}</h2>
+          <p>{t(`${asidePath}.text`)}</p>
+          <ul>
+            {t(`${asidePath}.points`).map((point) => (
+              <li key={point}>
+                <Icon name="checkCircle" size={17} />
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="auth__asideFoot">
+          <span><Icon name="shield" size={14} />{t('trust.items.gdpr')}</span>
+          <span><Icon name="lock" size={14} />{t('trust.items.encrypted')}</span>
+        </div>
+      </aside>
     </div>
   )
 }

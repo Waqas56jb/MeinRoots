@@ -1,83 +1,75 @@
 /* ==========================================================================
-   MeinRoots — auth (login / signup / reset) and the protected upload screen
+   MeinRoots — auth (login / signup / reset / verify)
+
+   Rebuilt on the workspace design system: same spacing scale, same surfaces,
+   same restraint. Two panels on a desktop, one on a phone.
    ========================================================================== */
 
 .auth {
-  min-height: 100vh;
   min-height: 100dvh;
   display: grid;
-  grid-template-columns: minmax(0, 0.88fr) minmax(0, 1.12fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 0.8fr);
   background: var(--surface);
-  overflow: hidden;
 }
 
-/* ------------------------------ form side ------------------------------- */
+/* -------------------------------- form side ------------------------------- */
 
-.auth__form {
+.auth__main {
   display: flex;
   flex-direction: column;
-  padding: clamp(14px, 2vw, 22px) clamp(18px, 3.4vw, 46px)
-    calc(clamp(14px, 2vw, 22px) + env(safe-area-inset-bottom));
-  position: relative;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-.auth__form::before {
-  content: '';
-  position: absolute;
-  width: 520px; height: 520px;
-  border-radius: 50%;
-  background: radial-gradient(circle, rgba(41, 169, 245, 0.16), transparent 68%);
-  top: -260px; left: -180px;
-  filter: blur(40px);
-  pointer-events: none;
+  padding:
+    calc(var(--s-5) + env(safe-area-inset-top))
+    calc(env(safe-area-inset-right) + clamp(20px, 4.5vw, 56px))
+    calc(var(--s-5) + env(safe-area-inset-bottom))
+    calc(env(safe-area-inset-left) + clamp(20px, 4.5vw, 56px));
 }
 
-.auth__bar {
-  position: relative;
+.auth__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
+.auth__brand { display: flex; align-items: center; gap: 11px; color: inherit; }
+.auth__brand img { border-radius: 10px; flex: none; }
+.auth__brand > span { display: flex; flex-direction: column; line-height: 1.15; }
+.auth__brand strong { font-family: var(--font-display); font-size: 1.04rem; color: var(--ink); letter-spacing: -0.02em; }
+.auth__brand small { font-size: 0.7rem; color: var(--muted-2); letter-spacing: 0.05em; text-transform: uppercase; }
+
+.auth__body { flex: 1; display: grid; place-items: center; padding-block: var(--s-6); }
+.auth__card { width: 100%; max-width: 420px; }
+.auth__card h1 { font-size: clamp(1.5rem, 3.4vw, 1.95rem); letter-spacing: -0.035em; }
+.auth__sub { margin: var(--s-2) 0 var(--s-6); font-size: 0.93rem; line-height: 1.55; color: var(--muted); }
+
+.auth__foot {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: var(--s-4);
   flex-wrap: wrap;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--muted-2);
 }
 .auth__back {
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  min-height: 44px;
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: 0.86rem;
   color: var(--muted);
   transition: color 0.2s var(--ease);
 }
 .auth__back:hover { color: var(--blue-700); }
-
-.auth__body {
-  position: relative;
-  flex: 1;
-  display: grid;
-  place-items: center;
-  padding-block: clamp(14px, 2.4vw, 28px);
-}
-.auth__card { width: 100%; max-width: 440px; }
-
-.auth__card h1 {
-  font-size: clamp(1.6rem, 2.5vw, 2.05rem);
-  letter-spacing: -0.035em;
-}
-.auth__sub { margin-top: 8px; margin-bottom: 20px; font-size: 0.92rem; line-height: 1.55; }
+.auth__trust { display: inline-flex; align-items: center; gap: 6px; }
+.auth__trust svg { color: var(--blue-500); }
 
 /* the "log in before uploading a CV" notice */
 .gate {
   display: flex;
-  gap: 12px;
-  padding: 13px 15px;
+  gap: var(--s-3);
+  padding: var(--s-3) var(--s-4);
   border-radius: var(--r-md);
-  background: var(--brand-grad-soft);
+  background: var(--blue-50);
   border: 1px solid var(--blue-100);
-  margin-bottom: 18px;
-  animation: fadeIn 0.4s var(--ease);
+  margin-bottom: var(--s-5);
 }
 .gate__icon {
   width: 36px; height: 36px;
@@ -87,10 +79,125 @@
   background: var(--brand-grad);
   color: #fff;
   flex: none;
-  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
 }
-.gate strong { display: block; font-family: var(--font-display); font-size: 0.95rem; color: var(--ink); }
-.gate p { font-size: 0.85rem; margin-top: 3px; line-height: 1.55; }
+.gate strong { display: block; font-family: var(--font-display); font-size: 0.94rem; color: var(--ink); }
+.gate p { font-size: 0.85rem; margin-top: 3px; line-height: 1.5; }
+
+.auth__alert {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 15px;
+  border-radius: var(--r-sm);
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #991b1b;
+  font-size: 0.87rem;
+  margin-bottom: var(--s-4);
+}
+.auth__alert svg { flex: none; }
+
+.auth__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-3);
+  flex-wrap: wrap;
+  margin: 2px 0 var(--s-4);
+}
+.auth__link {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--blue-700);
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+}
+.auth__link:hover { text-decoration: underline; }
+.auth__switch { margin-top: var(--s-5); font-size: 0.88rem; color: var(--muted); text-align: center; }
+.auth__switch a { font-weight: 700; color: var(--blue-700); }
+.auth__switch a:hover { text-decoration: underline; }
+
+/* ------------------------------- brand panel ------------------------------ */
+
+.auth__aside {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--s-6);
+  padding: clamp(28px, 3.4vw, 52px);
+  background: linear-gradient(155deg, #0f1e3d 0%, #0b1730 58%, #071229 100%);
+  color: #fff;
+}
+/* Drawn, not photographed: a full-bleed image with a Ken Burns animation cost
+   real frames on mid-range Android for decoration nobody reads. */
+.auth__glow {
+  position: absolute;
+  inset: -25% -35% auto -35%;
+  height: 75%;
+  z-index: -1;
+  background: radial-gradient(58% 58% at 50% 40%, rgba(41, 169, 245, 0.4), transparent 70%);
+  filter: blur(56px);
+}
+.auth__asideInner { max-width: 380px; margin-top: auto; }
+.auth__asideMark {
+  display: grid;
+  place-items: center;
+  width: 52px; height: 52px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #7dd3fc;
+  margin-bottom: var(--s-5);
+}
+.auth__aside h2 {
+  color: #fff;
+  font-size: clamp(1.5rem, 2vw, 1.95rem);
+  letter-spacing: -0.035em;
+  line-height: 1.25;
+}
+.auth__aside p { color: rgba(255, 255, 255, 0.72); font-size: 0.95rem; line-height: 1.6; margin-top: var(--s-3); }
+.auth__aside ul { margin-top: var(--s-6); display: grid; gap: var(--s-3); }
+.auth__aside li {
+  display: flex;
+  align-items: flex-start;
+  gap: 11px;
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.86);
+}
+.auth__aside li svg { color: #7dd3fc; flex: none; margin-top: 2px; }
+.auth__asideFoot {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 20px;
+  font-size: 0.78rem;
+  color: rgba(255, 255, 255, 0.55);
+}
+.auth__asideFoot span { display: inline-flex; align-items: center; gap: 7px; }
+.auth__asideFoot svg { color: #7dd3fc; }
+
+/* --------------------------- confirmation screens ------------------------- */
+
+.sent { text-align: center; }
+.sent__icon {
+  width: 64px; height: 64px;
+  border-radius: 20px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto var(--s-5);
+  background: var(--brand-grad);
+  color: #fff;
+  box-shadow: 0 12px 30px rgba(37, 99, 235, 0.28);
+}
+.sent__icon--bad { background: #fef2f2; color: #b91c1c; box-shadow: none; }
+.sent h1 { font-size: clamp(1.4rem, 3vw, 1.8rem); }
+.sent .auth__sub { margin-bottom: var(--s-5); }
+.sent .btn { margin-top: var(--s-2); }
 
 /* ------------------------------- fields --------------------------------- */
 
@@ -392,86 +499,35 @@
 
 /* ============================== responsive ==============================
 
-   The auth screens are the first thing a candidate touches, and most of them
-   arrive on a phone. Three concerns drive everything below:
+   Most candidates arrive on a phone, so the phone layout is the real one and
+   the desktop split is the enhancement. Three rules drive it:
 
-   1. Nothing may trigger the iOS focus-zoom. Every input is 16px.
-   2. The form must be reachable without scrolling past a decorative banner.
-      On a 667px screen with the keyboard open there is roughly 340px of usable
-      height, so the banner is compact and shrinks further as height drops.
-   3. It has to stay smooth. A full-bleed Ken Burns image plus two 80px-blurred
-      auroras is fine on a desktop GPU and visibly janky on a mid-range Android,
-      so both are dialled back on small screens.
+   1. Every input is 16px. Below that iOS Safari zooms the page on focus, which
+      throws the layout sideways and cannot be undone.
+   2. Under 960px the brand panel goes entirely rather than becoming a banner
+      that pushes the form below the fold.
+   3. Every control a thumb reaches is at least 44px.
    ====================================================================== */
 
-@media (max-width: 1080px) {
-  .auth {
-    grid-template-columns: minmax(0, 1fr);
-    overflow: visible;
-  }
-
-  /* --- brand panel becomes a compact banner --- */
-  .auth__aside {
-    min-height: 0;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    gap: 14px;
-    padding: calc(env(safe-area-inset-top) + 22px)
-             calc(env(safe-area-inset-right) + 22px)
-             56px
-             calc(env(safe-area-inset-left) + 22px);
-    border-radius: 0 0 28px 28px;
-  }
-  .auth__asideTop { display: flex; justify-content: center; }
-  .auth__asideBody { max-width: 34ch; margin-inline: auto; }
-  .auth__asideBody h2 { font-size: clamp(1.28rem, 4.4vw, 1.7rem); margin-bottom: 0; }
-  .auth__asideBody p { margin-top: 8px; font-size: 0.92rem; line-height: 1.5; }
-  .auth__asideBody ul,
-  .auth__asideFoot { display: none; }
-
-  /* The decoration costs real frames on a phone. The gradient veil carries the
-     brand on its own, so the moving parts simply stop. */
-  .auth__asideImg { animation: none; }
-  .auth__asideAurora i { filter: blur(46px); animation: none; }
-
-  /* --- form lifts over the banner as a sheet --- */
-  .auth__form {
-    position: relative;
-    z-index: 1;
-    margin-top: -30px;
-    border-radius: 28px 28px 0 0;
-    background: var(--surface);
-    box-shadow: 0 -14px 40px rgba(6, 20, 48, 0.16);
-    /* visible, not hidden: with the keyboard open the browser scrolls the
-       focused field into view, and hidden would clip it instead. */
-    overflow: visible;
-    padding: 16px
-             calc(env(safe-area-inset-right) + clamp(18px, 5vw, 34px))
-             calc(28px + env(safe-area-inset-bottom))
-             calc(env(safe-area-inset-left) + clamp(18px, 5vw, 34px));
-  }
-  .auth__form::before { display: none; }
-  .auth__body { padding-block: 18px 8px; place-items: start center; }
-  .auth__card { max-width: 460px; }
+@media (max-width: 960px) {
+  .auth { grid-template-columns: minmax(0, 1fr); }
+  .auth__aside { display: none; }
+  .auth__body { place-items: start center; padding-block: var(--s-6) var(--s-4); }
+  .auth__card { max-width: 440px; }
 }
 
 @media (max-width: 620px) {
-  .auth__aside { padding-bottom: 52px; gap: 12px; }
-  .auth__aside .brand__markWrap { width: 42px; height: 42px; }
-  .auth__aside .brand__mark { width: 36px; height: 36px; }
-
-  .auth__card h1 { font-size: clamp(1.42rem, 6.2vw, 1.75rem); }
-  .auth__sub { font-size: 0.89rem; margin-bottom: 16px; }
-
-  .auth__bar { justify-content: space-between; gap: 10px; }
-  .auth__back { font-size: 0.82rem; min-height: 44px; }
+  .auth__main { padding-top: calc(var(--s-4) + env(safe-area-inset-top)); }
+  .auth__brand small { display: none; }
+  .auth__card h1 { font-size: 1.5rem; }
+  .auth__sub { font-size: 0.9rem; margin-bottom: var(--s-5); }
+  .auth__body { padding-block: var(--s-5) var(--s-3); }
 
   .auth__grid2 { grid-template-columns: minmax(0, 1fr); }
 
   /* Comfortable thumb targets. 44px is the smallest reliably tappable size on
-     both platforms; the reveal button was roughly 34px. */
-  .ffield { margin-bottom: 14px; }
+     both platforms; the reveal button used to be about 34px. */
+  .ffield { margin-bottom: var(--s-4); }
   .ffield__box { padding-inline: 14px; }
   .ffield__box input { padding-block: 14px; }
   .ffield__toggle { width: 44px; height: 44px; padding: 0; margin-right: -8px; }
@@ -483,63 +539,101 @@
   .checkbox--block { min-height: 44px; align-items: center; }
   .checkbox__box { width: 22px; height: 22px; }
 
-  .gate { padding: 12px 14px; gap: 11px; }
-  .gate p { font-size: 0.82rem; }
-
-  .auth__row { gap: 10px; }
-  .auth__link { font-size: 0.84rem; min-height: 44px; display: inline-flex; align-items: center; }
-
-  /* The submit button is the one control every screen ends on. */
   .auth__card .btn--block { min-height: 52px; font-size: 0.96rem; }
-
-  .auth__switch { margin-top: 18px; font-size: 0.87rem; }
+  .auth__foot { font-size: 0.78rem; }
 }
 
-/* Short screens — an iPhone SE, or any phone once the keyboard is open. The
-   banner gives up its text first, then its height, so the form stays in view
-   instead of being pushed below the fold. */
-@media (max-width: 1080px) and (max-height: 720px) {
-  .auth__asideBody p { display: none; }
-  .auth__aside { padding-top: calc(env(safe-area-inset-top) + 16px); padding-bottom: 46px; gap: 10px; }
-  .auth__asideBody h2 { font-size: clamp(1.15rem, 4vw, 1.4rem); }
-  .auth__body { padding-block: 14px 4px; }
-}
-
-@media (max-width: 1080px) and (max-height: 600px) {
-  /* Below this there is no room for a headline at all — the logo alone still
-     says whose screen this is. */
-  .auth__asideBody { display: none; }
-  .auth__aside { padding-bottom: 42px; }
+/* Short screens — an iPhone SE, or any phone with the keyboard open. There is
+   roughly 340px of usable height then, so the chrome steps aside. */
+@media (max-height: 720px) and (max-width: 960px) {
+  .auth__body { padding-block: var(--s-4) var(--s-2); }
+  .auth__foot { display: none; }
 }
 
 @media (max-width: 380px) {
-  .auth__aside { padding-bottom: 44px; }
   .auth__card h1 { font-size: 1.34rem; }
   .checkbox--block { font-size: 0.8rem; }
   .goalpick legend small { display: block; margin-left: 0; margin-top: 2px; }
 }
 
-/* Landscape phones: the banner would otherwise eat the whole screen. */
-@media (max-width: 1080px) and (max-height: 520px) and (orientation: landscape) {
-  .auth__aside {
-    padding-block: 14px 38px;
-    /* Landscape is where the notch sits on a long edge. */
-    padding-inline: calc(env(safe-area-inset-left) + 20px) calc(env(safe-area-inset-right) + 20px);
-  }
-  .auth__asideBody { display: none; }
-  .auth__form { margin-top: -26px; }
-  .auth__body { padding-block: 12px 4px; }
-  /* Two columns again: in landscape the width is there and the height is not. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .auth__body { padding-block: var(--s-3); }
+  .auth__foot { display: none; }
+  /* Landscape has width to spare and no height: two columns again. */
   .auth__grid2 { grid-template-columns: 1fr 1fr; gap: 0 14px; }
 }
 
-/* A phone rendering the "check your inbox" confirmation. */
-@media (max-width: 620px) {
-  .sent__icon { width: 60px; height: 60px; margin-bottom: 16px; }
-  .sent h1 { font-size: 1.34rem; }
+@media (prefers-reduced-motion: reduce) {
+  .auth__glow { animation: none; }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .auth__asideImg,
-  .auth__asideAurora i { animation: none; }
+/* ================================= 404 ================================== */
+
+.nf {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  padding:
+    calc(var(--s-5) + env(safe-area-inset-top))
+    calc(env(safe-area-inset-right) + clamp(20px, 5vw, 48px))
+    calc(var(--s-5) + env(safe-area-inset-bottom))
+    calc(env(safe-area-inset-left) + clamp(20px, 5vw, 48px));
+}
+.nf__bar { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
+.nf__body {
+  flex: 1;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  text-align: center;
+  gap: var(--s-3);
+  padding-block: var(--s-7);
+  max-width: 46ch;
+  margin-inline: auto;
+}
+.nf__code {
+  font-family: var(--font-display);
+  font-size: clamp(4.5rem, 18vw, 8rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.06em;
+  background: var(--brand-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  /* background-clip: text paints nothing outside the box, so the descenders
+     of the gradient need a little room. */
+  padding-inline: 0.04em;
+}
+.nf__body h1 { font-size: clamp(1.4rem, 4vw, 1.9rem); letter-spacing: -0.03em; }
+.nf__body p { color: var(--muted); font-size: 0.95rem; line-height: 1.6; }
+.nf__path {
+  display: inline-block;
+  max-width: 100%;
+  padding: 7px 13px;
+  border-radius: var(--r-pill);
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.8rem;
+  color: var(--muted-2);
+  overflow-wrap: anywhere;
+}
+.nf__actions { display: flex; gap: var(--s-3); flex-wrap: wrap; justify-content: center; margin-top: var(--s-3); }
+.nf__foot {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--muted-2);
+}
+.nf__foot svg { color: var(--blue-500); }
+
+@media (max-width: 520px) {
+  .nf__actions { flex-direction: column; width: 100%; }
+  .nf__actions .btn { width: 100%; justify-content: center; }
 }

@@ -4,7 +4,6 @@ import AuthShell from '../components/auth/AuthShell.jsx'
 import Field from '../components/auth/Field.jsx'
 import PasswordMeter from '../components/auth/PasswordMeter.jsx'
 import Icon from '../components/ui/Icon.jsx'
-import { images } from '../data/content.js'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useApiMessage } from '../lib/apiMessage.js'
@@ -65,7 +64,7 @@ export default function ResetPasswordPage() {
 
   if (token) {
     return (
-      <AuthShell image={images.resetBackdrop} asidePath="auth.reset.aside">
+      <AuthShell asidePath="auth.reset.aside">
         {done ? (
           <div className="sent">
             <span className="sent__icon"><Icon name="checkCircle" size={28} /></span>
@@ -122,7 +121,7 @@ export default function ResetPasswordPage() {
   }
 
   return (
-    <AuthShell image={images.resetBackdrop} asidePath="auth.reset.aside">
+    <AuthShell asidePath="auth.reset.aside">
       {sent ? (
         <div className="sent">
           <span className="sent__icon"><Icon name="mail" size={28} /></span>

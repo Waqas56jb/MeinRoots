@@ -53,6 +53,12 @@ export default {
     notAdmin: 'Ce compte n’est pas administrateur.',
     aside: 'Seuls les profils que l’IA n’a pas pu valider seuls arrivent dans cette file.',
     footnote: 'Outil interne — chaque action ici est enregistrée dans le journal d’audit.',
+    internal: 'Accès interne',
+    showPassword: 'Afficher le mot de passe',
+    hidePassword: 'Masquer le mot de passe',
+    point1: 'L’IA valide ce qu’elle peut ; vous n’ouvrez que le reste',
+    point2: 'Chaque décision est attribuée et horodatée',
+    point3: 'Ouvrir un dossier candidat est en soi enregistré',
   },
 
   overview: {

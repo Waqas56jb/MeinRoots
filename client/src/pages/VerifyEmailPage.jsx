@@ -3,7 +3,6 @@ import { Link, useSearchParams } from 'react-router-dom'
 import AuthShell from '../components/auth/AuthShell.jsx'
 import Icon from '../components/ui/Icon.jsx'
 import Spinner from '../components/ui/Spinner.jsx'
-import { images } from '../data/content.js'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useApiMessage } from '../lib/apiMessage.js'
@@ -40,7 +39,7 @@ export default function VerifyEmailPage() {
   }, [token, verifyEmail, apiMessage])
 
   return (
-    <AuthShell image={images.authBackdrop} asidePath="auth.login.aside">
+    <AuthShell asidePath="auth.login.aside">
       {state === 'checking' && (
         <div className="sent">
           <Spinner />

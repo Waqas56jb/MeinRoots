@@ -908,23 +908,30 @@
 .langmenu__trigger svg { transition: transform 0.2s var(--ease); }
 .langmenu__pop {
   position: absolute;
-  bottom: calc(100% + 8px);
-  left: 0;
-  min-width: 170px;
+  min-width: 190px;
   padding: 6px;
   background: #fff;
   border: 1px solid var(--line);
-  border-radius: var(--r-sm);
+  border-radius: var(--r-md);
   box-shadow: var(--shadow-lg);
   display: grid;
   gap: 2px;
   opacity: 0;
-  transform: translateY(6px);
   pointer-events: none;
   visibility: hidden;
-  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease), visibility 0.2s;
-  z-index: 50;
+  transition: opacity 0.18s var(--ease), transform 0.18s var(--ease), visibility 0.18s;
+  z-index: 60;
 }
+/* Direction is explicit rather than assumed. The sidebar footer is the only
+   place with no room below; everywhere else the list must open downward or it
+   renders off the top of the screen and cannot be seen at all. */
+.langmenu--up .langmenu__pop    { bottom: calc(100% + 8px); transform: translateY(6px); }
+.langmenu--down .langmenu__pop  { top: calc(100% + 8px); transform: translateY(-6px); }
+.langmenu--left .langmenu__pop  { left: 0; }
+/* Anchored to the right edge when the trigger is on the right of a header —
+   otherwise a 190px list runs off a 360px screen. */
+.langmenu--right .langmenu__pop { right: 0; }
+
 .langmenu__pop.is-open { opacity: 1; transform: none; pointer-events: auto; visibility: visible; }
 .langmenu__pop button {
   display: flex;
@@ -961,65 +968,127 @@
 
 /* --------------------------------- login --------------------------------- */
 
-.login { min-height: 100dvh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.85fr); }
+.login { min-height: 100dvh; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 0.82fr); }
+
 .login__panel {
   display: flex;
   flex-direction: column;
-  padding: calc(24px + env(safe-area-inset-top)) clamp(20px, 5vw, 56px) calc(24px + env(safe-area-inset-bottom));
   background: #fff;
+  padding:
+    calc(var(--s-6) + env(safe-area-inset-top))
+    calc(env(safe-area-inset-right) + clamp(20px, 5vw, 56px))
+    calc(var(--s-6) + env(safe-area-inset-bottom))
+    calc(env(safe-area-inset-left) + clamp(20px, 5vw, 56px));
 }
-.login__top { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-.login__brand { display: flex; align-items: center; gap: 11px; }
-.login__brand img { border-radius: 10px; }
-.login__brand span { display: flex; flex-direction: column; line-height: 1.15; }
-.login__brand strong { font-family: var(--font-display); font-size: 1.05rem; color: var(--ink); }
-.login__brand small { font-size: 0.72rem; color: var(--muted-2); }
 
-.login__form { margin: auto 0; width: 100%; max-width: 380px; padding: 40px 0; }
-.login__form h1 { font-size: clamp(1.5rem, 4vw, 1.9rem); }
-.login__sub { color: var(--muted); font-size: 0.92rem; margin: 8px 0 26px; }
-.login__form .note { margin-bottom: 16px; }
-.login__foot { display: flex; align-items: center; gap: 7px; margin-top: 22px; font-size: 0.78rem; color: var(--muted-2); }
+.login__top { display: flex; align-items: center; justify-content: space-between; gap: var(--s-4); }
+.login__brand { display: flex; align-items: center; gap: 11px; }
+.login__brand img { border-radius: 10px; flex: none; }
+.login__brand > span { display: flex; flex-direction: column; line-height: 1.15; }
+.login__brand strong { font-family: var(--font-display); font-size: 1.05rem; color: var(--ink); letter-spacing: -0.02em; }
+.login__brand small { font-size: 0.7rem; color: var(--muted-2); letter-spacing: 0.05em; text-transform: uppercase; }
+
+.login__form { margin: auto 0; width: 100%; max-width: 400px; padding: var(--s-8) 0; }
+
+.login__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: var(--r-pill);
+  background: var(--brand-50);
+  border: 1px solid var(--brand-100);
+  color: var(--brand-700);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: var(--s-4);
+}
+.login__form h1 { font-size: clamp(1.5rem, 4vw, 1.95rem); letter-spacing: -0.035em; }
+.login__sub { color: var(--muted); font-size: 0.94rem; margin: var(--s-2) 0 var(--s-6); }
+.login__form .note { margin-bottom: var(--s-4); }
+.login__form .btn--block { margin-top: var(--s-2); }
+
+.login__foot {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: var(--s-6);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--line);
+  font-size: 0.78rem;
+  color: var(--muted-2);
+}
+.login__foot svg { flex: none; }
+
+/* ------------------------------ decorative side --------------------------- */
 
 .login__aside {
   position: relative;
-  background:
-    radial-gradient(900px 500px at 20% 10%, rgba(41, 169, 245, 0.35), transparent 60%),
-    linear-gradient(150deg, var(--navy-800), var(--navy-900));
-  color: #fff;
+  overflow: hidden;
+  isolation: isolate;
   display: grid;
   place-items: center;
-  padding: 40px;
-  overflow: hidden;
+  padding: var(--s-8);
+  background: linear-gradient(155deg, var(--navy-800) 0%, var(--navy-900) 60%, #071229 100%);
+  color: #fff;
 }
-.login__asideInner { max-width: 340px; display: grid; gap: 16px; }
-.login__asideInner svg { color: var(--brand-400); }
-.login__asideInner p { font-family: var(--font-display); font-size: 1.25rem; line-height: 1.4; color: #fff; }
+.login__glow {
+  position: absolute;
+  inset: -20% -30% auto -30%;
+  height: 70%;
+  z-index: -1;
+  background: radial-gradient(60% 60% at 50% 40%, rgba(41, 169, 245, 0.42), transparent 70%);
+  filter: blur(60px);
+}
+.login__asideInner { max-width: 330px; display: grid; gap: var(--s-5); }
+.login__asideIcon {
+  display: grid;
+  place-items: center;
+  width: 54px; height: 54px;
+  border-radius: 17px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: var(--brand-400);
+}
+.login__asideInner p {
+  font-family: var(--font-display);
+  font-size: 1.24rem;
+  line-height: 1.45;
+  letter-spacing: -0.02em;
+  color: #fff;
+}
+.login__points { display: grid; gap: var(--s-3); }
+.login__points li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.74);
+}
+.login__points svg { flex: none; margin-top: 2px; color: var(--brand-400); }
 
-@media (max-width: 900px) {
-  /* The decorative panel is the first thing to go — the form is the page. */
+@media (max-width: 960px) {
+  /* The atmosphere is the first thing to go. The form is the page. */
   .login { grid-template-columns: minmax(0, 1fr); }
   .login__aside { display: none; }
-  .login__form { margin: 32px 0 auto; }
+  .login__form { margin: var(--s-7) 0 auto; max-width: 440px; }
 }
 
-/* A row the candidate corrected: no longer the AI's reading. */
-.lowconf--mine { background: var(--brand-50); border-color: var(--brand-100); color: var(--brand-700); }
+@media (max-width: 520px) {
+  .login__panel { padding-top: calc(var(--s-5) + env(safe-area-inset-top)); }
+  .login__brand small { display: none; }
+  .login__form { margin-top: var(--s-6); padding-bottom: var(--s-6); }
+  .login__form h1 { font-size: 1.5rem; }
+  .login__sub { font-size: 0.9rem; margin-bottom: var(--s-5); }
+}
 
-/* Job failures, explained. The raw text stays available but does not lead. */
-.job__err { display: grid; gap: 4px; padding: 10px 12px; }
-.job__err strong { font-family: var(--font-display); font-size: 0.86rem; color: var(--bad); }
-.job__err span { font-size: 0.82rem; color: var(--ink-2); }
-.job__err button {
-  display: inline-flex; align-items: center; gap: 4px;
-  justify-self: start; margin-top: 2px;
-  font-size: 0.76rem; font-weight: 600; color: var(--muted);
-  min-height: 32px;
+/* Landscape phone: barely any height, so the header and footnote step aside. */
+@media (max-height: 520px) and (orientation: landscape) {
+  .login__form { margin-top: var(--s-4); padding-block: var(--s-4); }
+  .login__foot { display: none; }
+  .login__badge { display: none; }
 }
-.job__err button:hover { color: var(--brand-700); }
-.job__err code {
-  display: block; margin-top: 4px; padding: 8px 10px;
-  border-radius: 8px; background: rgba(11, 23, 48, 0.06);
-  font-size: 0.74rem; word-break: break-word; white-space: pre-wrap;
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-}
+

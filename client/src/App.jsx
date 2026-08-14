@@ -1,20 +1,31 @@
-import { useEffect } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import LandingPage from './pages/LandingPage.jsx'
 import LoginPage from './pages/LoginPage.jsx'
 import SignupPage from './pages/SignupPage.jsx'
 import ResetPasswordPage from './pages/ResetPasswordPage.jsx'
 import VerifyEmailPage from './pages/VerifyEmailPage.jsx'
-import DashboardPage from './pages/DashboardPage.jsx'
-import MyCvPage from './pages/MyCvPage.jsx'
-import ProfilePage from './pages/ProfilePage.jsx'
-import ReadinessPage from './pages/ReadinessPage.jsx'
-import RecommendationsPage from './pages/RecommendationsPage.jsx'
-import QuestionnairePage from './pages/QuestionnairePage.jsx'
-import SettingsPage from './pages/SettingsPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
 import Spinner from './components/ui/Spinner.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 import { WorkspaceProvider } from './context/WorkspaceContext.jsx'
+
+/**
+ * The workspace is loaded on demand.
+ *
+ * Someone who only reads the landing page or signs in was downloading the whole
+ * signed-in product with it — the profile editor, the questionnaire, the
+ * readiness charts, none of which they can reach. Splitting at the route
+ * boundary means the marketing and auth pages carry only themselves, and the
+ * workspace arrives when a session actually exists.
+ */
+const DashboardPage = lazy(() => import('./pages/DashboardPage.jsx'))
+const MyCvPage = lazy(() => import('./pages/MyCvPage.jsx'))
+const ProfilePage = lazy(() => import('./pages/ProfilePage.jsx'))
+const ReadinessPage = lazy(() => import('./pages/ReadinessPage.jsx'))
+const RecommendationsPage = lazy(() => import('./pages/RecommendationsPage.jsx'))
+const QuestionnairePage = lazy(() => import('./pages/QuestionnairePage.jsx'))
+const SettingsPage = lazy(() => import('./pages/SettingsPage.jsx'))
 
 /**
  * Sends anonymous visitors to the login gate, remembering where they wanted to
@@ -23,7 +34,7 @@ import { WorkspaceProvider } from './context/WorkspaceContext.jsx'
  * dashboard on every refresh.
  *
  * There is no admin route here. The review console is a separate application on
- * its own origin: none of it ships in the bundle a candidate downloads, and
+ * its own hostname: none of it ships in the bundle a candidate downloads, and
  * nothing here links to or reveals its address.
  */
 function Protected({ children, gate }) {
@@ -37,10 +48,17 @@ function Protected({ children, gate }) {
     return <Navigate to={`/login?next=${next}${gate ? `&gate=${gate}` : ''}`} replace />
   }
 
-  // One data layer for the whole workspace: the six signed-in pages share a
-  // single profile / CV / questionnaire load and a single polling loop, rather
-  // than each fetching and polling on its own.
-  return <WorkspaceProvider>{children}</WorkspaceProvider>
+  // One data layer for the whole workspace: the signed-in pages share a single
+  // profile / CV / questionnaire load and a single polling loop, rather than
+  // each fetching and polling on its own.
+  //
+  // Suspense sits inside the auth check so the spinner shown while a chunk
+  // downloads is the same one shown while the session is verified.
+  return (
+    <WorkspaceProvider>
+      <Suspense fallback={<Spinner full />}>{children}</Suspense>
+    </WorkspaceProvider>
+  )
 }
 
 /** Restores scroll position on navigation (hash links keep their own behaviour). */
@@ -76,7 +94,9 @@ export default function App() {
             the landing-page CTA and any shared link still arrive somewhere. */}
         <Route path="/upload" element={<Navigate to="/cv" replace />} />
 
-        <Route path="*" element={<Navigate to="/" replace />} />
+        {/* A real 404. Redirecting silently to the landing page made a broken
+            link look like the site had swallowed it. */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   )

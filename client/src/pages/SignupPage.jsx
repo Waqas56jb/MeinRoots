@@ -4,7 +4,7 @@ import AuthShell from '../components/auth/AuthShell.jsx'
 import Field from '../components/auth/Field.jsx'
 import PasswordMeter from '../components/auth/PasswordMeter.jsx'
 import Icon from '../components/ui/Icon.jsx'
-import { goalKeys, images } from '../data/content.js'
+import { goalKeys } from '../data/content.js'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
 import { useApiMessage, useFieldErrors } from '../lib/apiMessage.js'
@@ -61,7 +61,7 @@ export default function SignupPage() {
   }
 
   return (
-    <AuthShell image={images.signupBackdrop} asidePath="auth.signup.aside">
+    <AuthShell asidePath="auth.signup.aside">
       <h1>{t('auth.signup.title')}</h1>
       <p className="auth__sub">{t('auth.signup.subtitle')}</p>
 

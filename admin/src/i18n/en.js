@@ -53,6 +53,12 @@ export default {
     notAdmin: 'That account is not an administrator.',
     aside: 'Only the profiles the AI could not clear on its own reach this queue.',
     footnote: 'Internal tool — every action here is recorded in the audit log.',
+    internal: 'Internal access',
+    showPassword: 'Show password',
+    hidePassword: 'Hide password',
+    point1: 'The AI clears what it can, so you only open what it could not',
+    point2: 'Every decision is attributed and timestamped',
+    point3: 'Opening a candidate record is itself recorded',
   },
 
   overview: {
