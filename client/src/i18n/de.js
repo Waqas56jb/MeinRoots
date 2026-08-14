@@ -89,47 +89,12 @@ export default {
     menu: 'Menü',
     account: 'Mein Konto',
     logout: 'Abmelden',
+    paths: 'Berufswege',
+    readiness: 'Bereitschaft',
+    trust: 'Vertrauen',
+    getStarted: 'Loslegen',
   },
 
-  hero: {
-    proof: 'Genutzt von Kandidat:innen aus <b>40+ Ländern</b>',
-    titleA: 'Talent kennt keine Grenzen.',
-    titleB: 'Deine Zukunft:',
-    titleC: 'Karriere in Deutschland.',
-    lead: 'Ein Upload. Ein strukturiertes Profil, dein Berufsfeld und die Skills, die dir noch fehlen — in unter einer Minute.',
-    ctaPrimary: 'Lebenslauf hochladen — kostenlos',
-    ctaSecondary: 'So funktioniert’s',
-    note: 'Kostenloser Start · Dein Original bleibt unverändert · DSGVO-konform',
-    scroll: 'Zum Entdecken scrollen',
-    stats: {
-      languages: {
-        value: '3',
-        label: 'Sprachen für Lebensläufe',
-        hint: 'EN · DE · FR',
-      },
-      speed: {
-        value: '< 60s',
-        label: 'Bis zum strukturierten Profil',
-      },
-      domains: {
-        value: '12+',
-        label: 'Berufsfelder',
-      },
-    },
-  },
-
-  gallery: {
-    eyebrow: 'Wo unsere Kandidat:innen arbeiten',
-    title: 'Echte Rollen. Echte Städte. Echte Menschen.',
-    items: {
-      berlin: 'Berlin',
-      team: 'Tech-Teams',
-      care: 'Pflege',
-      build: 'Handwerk',
-      code: 'Software',
-      service: 'Gastgewerbe',
-    },
-  },
 
   trust: {
     label: 'Für regulierte, grenzüberschreitende Personalgewinnung gebaut',
@@ -167,288 +132,13 @@ export default {
       ausbildung: {
         title: 'Ausbildung',
         text: 'Die duale Ausbildung in Deutschland: Du arbeitest im Betrieb und lernst parallel in der Berufsschule.',
-        points: ['Ausbildungsvertrag im Betrieb', 'Deutsch A2–B1 zum Start', 'Anerkannter Abschluss in 2–3,5 Jahren'],
-      },
-    },
-  },
-
-  how: {
-    eyebrow: 'Der Weg',
-    title: 'Vom Lebenslauf zur Klarheit in vier Schritten',
-    lead: 'Keine langen Formulare, bevor du einen Nutzen siehst. Lade zuerst hoch — der Fragebogen fragt nur, was die KI nicht schon aus deinem Lebenslauf ableiten konnte.',
-    steps: {
-      objective: {
-        title: 'Ziel festlegen',
-        text: 'Registriere dich und wähle dein Ziel: Anstellung in Deutschland, Remote-Arbeit, Freelance, Ausbildung — oder eine Kombination.',
-      },
-      upload: {
-        title: 'Lebenslauf hochladen',
-        text: 'PDF oder DOCX in jeder unterstützten Sprache. Die Sprache wird automatisch erkannt, deine Originaldatei bleibt unverändert.',
-      },
-      analyse: {
-        title: 'Die KI baut dein Profil',
-        text: 'Erfahrung, Ausbildung, Zertifikate, Skills, Technologien und Sprachen werden mit Konfidenzwerten in strukturierte Felder überführt.',
-      },
-      act: {
-        title: 'Lücken und nächste Schritte',
-        text: 'Beantworte einen kurzen Qualifizierungsfragebogen und erhalte eine nachvollziehbare Bereitschaftsanzeige mit den passenden nächsten Skills.',
-      },
-    },
-    banner: {
-      tag: 'Hintergrundverarbeitung',
-      title: 'Die langsame Arbeit läuft, während du weitermachst',
-      text: 'Analyse, Übersetzung, Klassifizierung und der erste Bereitschaftscheck laufen asynchron. Du beantwortest ein paar Fragen — den Rest übernimmt die Plattform.',
-      list: [
-        'Originaldokument bleibt Byte für Byte erhalten',
-        'Konfidenzwert für jedes extrahierte Feld',
-        'Klarer Fehlerstatus, wenn die Analyse scheitert — nie eine stille Lücke',
-      ],
-    },
-  },
-
-  features: {
-    eyebrow: 'Die Plattform',
-    title: 'Eine KI, die Daten liefert — keine Textabsätze',
-    lead: 'Nach Fließtext lässt sich nicht filtern. Jeder Lebenslauf wird zu einheitlicher, abfragbarer Struktur.',
-    photoTag: 'Für echte Recruiting-Teams gebaut',
-    items: {
-      detect: {
-        title: 'Automatische Spracherkennung',
-        text: 'Englische, deutsche und französische Lebensläufe werden beim Upload erkannt — keine manuelle Auswahl, keine Fehlinterpretation.',
-      },
-      structure: {
-        title: 'Strukturierte Extraktion',
-        text: 'Kein Rohtext. Benannte Felder für Positionen, Zeiträume, Arbeitgeber, Zertifikate, Tools und Sprachen — bereit fürs Matching.',
-      },
-      classify: {
-        title: 'Klassifizierung des Berufsfelds',
-        text: 'Jedes Profil erhält ein Berufsfeld und eine Spezialisierung, von IT bis Pflege, mit Konfidenzanzeige.',
-      },
-      translate: {
-        title: 'Mehrsprachige Lebenslauf-Versionen',
-        text: 'Jede unterstützte Sprache entsteht im Hintergrund und bleibt klar als KI-generiert markiert, bis sie geprüft wurde.',
-      },
-      explain: {
-        title: 'Nachvollziehbare Bereitschaft',
-        text: 'Kein mysteriöser Score. Du siehst die Faktoren hinter deinem Status und die konkreten Schritte, die ihn verbessern.',
-      },
-      extend: {
-        title: 'Auf Erweiterung ausgelegt',
-        text: 'Stellenimport, Recruiter-Zugang, Matching und Abos docken an denselben Kern an — ohne Neubau.',
-      },
-    },
-    highlight: {
-      tag: 'Mit Konfidenzwert',
-      title: 'Jedes Feld trägt einen Konfidenzwert',
-      text: 'Alles unterhalb der Schwelle geht an eine menschliche Prüfung, statt stillschweigend übernommen zu werden.',
-      metric: 'der Profile brauchen keine manuelle Prüfung',
-    },
-  },
-
-  domains: {
-    eyebrow: 'Berufsfelder',
-    title: 'Eingeordnet in das Feld, in dem du wirklich arbeitest',
-    lead: 'Jedes Profil erhält ein oder mehrere Berufsfelder plus Spezialisierung, mit Konfidenzanzeige. Kategorien sind vom Admin konfigurierbar — neue Felder kommen ohne Deployment dazu.',
-    foot: 'Ein Berufsfeld fehlt? Admins ergänzen, benennen um oder deaktivieren Kategorien direkt in der Konsole.',
-    specialisations: 'Spezialisierungen',
-    items: {
-      it: {
-        name: 'IT & Software',
-        spec: 'Frontend · Backend · Daten · DevOps',
-      },
-      health: {
-        name: 'Gesundheit / Pflege',
-        spec: 'Pflege · Betreuung · Therapie · Medizin',
-      },
-      engineering: {
-        name: 'Ingenieurwesen',
-        spec: 'Maschinenbau · Elektro · Automotive',
-      },
-      logistics: {
-        name: 'Logistik',
-        spec: 'Lager · Supply Chain · Transport',
-      },
-      finance: {
-        name: 'Finanzen',
-        spec: 'Buchhaltung · Controlling · Audit',
-      },
-      construction: {
-        name: 'Bau',
-        spec: 'Baustelle · Planung · Handwerk',
-      },
-      hospitality: {
-        name: 'Gastgewerbe',
-        spec: 'Hotel · Küche · Service',
-      },
-      sales: {
-        name: 'Vertrieb & Marketing',
-        spec: 'B2B-Vertrieb · Growth · Content',
-      },
-    },
-  },
-
-  languages: {
-    eyebrow: 'Mehrsprachig von Haus aus',
-    title: 'Ein Upload. Drei Sprachen. Eine Quelle der Wahrheit.',
-    lead: 'Deutsche Arbeitgeber wollen Deutsch. Internationale Teams Englisch. Wir erzeugen jede Version im Hintergrund — als KI markiert, bis ein Mensch sie bestätigt.',
-    checklist: [
-      'Ausgangssprache wird beim Upload automatisch erkannt',
-      'Originaldatei bleibt unberührt und jederzeit herunterladbar',
-      'KI-Versionen bleiben markiert, bis sie geprüft und verifiziert sind',
-      'Doppelte oder widersprüchliche Einträge werden markiert, nicht stillschweigend zusammengeführt',
-    ],
-    cta: 'Mit deinem Lebenslauf testen',
-    source: 'Quelle',
-    generated: 'Im Hintergrund erzeugt',
-    original: 'Originaldokument',
-    ai: 'KI',
-  },
-
-  admin: {
-    eyebrow: 'Mensch im Prozess',
-    title: 'Die KI macht die Menge. Menschen entscheiden, was zählt.',
-    lead: 'Die Konsole ist auf Ausnahmen ausgelegt — nur Profile, bei denen die KI unsicher ist, landen bei einer Prüfperson.',
-    points: {
-      filter: {
-        title: 'Den gesamten Talentpool filtern',
-        text: 'Suche nach Berufsfeld, Spezialisierung, Skill, Deutschniveau, Erfahrung, Verifizierungsstatus oder Arbeitserlaubnis.',
-      },
-      exceptions: {
-        title: 'Nur Ausnahmen prüfen',
-        text: 'Extraktionen mit geringer Konfidenz und widersprüchliche Daten werden markiert. Alles andere läuft unberührt durch.',
-      },
-      audit: {
-        title: 'Korrigieren, bestätigen, protokollieren',
-        text: 'Jede Korrektur und Statusänderung wird protokolliert — verifizierte Daten sind immer von KI-Ausgaben unterscheidbar.',
-      },
-    },
-    flag: {
-      tag: 'Prüfung nötig',
-      text: '<b>4 Profile</b> heute markiert — geringe Konfidenz bei Beschäftigungszeiträumen.',
-      foot: 'Geprüft von 3 Admins · Ø 40 Sek.',
-    },
-  },
-
-  testimonials: {
-    eyebrow: 'Erfahrungen',
-    title: 'Was bleibt, ist Klarheit',
-    lead: 'Kandidat:innen scheitern selten an fehlender Qualifikation. Sie scheitern daran, dass ihnen niemand sagt, was fehlt.',
-    items: {
-      amina: {
-        quote: 'Ich habe an einem Sonntagabend einen französischen Lebenslauf hochgeladen. Als ich den Fragebogen fertig hatte, lag eine deutsche Version vor, ein klares Berufsfeld und drei Skills zum Nachlegen. Vorher hatte mir nie jemand gesagt, was genau fehlt.',
-        name: 'Amina D.',
-        role: 'Frontend-Entwicklerin · Casablanca → Berlin',
-      },
-      rajesh: {
-        quote: 'Die Bereitschaftsanzeige hat für mich den Unterschied gemacht. Sie hat erklärt, warum ich noch nicht so weit war — Deutschniveau und ein Zertifikat — statt meine Bewerbung stillschweigend abzulehnen.',
-        name: 'Rajesh K.',
-        role: 'Gesundheits- und Krankenpfleger · Kochi → München',
-      },
-      lena: {
-        quote: 'Als Admin habe ich früher jeden einzelnen Lebenslauf geöffnet. Heute prüfe ich nur noch die markierten. Die strukturierten Profile sind konsistent genug, dass Filtern wirklich funktioniert.',
-        name: 'Lena Hoffmann',
-        role: 'Recruiting-Leitung · MeinRoots',
-      },
-    },
-  },
-
-  pricing: {
-    eyebrow: 'Tarife',
-    title: 'Kostenlos herausfinden, wo du stehst',
-    lead: 'Lebenslaufanalyse, strukturiertes Profil und Bereitschaftsüberblick kosten nie etwas. Bezahlte Stufen gibt es für die Arbeit danach — Lücken schließen und eingestellt werden.',
-    note: 'Preise und Funktionsgrenzen sind für Milestone 1 indikativ und werden vor dem Launch mit MeinRoots bestätigt.',
-    popular: 'Am beliebtesten',
-    monthly: 'Monatlich',
-    yearly: 'Jährlich',
-    save: '21 % sparen',
-    plans: {
-      free: {
-        name: 'Free',
-        price: '0 €',
-        priceYearly: '0 €',
-        period: 'für immer',
-        periodYearly: 'für immer',
-        billedNote: '',
-        tagline: 'Verstehe, wo du stehst.',
-        cta: 'Kostenlos starten',
-        features: [
-          'Upload & Spracherkennung',
-          'KI-Analyse und strukturiertes Profil',
-          'Berufsfeld & Spezialisierung',
-          'Bereitschaftsüberblick',
-          'Basis-Empfehlungen',
-        ],
-      },
-      pro: {
-        name: 'Pro',
-        price: '19 €',
-        priceYearly: '15 €',
-        period: 'pro Monat',
-        periodYearly: 'pro Monat, jährlich abgerechnet',
-        billedNote: '180 € einmal jährlich — du sparst 48 €',
-        tagline: 'Schließe die Lücken, die Angebote blockieren.',
-        cta: 'Pro holen',
-        features: [
-          'Alles aus Free',
-          'Detaillierte Qualifizierungsanalyse',
-          'Vollständiger Skill-Fahrplan',
-          'Lebenslauf-Optimierung für deutsche Arbeitgeber',
-          'Interviewvorbereitung & Kurse',
-          'Bevorzugte Profilverifizierung',
-        ],
-      },
-      premium: {
-        name: 'Premium',
-        price: 'Individuell',
-        priceYearly: 'Individuell',
-        period: 'pro Vermittlung',
-        periodYearly: 'pro Vermittlung',
-        billedNote: '',
-        tagline: 'Intensive Begleitung bis zur Ankunft.',
-        cta: 'Kontakt aufnehmen',
-        features: [
-          'Alles aus Pro',
-          'Persönliche Karriereberatung',
-          'Aktive Unterstützung bei der Jobsuche',
-          'Coaching & Verhandlungshilfe',
-          'Visum- & Umzugsberatung',
-          'Ankunftshilfe in Deutschland',
+        points: [
+          'Ausbildungsvertrag im Betrieb',
+          'Deutsch A2–B1 zum Start',
+          'Anerkannter Abschluss in 2–3,5 Jahren',
         ],
       },
     },
-  },
-
-  faq: {
-    eyebrow: 'FAQ',
-    title: 'Fragen, die vor dem Upload gestellt werden',
-    lead: 'Dein Lebenslauf sind personenbezogene Daten. Hier steht genau, was damit passiert — und was nicht.',
-    link: 'Noch unsicher? Sprich mit uns',
-    items: [
-      {
-        q: 'Welche Sprachen werden unterstützt?',
-        a: 'Englisch, Deutsch und Französisch. Die Ausgangssprache wird beim Upload automatisch erkannt — du musst sie nie auswählen — und die Versionen in den beiden anderen Sprachen entstehen im Hintergrund.',
-      },
-      {
-        q: 'Wird mein Original verändert?',
-        a: 'Niemals. Die hochgeladene Datei wird exakt so gespeichert, wie du sie gesendet hast. Übersetzungen und strukturierte Daten liegen als separate Datensätze daneben, und KI-Inhalte bleiben klar markiert, bis ein Mensch sie prüft.',
-      },
-      {
-        q: 'Wie werden meine Daten geschützt?',
-        a: 'Lebensläufe und Profildaten sind personenbezogene Daten und werden so behandelt: verschlüsselt bei Übertragung und Speicherung, rollenbasierter Zugriff, Aufbewahrung und Löschung nach DSGVO. Weitergabe an Recruiter oder Arbeitgeber erfolgt erst nach deiner Einwilligung.',
-      },
-      {
-        q: 'Was bedeutet die Bereitschaftsanzeige?',
-        a: 'Sie ist ein erklärbarer Status, kein Blackbox-Score. Du siehst die Faktoren dahinter — belegte Skills, Sprachniveau, Erfahrung, Arbeitserlaubnis — und die konkreten Schritte, die ihn verbessern.',
-      },
-      {
-        q: 'Brauche ich Deutsch für eine Bewerbung?',
-        a: 'Das hängt von der Rolle ab. Viele IT- und Remote-Stellen sind englischsprachig, während Pflege und Rollen mit Kundenkontakt in Deutschland meist B1–B2 erwarten. Dein Profil zeigt das übliche Niveau deiner Zielrollen und deinen Abstand dazu.',
-      },
-      {
-        q: 'Ist jemals ein Mensch beteiligt?',
-        a: 'Ja — bewusst. Die KI übernimmt die repetitive Extraktion und Klassifizierung; eine Prüfperson von MeinRoots kontrolliert Ergebnisse mit geringer Konfidenz, widersprüchliche Angaben und Qualifizierungsentscheidungen. Verifizierte Daten sind immer als verifiziert gekennzeichnet.',
-      },
-    ],
   },
 
   cta: {
@@ -953,5 +643,291 @@ export default {
     title: 'Diese Seite konnten wir nicht finden',
     text: 'Der Link ist womöglich veraltet oder die Adresse enthält einen Tippfehler. Mit deinem Konto ist alles in Ordnung.',
     home: 'Zur Startseite',
+  },
+
+  home: {
+    factors: {
+      experience: 'Erfahrung',
+      education: 'Ausbildung',
+      skills: 'Skills',
+      language: 'Deutsch',
+    },
+    hero: {
+      eyebrow: 'Für Arbeit in Deutschland, Remote und Ausbildung',
+      titleA: 'Finde heraus, wie bereit du',
+      titleB: 'für deinen nächsten Schritt bist.',
+      lead: 'Lade einen Lebenslauf hoch. MeinRoots liest ihn, erstellt ein strukturiertes Profil und zeigt dir, wie bereit du für deinen gewählten Weg bist — und was genau noch dazwischensteht.',
+      ctaPrimary: 'Lebenslauf hochladen',
+      ctaSecondary: 'So funktioniert’s',
+      point1: 'Kostenlos starten',
+      point2: 'Dein Original bleibt unverändert',
+      point3: 'Englisch, Deutsch oder Französisch',
+      exampleLabel: 'Beispiel',
+      band: 'Fast bereit',
+      outOf: 'von 100',
+      nextTitle: 'Dein nächster Schritt',
+      nextText: 'Deutsch B2 erreichen — etwa 12 Wochen Lernzeit',
+      fileName: 'Lebenslauf — Amina Haddad.pdf',
+      fileMeta: 'Französisch erkannt · in 41 Sekunden analysiert',
+    },
+    trust: {
+      label: 'Was MeinRoots mit deinem Lebenslauf macht',
+      languages: 'Lebensläufe auf EN, DE und FR',
+      original: 'Dein Original bleibt unverändert',
+      human: 'Unsichere Fälle prüft ein Mensch',
+      gdpr: 'Erst Einwilligung, Löschung jederzeit',
+      free: 'Kostenlos starten',
+    },
+    paths: {
+      eyebrow: 'Dein Ziel',
+      title: 'Worauf arbeitest du hin?',
+      lead: 'Alles Weitere richtet sich danach. Bereitschaft, Lücken und Empfehlungen werden für den gewählten Weg bewertet — und du kannst mehrere wählen.',
+      choose: 'Damit starten',
+      note: 'Du kannst dein Ziel jederzeit ändern; deine Bereitschaft wird dann für das neue Ziel neu bewertet.',
+      detail: {
+        germany: 'Visum, Anerkennung und Deutschniveau entscheiden',
+        remote: 'Zeitzone und belegtes Englisch zählen am meisten',
+        freelance: 'Belegte Projekte und eine klare Spezialisierung',
+        ausbildung: 'Deutsch A2–B1 zum Start, anerkannter Abschluss in 2–3,5 Jahren',
+      },
+    },
+    how: {
+      eyebrow: 'Der Ablauf',
+      title: 'Von einem Lebenslauf zum klaren nächsten Schritt',
+      lead: 'Keine langen Formulare, bevor du etwas Nützliches siehst. Lade zuerst hoch — gefragt wird nur, was dein Lebenslauf nicht schon gesagt hat.',
+      steps: {
+        upload: {
+          title: 'Lebenslauf hochladen',
+          text: 'PDF oder Word auf Englisch, Deutsch oder Französisch. Die Sprache wird automatisch erkannt.',
+        },
+        understand: {
+          title: 'Wir lesen ihn richtig',
+          text: 'Erfahrung, Ausbildung, Zertifikate, Skills und Sprachen werden zu einem strukturierten Profil — mit einem Sicherheitswert für jeden Teil.',
+        },
+        readiness: {
+          title: 'Sieh, wo du stehst',
+          text: 'Eine Bereitschaftsbewertung je Ziel und die gewichteten Gründe dahinter. Nie nur eine nackte Zahl.',
+        },
+        act: {
+          title: 'Wisse, was als Nächstes kommt',
+          text: 'Jede Lücke kommt mit Zielniveau, der Begründung für dein Ziel und einem ersten Schritt für diese Woche.',
+        },
+      },
+    },
+    showcase: {
+      eyebrow: 'Was du bekommst',
+      title: 'Kein Urteil — ein Profil, mit dem du arbeiten kannst',
+      lead: 'Das sind dieselben Ansichten, die du nach dem Hochladen erreichst. Nichts davon ist ein Marketing-Mockup für etwas, das es nicht gibt.',
+      tabs: {
+        profile: 'Dein Profil',
+        readiness: 'Bereitschaft',
+        gaps: 'Lücken',
+        next: 'Nächste Schritte',
+      },
+      profile: {
+        headline: 'Krankenpflegerin, Intensivpflege',
+        location: 'Casablanca, Marokko',
+        domain: 'Gesundheit & Pflege',
+        experienceLabel: 'Erfahrung',
+        experience: '6 Jahre 3 Monate',
+        specLabel: 'Spezialisierung',
+        spec: 'Intensivpflege',
+        eduLabel: 'Ausbildung',
+        edu: 'BSc Pflege, 2018',
+        langLabel: 'Sprachen',
+        lang: 'Arabisch Muttersprache · Französisch C1 · Deutsch B1',
+        evidenced: 'Skills, die deine Rollen tatsächlich belegen',
+      },
+      readiness: {
+        foot: 'Für dieses Ziel gewichtet — bei Remote-Arbeit würde Deutsch weit weniger zählen.',
+      },
+      gaps: {
+        german: {
+          skill: 'Deutsch',
+          tag: 'Blockierend',
+          from: 'B1',
+          to: 'B2',
+          action: 'B2-Kurs buchen — etwa 12 Wochen',
+        },
+        recognition: {
+          skill: 'Anerkennung',
+          tag: 'Wichtig',
+          from: 'Nicht begonnen',
+          to: 'Antrag gestellt',
+          action: 'Anerkennungsverfahren für deinen Abschluss starten',
+        },
+        certificate: {
+          skill: 'Intensivpflege-Nachweis',
+          tag: 'Wünschenswert',
+          from: 'Nur Erfahrung',
+          to: 'Nachgewiesen',
+          action: 'Arbeitgeber um eine schriftliche Bestätigung bitten',
+        },
+      },
+      next: {
+        german: {
+          title: 'Deutsch B2 erreichen',
+          text: 'Die größte einzelne Verbesserung deiner Bewertung',
+        },
+        questions: {
+          title: '4 Fragen beantworten',
+          text: 'Arbeitserlaubnis und Verfügbarkeit sind noch offen',
+        },
+        certificate: {
+          title: 'Nachweis hinzufügen',
+          text: 'Macht aus genannter Erfahrung belegte Erfahrung',
+        },
+        relocation: {
+          title: 'Umzugsbereitschaft bestätigen',
+          text: 'Arbeitgeber filtern sehr früh danach',
+        },
+      },
+      priority: {
+        critical: 'Zuerst',
+        important: 'Lohnt sich',
+        nice: 'Optional',
+      },
+    },
+    readiness: {
+      eyebrow: 'Bereitschaft',
+      title: 'Eine Bewertung nützt nur, wenn du siehst, woraus sie besteht',
+      lead: 'MeinRoots sagt dir nicht, ob du ein guter Kandidat bist. Es zeigt dir, wo du für dein gewähltes Ziel stehst, was dich trägt und was dich bremst.',
+      p1Title: 'Für dein Ziel gewichtet',
+      p1Text: 'Deutsch zählt für Arbeit in Deutschland stark und für Remote-Rollen kaum. Dasselbe Profil bekommt für verschiedene Wege verschiedene Werte.',
+      p2Title: 'Jeder Faktor wird erklärt',
+      p2Text: 'Die Begründung steht neben der Zahl — was stark ist, was unbekannt ist und warum.',
+      p3Title: 'Unbekannt ist eine echte Antwort',
+      p3Text: 'Wenn dein Lebenslauf nichts über deine Arbeitserlaubnis sagt, wird das als unbekannt markiert und nicht geraten.',
+      caveat: 'Das ist eine Entscheidungshilfe, kein Testergebnis. Es zeigt dir, wo sich Aufwand lohnt — es entscheidet nichts über dich.',
+      improve: '3 Änderungen würden diesen Wert heben',
+      state: {
+        strong: 'Stark',
+        ok: 'Ausreichend',
+        weak: 'Ausbaufähig',
+      },
+    },
+    gaps: {
+      eyebrow: 'Qualifikationslücken',
+      title: 'Zu jeder Lücke gehört ein erster Schritt',
+      lead: 'Eine Schwäche zu finden ist einfach. Nützlich ist das Zielniveau, die Begründung für dein Ziel und das, was du am Montagmorgen tun kannst.',
+      current: 'Jetzt',
+      target: 'Ziel',
+      why: 'Warum das zählt',
+      items: {
+        german: {
+          skill: 'Deutsch',
+          tag: 'Blockierend',
+          from: 'B1',
+          to: 'B2',
+          why: 'Pflegestellen in deutschen Kliniken verlangen B2 für die Arbeit am Patienten. Das ist die einzige Lücke, die das Ziel direkt blockiert.',
+          action: 'B2-Kurs buchen — von deinem Niveau aus etwa 12 Wochen',
+        },
+        recognition: {
+          skill: 'Anerkennung des Abschlusses',
+          tag: 'Wichtig',
+          from: 'Nicht begonnen',
+          to: 'Antrag gestellt',
+          why: 'Ein ausländischer Pflegeabschluss muss formal anerkannt werden, bevor du arbeiten darfst. Das Verfahren dauert Monate — früh anfangen lohnt sich.',
+          action: 'Anerkennungsverfahren für deinen Pflegeabschluss starten',
+        },
+        certificate: {
+          skill: 'Intensivpflege-Nachweis',
+          tag: 'Wünschenswert',
+          from: 'Nur Erfahrung',
+          to: 'Nachgewiesen',
+          why: 'Deine Intensiverfahrung geht aus deinen Rollen hervor, ist aber nirgends dokumentiert. Ein Nachweis macht aus einer Angabe einen Beleg.',
+          action: 'Arbeitgeber um eine schriftliche Bestätigung deiner Intensivarbeit bitten',
+        },
+      },
+    },
+    human: {
+      eyebrow: 'KI und Menschen',
+      title: 'Die Analyse benennt ihre eigene Unsicherheit',
+      lead: 'Ein Modell, das sich bei deiner Karriere selbstbewusst irrt, ist schlimmer als gar kein Modell. Deshalb trägt jeder extrahierte Wert eine Sicherheitsangabe — und geringe Sicherheit wird eskaliert statt versteckt.',
+      stages: {
+        analyse: {
+          title: 'Die KI liest deinen Lebenslauf',
+          text: 'Erfahrung, Ausbildung, Skills und Sprachen werden in strukturierte Felder überführt.',
+        },
+        confidence: {
+          title: 'Sie bewertet ihre eigene Sicherheit',
+          text: 'Jeder extrahierte Block bekommt einen Sicherheitswert. Ein schwer lesbarer Lebenslauf erzeugt niedrige Werte.',
+        },
+        review: {
+          title: 'Geringe Sicherheit geht an einen Menschen',
+          text: 'Profile, die die KI nicht sauber lesen konnte, werden markiert und landen in der Prüf-Warteschlange unseres Teams.',
+        },
+        profile: {
+          title: 'Du siehst, was unsicher war',
+          text: 'Alles mit geringer Sicherheit ist in deinem Profil markiert — und du kannst es selbst korrigieren.',
+        },
+      },
+      honest: 'Um genau zu sein: nicht jedes Profil wird von einem Menschen geprüft. Profile, die die KI sicher verarbeitet hat, werden automatisch freigegeben — die menschliche Prüfung gibt es für die Fälle, in denen sie es nicht konnte.',
+    },
+    cv: {
+      eyebrow: 'Dein Lebenslauf, drei Sprachen',
+      title: 'Ein deutscher Arbeitgeber liest einen deutschen Lebenslauf',
+      lead: 'MeinRoots erzeugt aus deiner hochgeladenen Datei Fassungen auf Englisch, Deutsch und Französisch. Deutsche Fachbegriffe bleiben deutsch, weil Arbeitgeber genau danach suchen.',
+      p1: 'Deine Originaldatei wird genau so gespeichert, wie du sie gesendet hast, und nie verändert',
+      p2: 'Erzeugte Fassungen sind klar als erzeugt gekennzeichnet',
+      p3: 'Eine von unserem Team geprüfte Fassung wird als geprüft markiert',
+      originalTitle: 'Dein Original-Lebenslauf',
+      originalMeta: 'PDF · von dir hochgeladen',
+      untouched: 'Nie verändert',
+      generated: 'Aus deinem Lebenslauf erzeugt',
+    },
+    domains: {
+      eyebrow: 'Einordnung',
+      title: 'Es erkennt, was für eine Fachkraft du bist',
+      lead: 'Kein Keyword-Abgleich. Die Einordnung liest, was du zuletzt und am substanziellsten gemacht hast, und ordnet dich einem Berufsfeld mit Spezialisierung und Erfahrungsstufe zu — so wie es eine Recruiterin täte.',
+      input: 'Dein hochgeladener Lebenslauf',
+      domainLabel: 'Berufsfeld',
+      domainValue: 'Gesundheit & Pflege',
+      specLabel: 'Spezialisierung',
+      specValue: 'Intensivpflege',
+      seniorityLabel: 'Erfahrungsstufe',
+      seniorityValue: 'Berufserfahren',
+      listLabel: 'Aktuell unterstützte Felder',
+      items: {
+        it: 'IT & Software',
+        health: 'Gesundheit & Pflege',
+        engineering: 'Ingenieurwesen',
+        logistics: 'Logistik',
+        finance: 'Finanzen',
+        construction: 'Bau & Handwerk',
+        hospitality: 'Gastronomie',
+        sales: 'Vertrieb & Marketing',
+      },
+    },
+    privacy: {
+      eyebrow: 'Deine Daten',
+      title: 'Ein Lebenslauf ist persönlich. So behandeln wir ihn',
+      lead: 'Klar formuliert, weil wir dich um dein Arbeitsleben bitten. Alles hier ist etwas, das die Plattform tatsächlich tut.',
+      items: {
+        consent: {
+          title: 'Einwilligung vor der Verarbeitung',
+          text: 'Nichts wird analysiert, bevor du bei der Anmeldung ausdrücklich zugestimmt hast.',
+        },
+        untouched: {
+          title: 'Deine Datei wird nicht verändert',
+          text: 'Das hochgeladene Dokument wird Byte für Byte gespeichert. Alles andere entsteht daneben.',
+        },
+        audit: {
+          title: 'Zugriffe werden protokolliert',
+          text: 'Jede Aktion mit deinen Daten wird festgehalten — auch wenn jemand aus unserem Team dein Profil öffnet.',
+        },
+        erase: {
+          title: 'Selbst löschen',
+          text: 'Eine Aktion in den Einstellungen entfernt Konto, Profil und Dateien. Ohne E-Mail-Anfrage.',
+        },
+      },
+    },
+    final: {
+      titleA: 'Dein Lebenslauf enthält deine Erfahrung bereits.',
+      titleB: 'Finde heraus, was sie für Deutschland bedeutet.',
+      lead: 'Ein Upload, unter einer Minute, und du weißt, wo du stehst und was als Nächstes zu tun ist. Zu verlieren hast du nur die Datei, die du ohnehin schon hast.',
+      secondary: 'Erst ansehen, wie es funktioniert',
+      note: 'Kostenlos starten · Daten jederzeit löschen',
+    },
   },
 }

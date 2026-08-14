@@ -42,7 +42,7 @@ export function I18nProvider({ children, initialLocale }) {
   }, [])
 
   /**
-   * t('hero.lead') → string | array | object.
+   * t('home.hero.lead') → string | array | object.
    * Falls back to English, then to the key itself so a missing string is obvious.
    * Pass vars to substitute {placeholders}: t('auth.reset.sentText', { email }).
    */

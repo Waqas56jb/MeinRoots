@@ -30,10 +30,9 @@ export const gallery = [
 
 export const navSections = [
   { key: 'how', href: '#how-it-works' },
-  { key: 'platform', href: '#platform' },
-  { key: 'domains', href: '#domains' },
-  { key: 'plans', href: '#plans' },
-  { key: 'faq', href: '#faq' },
+  { key: 'paths', href: '#career-paths' },
+  { key: 'readiness', href: '#readiness' },
+  { key: 'trust', href: '#trust' },
 ]
 
 export const heroStatKeys = ['languages', 'speed', 'domains']

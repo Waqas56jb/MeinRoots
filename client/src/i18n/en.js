@@ -89,47 +89,12 @@ export default {
     menu: 'Menu',
     account: 'My account',
     logout: 'Log out',
+    paths: 'Career paths',
+    readiness: 'Readiness',
+    trust: 'Trust',
+    getStarted: 'Get started',
   },
 
-  hero: {
-    proof: 'Trusted by candidates from <b>40+ countries</b>',
-    titleA: 'Talent has no borders.',
-    titleB: 'Your future',
-    titleC: 'Career in Germany.',
-    lead: 'One CV upload. A structured profile, your professional domain and the exact skills you still need — in under a minute.',
-    ctaPrimary: 'Upload your CV — free',
-    ctaSecondary: 'See how it works',
-    note: 'No cost to start · Your original CV is never modified · GDPR-ready',
-    scroll: 'Scroll to explore',
-    stats: {
-      languages: {
-        value: '3',
-        label: 'CV languages parsed',
-        hint: 'EN · DE · FR',
-      },
-      speed: {
-        value: '< 60s',
-        label: 'To a structured profile',
-      },
-      domains: {
-        value: '12+',
-        label: 'Professional domains',
-      },
-    },
-  },
-
-  gallery: {
-    eyebrow: 'Where our candidates work',
-    title: 'Real roles. Real cities. Real people.',
-    items: {
-      berlin: 'Berlin',
-      team: 'Tech teams',
-      care: 'Pflege & care',
-      build: 'Skilled trades',
-      code: 'Software',
-      service: 'Hospitality',
-    },
-  },
 
   trust: {
     label: 'Built for regulated, cross-border hiring',
@@ -174,285 +139,6 @@ export default {
         ],
       },
     },
-  },
-
-  how: {
-    eyebrow: 'The journey',
-    title: 'From CV to clarity in four steps',
-    lead: 'No long forms before you see value. Upload first — the questionnaire only asks for what the AI could not already establish from your CV.',
-    steps: {
-      objective: {
-        title: 'Set your objective',
-        text: 'Register and pick your goal: employment in Germany, remote work, freelance, Ausbildung — or a combination.',
-      },
-      upload: {
-        title: 'Upload your CV',
-        text: 'Drop a PDF or DOCX in any supported language. The language is detected automatically and your original file is never altered.',
-      },
-      analyse: {
-        title: 'AI builds your profile',
-        text: 'Experience, education, certifications, skills, technologies and languages are extracted into structured fields with confidence scores.',
-      },
-      act: {
-        title: 'See gaps and next actions',
-        text: 'Answer a short qualification questionnaire and get an explainable readiness view with the exact skills to add next.',
-      },
-    },
-    banner: {
-      tag: 'Background processing',
-      title: 'The slow work happens while you keep moving',
-      text: 'Parsing, translation, classification and the first readiness pass all run asynchronously. You answer a few questions — the platform does the rest.',
-      list: [
-        'Original document preserved, byte for byte',
-        'Confidence score on every extracted field',
-        'Clear error state if analysis fails — never a silent gap',
-      ],
-    },
-  },
-
-  features: {
-    eyebrow: 'The platform',
-    title: 'An AI engine that produces data, not paragraphs',
-    lead: 'Recruiters cannot filter on prose. Every CV becomes consistent, queryable structure.',
-    photoTag: 'Built for real hiring teams',
-    items: {
-      detect: {
-        title: 'Automatic language detection',
-        text: 'English, German and French CVs are recognised on upload — no manual selection, no wrong parsing.',
-      },
-      structure: {
-        title: 'Structured extraction',
-        text: 'Not raw text. Named fields for roles, dates, employers, certifications, tools and languages — ready for matching.',
-      },
-      classify: {
-        title: 'Domain classification',
-        text: 'Every profile is placed in a professional domain and specialisation, from IT to Pflege, with a confidence indicator.',
-      },
-      translate: {
-        title: 'Multilingual CV versions',
-        text: 'Every supported language is generated in the background and clearly labelled as AI-generated until reviewed.',
-      },
-      explain: {
-        title: 'Explainable readiness',
-        text: 'No mystery score. You see the factors behind your status and the concrete actions that improve it.',
-      },
-      extend: {
-        title: 'Built to extend',
-        text: 'Job aggregation, recruiter access, matching and subscriptions plug into the same core — no rebuild required.',
-      },
-    },
-    highlight: {
-      tag: 'Confidence-scored',
-      title: 'Every field carries a confidence score',
-      text: 'Anything below the threshold is routed to a human reviewer instead of being silently trusted.',
-      metric: 'of profiles need no manual review',
-    },
-  },
-
-  domains: {
-    eyebrow: 'Professional domains',
-    title: 'Classified into the field you actually work in',
-    lead: 'Each profile receives one or more domains plus a specialisation, with a confidence indicator. Categories are configurable by the admin — new fields are added without a redeployment.',
-    foot: 'Need a domain that isn’t listed? Admins add, rename or deactivate categories from the console.',
-    specialisations: 'specialisations',
-    items: {
-      it: {
-        name: 'IT & Software',
-        spec: 'Front-end · Back-end · Data · DevOps',
-      },
-      health: {
-        name: 'Healthcare / Pflege',
-        spec: 'Nursing · Care · Therapy · Medical',
-      },
-      engineering: {
-        name: 'Engineering',
-        spec: 'Mechanical · Electrical · Automotive',
-      },
-      logistics: {
-        name: 'Logistics',
-        spec: 'Warehouse · Supply chain · Transport',
-      },
-      finance: {
-        name: 'Finance',
-        spec: 'Accounting · Controlling · Audit',
-      },
-      construction: {
-        name: 'Construction',
-        spec: 'Site · Planning · Skilled trades',
-      },
-      hospitality: {
-        name: 'Hospitality',
-        spec: 'Hotel · Kitchen · Service',
-      },
-      sales: {
-        name: 'Sales & Marketing',
-        spec: 'B2B sales · Growth · Content',
-      },
-    },
-  },
-
-  languages: {
-    eyebrow: 'Multilingual by default',
-    title: 'One upload. Three languages. One source of truth.',
-    lead: 'German employers want German. International teams want English. We generate every version in the background — marked as AI until a human confirms it.',
-    checklist: [
-      'Source language detected automatically on upload',
-      'Original file stored untouched and always downloadable',
-      'AI versions labelled until reviewed and verified',
-      'Duplicate or conflicting entries flagged, not silently merged',
-    ],
-    cta: 'Try it with your CV',
-    source: 'Source',
-    generated: 'Generated in background',
-    original: 'Original document',
-    ai: 'AI',
-  },
-
-  admin: {
-    eyebrow: 'Human-in-the-loop',
-    title: 'AI does the volume. People decide what matters.',
-    lead: 'The console is built around exceptions — only the profiles the AI is unsure about ever reach a reviewer.',
-    points: {
-      filter: {
-        title: 'Filter the whole talent pool',
-        text: 'Search by domain, specialisation, skill, German level, experience, verification status or work authorisation.',
-      },
-      exceptions: {
-        title: 'Review only the exceptions',
-        text: 'Low-confidence extractions and conflicting data are flagged. Everything else flows through untouched.',
-      },
-      audit: {
-        title: 'Correct, confirm, audit',
-        text: 'Every correction and status change is logged, so verified data is always distinguishable from AI output.',
-      },
-    },
-    flag: {
-      tag: 'Needs review',
-      text: '<b>4 profiles</b> flagged today — low extraction confidence on employment dates.',
-      foot: 'Reviewed by 3 admins · avg. 40s',
-    },
-  },
-
-  testimonials: {
-    eyebrow: 'Stories',
-    title: 'Clarity is what people remember',
-    lead: 'Candidates rarely fail because they are unqualified. They fail because nobody told them what was missing.',
-    items: {
-      amina: {
-        quote: 'I uploaded a French CV on a Sunday evening. By the time I finished the questionnaire I had a German version, a clear domain and three skills to work on. Nobody had ever told me exactly what was missing before.',
-        name: 'Amina D.',
-        role: 'Front-end Developer · Casablanca → Berlin',
-      },
-      rajesh: {
-        quote: 'The readiness view is the part that changed things for me. It explained why I was not ready yet — German level and one certification — instead of just rejecting my application silently.',
-        name: 'Rajesh K.',
-        role: 'Registered Nurse · Kochi → Munich',
-      },
-      lena: {
-        quote: 'As an admin I used to open every single CV. Now I only review the flagged ones. The structured profiles are consistent enough that filtering actually works.',
-        name: 'Lena Hoffmann',
-        role: 'Recruitment Lead · MeinRoots',
-      },
-    },
-  },
-
-  pricing: {
-    eyebrow: 'Plans',
-    title: 'Free to find out where you stand',
-    lead: 'CV analysis, your structured profile and a readiness overview never cost anything. Paid tiers exist for the work that comes after — closing gaps and getting hired.',
-    note: 'Pricing and feature gates shown are indicative for Milestone 1 and confirmed with MeinRoots before launch.',
-    popular: 'Most popular',
-    monthly: 'Monthly',
-    yearly: 'Yearly',
-    save: 'Save 21%',
-    plans: {
-      free: {
-        name: 'Free',
-        price: '€0',
-        priceYearly: '€0',
-        period: 'forever',
-        periodYearly: 'forever',
-        billedNote: '',
-        tagline: 'Understand where you stand.',
-        cta: 'Start free',
-        features: [
-          'CV upload & language detection',
-          'AI CV analysis and structured profile',
-          'Professional category & specialisation',
-          'Readiness overview',
-          'Basic recommendations',
-        ],
-      },
-      pro: {
-        name: 'Pro',
-        price: '€19',
-        priceYearly: '€15',
-        period: 'per month',
-        periodYearly: 'per month, billed annually',
-        billedNote: '€180 billed once a year — you save €48',
-        tagline: 'Close the gaps that block offers.',
-        cta: 'Go Pro',
-        features: [
-          'Everything in Free',
-          'Detailed qualification breakdown',
-          'Full skill-gap roadmap',
-          'CV optimisation for German employers',
-          'Interview preparation & courses',
-          'Priority profile verification',
-        ],
-      },
-      premium: {
-        name: 'Premium',
-        price: 'Custom',
-        priceYearly: 'Custom',
-        period: 'per placement',
-        periodYearly: 'per placement',
-        billedNote: '',
-        tagline: 'High-touch support to arrival.',
-        cta: 'Talk to us',
-        features: [
-          'Everything in Pro',
-          'Personal career consultant',
-          'Active job-search assistance',
-          'Coaching & negotiation support',
-          'Visa & relocation guidance',
-          'Arrival support in Germany',
-        ],
-      },
-    },
-  },
-
-  faq: {
-    eyebrow: 'FAQ',
-    title: 'Questions people ask before uploading',
-    lead: 'Your CV is personal data. Here is exactly what happens to it — and what does not.',
-    link: 'Still unsure? Talk to us',
-    items: [
-      {
-        q: 'Which CV languages are supported?',
-        a: 'English, German and French. The source language is detected automatically on upload — you never have to select it — and versions in the other two languages are generated in the background.',
-      },
-      {
-        q: 'Will my original CV be changed?',
-        a: 'Never. The uploaded file is stored exactly as you sent it. Translations and structured data are stored alongside it as separate records, and AI-generated content stays clearly labelled until a human reviews it.',
-      },
-      {
-        q: 'How is my personal data protected?',
-        a: 'CVs and profile data are personal data and are treated as such: encrypted in transit and at rest, access is role-based, and retention and deletion follow GDPR. Your information is only shared with a recruiter or employer after you consent.',
-      },
-      {
-        q: 'What does the readiness indicator actually mean?',
-        a: 'It is an explainable status, not a black-box score. You see the factors behind it — evidenced skills, language level, experience, work authorisation — and the specific actions that would move it forward.',
-      },
-      {
-        q: 'Do I need German to apply?',
-        a: 'It depends on the role. Many IT and remote positions are English-first, while healthcare and customer-facing roles in Germany usually expect B1–B2. Your profile shows the level your target roles typically require and how far you are from it.',
-      },
-      {
-        q: 'Is a human ever involved?',
-        a: 'Yes — by design. AI does the repetitive extraction and classification; a MeinRoots reviewer checks low-confidence results, conflicting information and qualification decisions. Verified data is always marked as verified.',
-      },
-    ],
   },
 
   cta: {
@@ -957,5 +643,291 @@ export default {
     title: 'We could not find that page',
     text: 'The link may be out of date, or the address may have a typo in it. Nothing has gone wrong with your account.',
     home: 'Go to the homepage',
+  },
+
+  home: {
+    factors: {
+      experience: 'Experience',
+      education: 'Education',
+      skills: 'Skills',
+      language: 'German',
+    },
+    hero: {
+      eyebrow: 'For work in Germany, remote and Ausbildung',
+      titleA: 'Find out how ready you are',
+      titleB: 'for your next move.',
+      lead: 'Upload one CV. MeinRoots reads it, builds a structured profile, and tells you how ready you are for the path you have chosen — and exactly what stands between you and it.',
+      ctaPrimary: 'Upload your CV',
+      ctaSecondary: 'See how it works',
+      point1: 'Free to start',
+      point2: 'Your original CV is never changed',
+      point3: 'English, German or French',
+      exampleLabel: 'Example',
+      band: 'Nearly ready',
+      outOf: 'out of 100',
+      nextTitle: 'Your next step',
+      nextText: 'Reach German B2 — about 12 weeks of study',
+      fileName: 'CV — Amina Haddad.pdf',
+      fileMeta: 'French detected · analysed in 41 seconds',
+    },
+    trust: {
+      label: 'What MeinRoots does with your CV',
+      languages: 'CVs read in EN, DE and FR',
+      original: 'Your original is never modified',
+      human: 'Uncertain cases go to a person',
+      gdpr: 'Consent first, deletion any time',
+      free: 'Free to start',
+    },
+    paths: {
+      eyebrow: 'Your objective',
+      title: 'What are you working toward?',
+      lead: 'Everything that follows adapts to this. Readiness, gaps and recommendations are assessed against the path you choose — and you can choose more than one.',
+      choose: 'Start with this',
+      note: 'You can change your objective at any time, and your readiness is reassessed for the new one.',
+      detail: {
+        germany: 'Visa, recognition and German level are decisive',
+        remote: 'Time zone and documented English matter most',
+        freelance: 'Evidence of delivery and a clear specialisation',
+        ausbildung: 'German A2–B1 to start, a recognised qualification in 2–3.5 years',
+      },
+    },
+    how: {
+      eyebrow: 'The process',
+      title: 'From one CV to a clear next step',
+      lead: 'No long forms before you see anything useful. Upload first — you are only asked for what your CV could not already tell us.',
+      steps: {
+        upload: {
+          title: 'Upload your CV',
+          text: 'A PDF or Word file in English, German or French. The language is detected for you.',
+        },
+        understand: {
+          title: 'We read it properly',
+          text: 'Your experience, education, certifications, skills and languages become a structured profile — with a confidence value on every part.',
+        },
+        readiness: {
+          title: 'See where you stand',
+          text: 'A readiness score for each objective, and the weighted reasons behind it. Never a number on its own.',
+        },
+        act: {
+          title: 'Know what to do next',
+          text: 'Each gap arrives with a target level, why it matters for your objective, and a first action you can take this week.',
+        },
+      },
+    },
+    showcase: {
+      eyebrow: 'What you get',
+      title: 'Not a verdict — a working profile you can act on',
+      lead: 'This is the same set of screens you reach after uploading. Nothing here is a marketing mock-up of something that does not exist.',
+      tabs: {
+        profile: 'Your profile',
+        readiness: 'Readiness',
+        gaps: 'Skill gaps',
+        next: 'Next steps',
+      },
+      profile: {
+        headline: 'Registered Nurse, intensive care',
+        location: 'Casablanca, Morocco',
+        domain: 'Healthcare & Care',
+        experienceLabel: 'Experience',
+        experience: '6 years 3 months',
+        specLabel: 'Specialisation',
+        spec: 'Intensive care',
+        eduLabel: 'Education',
+        edu: 'BSc Nursing, 2018',
+        langLabel: 'Languages',
+        lang: 'Arabic native · French C1 · German B1',
+        evidenced: 'Skills your roles actually demonstrate',
+      },
+      readiness: {
+        foot: 'Weighted for this objective — for remote work, German would count for far less.',
+      },
+      gaps: {
+        german: {
+          skill: 'German',
+          tag: 'Blocking',
+          from: 'B1',
+          to: 'B2',
+          action: 'Book a B2 course — around 12 weeks',
+        },
+        recognition: {
+          skill: 'Qualification recognition',
+          tag: 'Important',
+          from: 'Not started',
+          to: 'Anerkennung applied for',
+          action: 'Start the recognition process for your nursing degree',
+        },
+        certificate: {
+          skill: 'Intensive care certificate',
+          tag: 'Nice to have',
+          from: 'Experience only',
+          to: 'Certified',
+          action: 'Ask your employer for written confirmation of your ICU work',
+        },
+      },
+      next: {
+        german: {
+          title: 'Reach German B2',
+          text: 'The single biggest change to your readiness',
+        },
+        questions: {
+          title: 'Answer 4 questions',
+          text: 'Work authorisation and availability are still unknown',
+        },
+        certificate: {
+          title: 'Add a certificate',
+          text: 'Turns claimed experience into evidenced experience',
+        },
+        relocation: {
+          title: 'Confirm you can relocate',
+          text: 'Employers filter on this very early',
+        },
+      },
+      priority: {
+        critical: 'Do first',
+        important: 'Worth doing',
+        nice: 'Optional',
+      },
+    },
+    readiness: {
+      eyebrow: 'Readiness',
+      title: 'A score is only useful if you can see what it is made of',
+      lead: 'MeinRoots does not tell you whether you are a good candidate. It shows you where you stand for the objective you chose, what is carrying you, and what is holding you back.',
+      p1Title: 'Weighted for your objective',
+      p1Text: 'German language counts heavily for work in Germany and barely at all for remote roles. The same profile gets different scores for different paths.',
+      p2Title: 'Every factor is explained',
+      p2Text: 'You see the reasoning next to the number — which parts are strong, which are unknown, and why.',
+      p3Title: 'Unknown is a real answer',
+      p3Text: 'If your CV never states your work authorisation, it is marked unknown rather than guessed at.',
+      caveat: 'This is decision support, not a test result. It tells you where to put your effort — it does not decide anything about you.',
+      improve: '3 changes would raise this score',
+      state: {
+        strong: 'Strong',
+        ok: 'Adequate',
+        weak: 'Needs work',
+      },
+    },
+    gaps: {
+      eyebrow: 'Skill gaps',
+      title: 'Every gap comes with a first step',
+      lead: 'Finding a weakness is easy. What is useful is knowing the target, why it matters for your objective, and what to do on Monday morning.',
+      current: 'Now',
+      target: 'Target',
+      why: 'Why it matters',
+      items: {
+        german: {
+          skill: 'German',
+          tag: 'Blocking',
+          from: 'B1',
+          to: 'B2',
+          why: 'Nursing roles in German hospitals require B2 for patient-facing work. This is the one gap that blocks the objective outright.',
+          action: 'Book a B2 course — roughly 12 weeks at your current level',
+        },
+        recognition: {
+          skill: 'Qualification recognition',
+          tag: 'Important',
+          from: 'Not started',
+          to: 'Anerkennung applied for',
+          why: 'A foreign nursing degree has to be formally recognised before you can practise. The process takes months, so it is worth starting early.',
+          action: 'Start the Anerkennung process for your nursing degree',
+        },
+        certificate: {
+          skill: 'Intensive care certificate',
+          tag: 'Nice to have',
+          from: 'Experience only',
+          to: 'Certified',
+          why: 'Your ICU experience is clear from your roles, but nothing documents it. A certificate turns a claim into evidence.',
+          action: 'Ask your employer for written confirmation of your ICU work',
+        },
+      },
+    },
+    human: {
+      eyebrow: 'AI and people',
+      title: 'The analysis reports its own uncertainty',
+      lead: 'A model that is confidently wrong about your career is worse than no model at all. So every value it extracts carries a confidence, and low confidence is treated as a problem to escalate rather than a detail to hide.',
+      stages: {
+        analyse: {
+          title: 'The AI reads your CV',
+          text: 'It extracts your experience, education, skills and languages into structured fields.',
+        },
+        confidence: {
+          title: 'It scores its own certainty',
+          text: 'Every extracted block carries a confidence value. A CV that is hard to read produces low ones.',
+        },
+        review: {
+          title: 'Low confidence reaches a person',
+          text: 'Profiles the AI could not read cleanly are flagged and land in a queue for our team.',
+        },
+        profile: {
+          title: 'You see what was uncertain',
+          text: 'Anything read with low confidence is marked on your profile, and you can correct it yourself.',
+        },
+      },
+      honest: 'To be precise about what this means: not every profile is reviewed by a person. Profiles the AI handled confidently are cleared automatically — the human review exists for the cases where it could not.',
+    },
+    cv: {
+      eyebrow: 'Your CV, three languages',
+      title: 'A German employer reads a German CV',
+      lead: 'MeinRoots generates your CV in English, German and French from the file you uploaded. German terms of art stay in German, because that is what employers search for.',
+      p1: 'Your original file is stored exactly as you sent it and is never modified',
+      p2: 'Generated versions are clearly labelled as generated',
+      p3: 'A version reviewed by our team is marked as reviewed',
+      originalTitle: 'Your original CV',
+      originalMeta: 'PDF · uploaded by you',
+      untouched: 'Never modified',
+      generated: 'Generated from your CV',
+    },
+    domains: {
+      eyebrow: 'Classification',
+      title: 'It works out what kind of professional you are',
+      lead: 'Not keyword matching. The classifier reads what you have actually done most recently and most substantially, and places you in a field with a specialisation and a seniority — the same way a recruiter would.',
+      input: 'Your uploaded CV',
+      domainLabel: 'Professional domain',
+      domainValue: 'Healthcare & Care',
+      specLabel: 'Specialisation',
+      specValue: 'Intensive care',
+      seniorityLabel: 'Seniority',
+      seniorityValue: 'Mid-level',
+      listLabel: 'Fields currently supported',
+      items: {
+        it: 'IT & Software',
+        health: 'Healthcare & Care',
+        engineering: 'Engineering',
+        logistics: 'Logistics',
+        finance: 'Finance',
+        construction: 'Construction & Trades',
+        hospitality: 'Hospitality',
+        sales: 'Sales & Marketing',
+      },
+    },
+    privacy: {
+      eyebrow: 'Your data',
+      title: 'A CV is personal. We treat it that way',
+      lead: 'Written plainly, because you are being asked to hand over your working life. Everything below is something the platform actually does.',
+      items: {
+        consent: {
+          title: 'Consent before processing',
+          text: 'Nothing is analysed until you have explicitly agreed to it at sign-up.',
+        },
+        untouched: {
+          title: 'Your file is not altered',
+          text: 'The document you upload is stored byte for byte. Everything else is built alongside it.',
+        },
+        audit: {
+          title: 'Access is logged',
+          text: 'Every action taken on your data is recorded — including a member of our team opening your profile.',
+        },
+        erase: {
+          title: 'Delete it yourself',
+          text: 'One action in your settings removes your account, your profile and your files. No email required.',
+        },
+      },
+    },
+    final: {
+      titleA: 'Your CV already holds your experience.',
+      titleB: 'Find out what it means for Germany.',
+      lead: 'One upload, under a minute, and you will know where you stand and what to do next. There is nothing to lose but the file you already have.',
+      secondary: 'See how it works first',
+      note: 'Free to start · Delete your data at any time',
+    },
   },
 }

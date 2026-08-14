@@ -89,47 +89,12 @@ export default {
     menu: 'Menu',
     account: 'Mon compte',
     logout: 'Se déconnecter',
+    paths: 'Parcours',
+    readiness: 'Préparation',
+    trust: 'Confiance',
+    getStarted: 'Commencer',
   },
 
-  hero: {
-    proof: 'Utilisé par des candidats de <b>40+ pays</b>',
-    titleA: 'Le talent n’a pas de frontières.',
-    titleB: 'Votre avenir :',
-    titleC: 'une carrière en Allemagne.',
-    lead: 'Un seul CV. Un profil structuré, votre domaine professionnel et les compétences qui vous manquent — en moins d’une minute.',
-    ctaPrimary: 'Téléverser mon CV — gratuit',
-    ctaSecondary: 'Comment ça marche',
-    note: 'Gratuit au démarrage · Votre CV original n’est jamais modifié · Conforme RGPD',
-    scroll: 'Faites défiler',
-    stats: {
-      languages: {
-        value: '3',
-        label: 'Langues de CV analysées',
-        hint: 'EN · DE · FR',
-      },
-      speed: {
-        value: '< 60s',
-        label: 'Vers un profil structuré',
-      },
-      domains: {
-        value: '12+',
-        label: 'Domaines professionnels',
-      },
-    },
-  },
-
-  gallery: {
-    eyebrow: 'Où travaillent nos candidats',
-    title: 'De vrais postes. De vraies villes. De vraies personnes.',
-    items: {
-      berlin: 'Berlin',
-      team: 'Équipes tech',
-      care: 'Santé & soins',
-      build: 'Métiers qualifiés',
-      code: 'Logiciel',
-      service: 'Hôtellerie',
-    },
-  },
 
   trust: {
     label: 'Conçu pour le recrutement transfrontalier encadré',
@@ -178,285 +143,6 @@ export default {
         ],
       },
     },
-  },
-
-  how: {
-    eyebrow: 'Le parcours',
-    title: 'Du CV à la clarté en quatre étapes',
-    lead: 'Pas de longs formulaires avant d’en voir l’intérêt. Téléversez d’abord — le questionnaire ne demande que ce que l’IA n’a pas pu déduire de votre CV.',
-    steps: {
-      objective: {
-        title: 'Définissez votre objectif',
-        text: 'Inscrivez-vous et choisissez : emploi en Allemagne, télétravail, freelance, Ausbildung — ou une combinaison.',
-      },
-      upload: {
-        title: 'Téléversez votre CV',
-        text: 'Un PDF ou DOCX dans n’importe quelle langue prise en charge. La langue est détectée automatiquement et votre fichier d’origine n’est jamais modifié.',
-      },
-      analyse: {
-        title: 'L’IA construit votre profil',
-        text: 'Expérience, formation, certifications, compétences, technologies et langues sont extraites en champs structurés avec un indice de confiance.',
-      },
-      act: {
-        title: 'Lacunes et prochaines actions',
-        text: 'Répondez à un court questionnaire et obtenez une vue de préparation explicable, avec les compétences exactes à ajouter.',
-      },
-    },
-    banner: {
-      tag: 'Traitement en arrière-plan',
-      title: 'Le travail lent se fait pendant que vous avancez',
-      text: 'Analyse, traduction, classification et première évaluation s’exécutent de façon asynchrone. Vous répondez à quelques questions ; la plateforme fait le reste.',
-      list: [
-        'Document original conservé à l’octet près',
-        'Indice de confiance sur chaque champ extrait',
-        'État d’erreur clair si l’analyse échoue — jamais de silence',
-      ],
-    },
-  },
-
-  features: {
-    eyebrow: 'La plateforme',
-    title: 'Une IA qui produit des données, pas des paragraphes',
-    lead: 'On ne filtre pas de la prose. Chaque CV devient une structure cohérente et interrogeable.',
-    photoTag: 'Conçu pour de vraies équipes de recrutement',
-    items: {
-      detect: {
-        title: 'Détection automatique de la langue',
-        text: 'Les CV en anglais, allemand et français sont reconnus au téléversement — aucune sélection manuelle, aucune erreur d’analyse.',
-      },
-      structure: {
-        title: 'Extraction structurée',
-        text: 'Pas du texte brut. Des champs nommés pour les postes, dates, employeurs, certifications, outils et langues — prêts pour le matching.',
-      },
-      classify: {
-        title: 'Classification par domaine',
-        text: 'Chaque profil reçoit un domaine professionnel et une spécialisation, de l’IT au soin, avec un indice de confiance.',
-      },
-      translate: {
-        title: 'Versions multilingues du CV',
-        text: 'Chaque langue prise en charge est générée en arrière-plan et clairement identifiée comme générée par IA jusqu’à relecture.',
-      },
-      explain: {
-        title: 'Préparation explicable',
-        text: 'Aucun score mystérieux. Vous voyez les facteurs derrière votre statut et les actions concrètes qui l’améliorent.',
-      },
-      extend: {
-        title: 'Conçu pour évoluer',
-        text: 'Agrégation d’offres, accès recruteur, matching et abonnements se greffent sur le même socle — sans tout reconstruire.',
-      },
-    },
-    highlight: {
-      tag: 'Indice de confiance',
-      title: 'Chaque champ porte un indice de confiance',
-      text: 'Tout ce qui passe sous le seuil part en relecture humaine plutôt que d’être accepté en silence.',
-      metric: 'des profils ne nécessitent aucune relecture manuelle',
-    },
-  },
-
-  domains: {
-    eyebrow: 'Domaines professionnels',
-    title: 'Classé dans le métier que vous exercez vraiment',
-    lead: 'Chaque profil reçoit un ou plusieurs domaines et une spécialisation, avec un indice de confiance. Les catégories sont configurables par l’admin — sans redéploiement.',
-    foot: 'Un domaine manque ? Les admins ajoutent, renomment ou désactivent les catégories depuis la console.',
-    specialisations: 'spécialisations',
-    items: {
-      it: {
-        name: 'IT & Logiciel',
-        spec: 'Front-end · Back-end · Data · DevOps',
-      },
-      health: {
-        name: 'Santé / Soins',
-        spec: 'Infirmier · Aide-soignant · Thérapie · Médical',
-      },
-      engineering: {
-        name: 'Ingénierie',
-        spec: 'Mécanique · Électrique · Automobile',
-      },
-      logistics: {
-        name: 'Logistique',
-        spec: 'Entrepôt · Chaîne d’approvisionnement · Transport',
-      },
-      finance: {
-        name: 'Finance',
-        spec: 'Comptabilité · Contrôle de gestion · Audit',
-      },
-      construction: {
-        name: 'Construction',
-        spec: 'Chantier · Études · Métiers qualifiés',
-      },
-      hospitality: {
-        name: 'Hôtellerie-restauration',
-        spec: 'Hôtel · Cuisine · Service',
-      },
-      sales: {
-        name: 'Vente & Marketing',
-        spec: 'Vente B2B · Growth · Contenu',
-      },
-    },
-  },
-
-  languages: {
-    eyebrow: 'Multilingue par défaut',
-    title: 'Un téléversement. Trois langues. Une seule source de vérité.',
-    lead: 'Les employeurs allemands veulent de l’allemand, les équipes internationales de l’anglais. Nous générons chaque version en arrière-plan — identifiée comme IA jusqu’à validation humaine.',
-    checklist: [
-      'Langue source détectée automatiquement au téléversement',
-      'Fichier original conservé intact et toujours téléchargeable',
-      'Versions IA identifiées jusqu’à relecture et validation',
-      'Doublons et contradictions signalés, jamais fusionnés en silence',
-    ],
-    cta: 'Essayer avec mon CV',
-    source: 'Source',
-    generated: 'Générée en arrière-plan',
-    original: 'Document original',
-    ai: 'IA',
-  },
-
-  admin: {
-    eyebrow: 'Humain dans la boucle',
-    title: 'L’IA traite le volume. L’humain tranche l’essentiel.',
-    lead: 'La console est bâtie autour des exceptions — seuls les profils incertains arrivent jusqu’à un relecteur.',
-    points: {
-      filter: {
-        title: 'Filtrer tout le vivier',
-        text: 'Recherche par domaine, spécialisation, compétence, niveau d’allemand, expérience, statut de vérification ou autorisation de travail.',
-      },
-      exceptions: {
-        title: 'Ne relire que les exceptions',
-        text: 'Les extractions peu fiables et les données contradictoires sont signalées. Le reste passe sans intervention.',
-      },
-      audit: {
-        title: 'Corriger, confirmer, tracer',
-        text: 'Chaque correction et changement de statut est journalisé : les données vérifiées restent distinguables des sorties IA.',
-      },
-    },
-    flag: {
-      tag: 'Relecture requise',
-      text: '<b>4 profils</b> signalés aujourd’hui — faible confiance sur les dates d’emploi.',
-      foot: 'Relu par 3 admins · 40 s en moyenne',
-    },
-  },
-
-  testimonials: {
-    eyebrow: 'Témoignages',
-    title: 'Ce qui marque, c’est la clarté',
-    lead: 'Les candidats échouent rarement par manque de qualification. Ils échouent parce que personne ne leur a dit ce qui manquait.',
-    items: {
-      amina: {
-        quote: 'J’ai téléversé un CV français un dimanche soir. À la fin du questionnaire, j’avais une version allemande, un domaine clair et trois compétences à travailler. Personne ne m’avait jamais dit précisément ce qui manquait.',
-        name: 'Amina D.',
-        role: 'Développeuse front-end · Casablanca → Berlin',
-      },
-      rajesh: {
-        quote: 'La vue de préparation a tout changé pour moi. Elle expliquait pourquoi je n’étais pas encore prêt — niveau d’allemand et une certification — au lieu de rejeter ma candidature en silence.',
-        name: 'Rajesh K.',
-        role: 'Infirmier diplômé · Kochi → Munich',
-      },
-      lena: {
-        quote: 'Comme admin, j’ouvrais chaque CV. Aujourd’hui je ne relis que ceux qui sont signalés. Les profils structurés sont assez cohérents pour que le filtrage fonctionne vraiment.',
-        name: 'Lena Hoffmann',
-        role: 'Responsable recrutement · MeinRoots',
-      },
-    },
-  },
-
-  pricing: {
-    eyebrow: 'Offres',
-    title: 'Gratuit pour savoir où vous en êtes',
-    lead: 'L’analyse du CV, votre profil structuré et l’aperçu de préparation ne coûtent jamais rien. Les offres payantes concernent la suite — combler les lacunes et être recruté.',
-    note: 'Les tarifs et limites affichés sont indicatifs pour le Milestone 1 et confirmés avec MeinRoots avant le lancement.',
-    popular: 'Le plus populaire',
-    monthly: 'Mensuel',
-    yearly: 'Annuel',
-    save: '21 % d’économie',
-    plans: {
-      free: {
-        name: 'Free',
-        price: '0 €',
-        priceYearly: '0 €',
-        period: 'pour toujours',
-        periodYearly: 'pour toujours',
-        billedNote: '',
-        tagline: 'Comprendre où vous en êtes.',
-        cta: 'Commencer gratuitement',
-        features: [
-          'Téléversement & détection de langue',
-          'Analyse IA et profil structuré',
-          'Catégorie professionnelle & spécialisation',
-          'Aperçu de préparation',
-          'Recommandations de base',
-        ],
-      },
-      pro: {
-        name: 'Pro',
-        price: '19 €',
-        priceYearly: '15 €',
-        period: 'par mois',
-        periodYearly: 'par mois, facturé annuellement',
-        billedNote: '180 € facturés une fois par an — 48 € d’économie',
-        tagline: 'Combler ce qui bloque les offres.',
-        cta: 'Passer à Pro',
-        features: [
-          'Tout de Free',
-          'Analyse détaillée de qualification',
-          'Feuille de route complète des compétences',
-          'Optimisation du CV pour les employeurs allemands',
-          'Préparation aux entretiens & formations',
-          'Vérification prioritaire du profil',
-        ],
-      },
-      premium: {
-        name: 'Premium',
-        price: 'Sur mesure',
-        priceYearly: 'Sur mesure',
-        period: 'par placement',
-        periodYearly: 'par placement',
-        billedNote: '',
-        tagline: 'Un accompagnement jusqu’à l’arrivée.',
-        cta: 'Nous contacter',
-        features: [
-          'Tout de Pro',
-          'Conseiller carrière dédié',
-          'Recherche d’emploi assistée',
-          'Coaching & aide à la négociation',
-          'Accompagnement visa & relocalisation',
-          'Accueil à l’arrivée en Allemagne',
-        ],
-      },
-    },
-  },
-
-  faq: {
-    eyebrow: 'FAQ',
-    title: 'Les questions posées avant de téléverser',
-    lead: 'Votre CV est une donnée personnelle. Voici exactement ce qui lui arrive — et ce qui ne lui arrive pas.',
-    link: 'Encore un doute ? Parlons-en',
-    items: [
-      {
-        q: 'Quelles langues de CV sont prises en charge ?',
-        a: 'L’anglais, l’allemand et le français. La langue source est détectée automatiquement au téléversement — vous n’avez jamais à la choisir — et les versions dans les deux autres langues sont générées en arrière-plan.',
-      },
-      {
-        q: 'Mon CV original sera-t-il modifié ?',
-        a: 'Jamais. Le fichier téléversé est conservé exactement tel que vous l’avez envoyé. Les traductions et données structurées sont stockées à côté, dans des enregistrements séparés, et le contenu généré par IA reste identifié jusqu’à relecture humaine.',
-      },
-      {
-        q: 'Comment mes données sont-elles protégées ?',
-        a: 'Les CV et données de profil sont des données personnelles et traités comme telles : chiffrées en transit et au repos, accès basé sur les rôles, conservation et suppression conformes au RGPD. Vos informations ne sont transmises à un recruteur qu’après votre consentement.',
-      },
-      {
-        q: 'Que signifie réellement l’indicateur de préparation ?',
-        a: 'C’est un statut explicable, pas un score opaque. Vous voyez les facteurs qui le composent — compétences prouvées, niveau de langue, expérience, autorisation de travail — et les actions précises qui le font progresser.',
-      },
-      {
-        q: 'Faut-il parler allemand pour postuler ?',
-        a: 'Cela dépend du poste. Beaucoup de postes IT et à distance sont en anglais, tandis que la santé et les métiers en contact client en Allemagne attendent souvent un B1–B2. Votre profil indique le niveau habituellement requis et l’écart restant.',
-      },
-      {
-        q: 'Un humain intervient-il ?',
-        a: 'Oui — par conception. L’IA fait l’extraction et la classification répétitives ; un relecteur MeinRoots contrôle les résultats peu fiables, les informations contradictoires et les décisions de qualification. Les données vérifiées sont toujours marquées comme telles.',
-      },
-    ],
   },
 
   cta: {
@@ -970,5 +656,291 @@ export default {
     title: 'Nous n’avons pas trouvé cette page',
     text: 'Le lien est peut-être obsolète, ou l’adresse contient une faute de frappe. Votre compte n’a aucun problème.',
     home: 'Aller à l’accueil',
+  },
+
+  home: {
+    factors: {
+      experience: 'Expérience',
+      education: 'Formation',
+      skills: 'Compétences',
+      language: 'Allemand',
+    },
+    hero: {
+      eyebrow: 'Pour l’Allemagne, le télétravail et l’Ausbildung',
+      titleA: 'Découvrez à quel point vous êtes prêt',
+      titleB: 'pour la suite de votre carrière.',
+      lead: 'Envoyez un CV. MeinRoots le lit, construit un profil structuré et vous indique votre niveau de préparation pour la voie que vous avez choisie — et ce qui vous en sépare exactement.',
+      ctaPrimary: 'Envoyer mon CV',
+      ctaSecondary: 'Comment ça marche',
+      point1: 'Gratuit pour commencer',
+      point2: 'Votre CV original n’est jamais modifié',
+      point3: 'Anglais, allemand ou français',
+      exampleLabel: 'Exemple',
+      band: 'Presque prêt',
+      outOf: 'sur 100',
+      nextTitle: 'Votre prochaine étape',
+      nextText: 'Atteindre l’allemand B2 — environ 12 semaines',
+      fileName: 'CV — Amina Haddad.pdf',
+      fileMeta: 'Français détecté · analysé en 41 secondes',
+    },
+    trust: {
+      label: 'Ce que MeinRoots fait de votre CV',
+      languages: 'CV lus en EN, DE et FR',
+      original: 'Votre original n’est jamais modifié',
+      human: 'Les cas incertains passent par une personne',
+      gdpr: 'Consentement d’abord, suppression à tout moment',
+      free: 'Gratuit pour commencer',
+    },
+    paths: {
+      eyebrow: 'Votre objectif',
+      title: 'Vers quoi travaillez-vous ?',
+      lead: 'Tout ce qui suit s’y adapte. La préparation, les écarts et les recommandations sont évalués pour la voie choisie — et vous pouvez en choisir plusieurs.',
+      choose: 'Commencer par là',
+      note: 'Vous pouvez changer d’objectif à tout moment ; votre préparation est alors réévaluée pour le nouveau.',
+      detail: {
+        germany: 'Visa, reconnaissance et niveau d’allemand sont décisifs',
+        remote: 'Le fuseau horaire et un anglais démontré comptent le plus',
+        freelance: 'Des réalisations prouvées et une spécialisation claire',
+        ausbildung: 'Allemand A2–B1 au départ, diplôme reconnu en 2 à 3,5 ans',
+      },
+    },
+    how: {
+      eyebrow: 'Le déroulé',
+      title: 'D’un seul CV à une étape claire',
+      lead: 'Pas de longs formulaires avant d’en voir l’intérêt. Envoyez d’abord — on ne vous demande que ce que votre CV n’a pas déjà dit.',
+      steps: {
+        upload: {
+          title: 'Envoyez votre CV',
+          text: 'Un PDF ou un Word en anglais, allemand ou français. La langue est détectée pour vous.',
+        },
+        understand: {
+          title: 'Nous le lisons vraiment',
+          text: 'Expérience, formation, certifications, compétences et langues deviennent un profil structuré — avec un indice de confiance sur chaque partie.',
+        },
+        readiness: {
+          title: 'Voyez où vous en êtes',
+          text: 'Un score de préparation par objectif, et les raisons pondérées derrière. Jamais un chiffre seul.',
+        },
+        act: {
+          title: 'Sachez quoi faire ensuite',
+          text: 'Chaque écart arrive avec un niveau cible, sa raison d’être pour votre objectif, et une première action pour cette semaine.',
+        },
+      },
+    },
+    showcase: {
+      eyebrow: 'Ce que vous obtenez',
+      title: 'Pas un verdict — un profil exploitable',
+      lead: 'Ce sont les mêmes écrans que vous atteignez après l’envoi. Rien ici n’est une maquette marketing de quelque chose qui n’existe pas.',
+      tabs: {
+        profile: 'Votre profil',
+        readiness: 'Préparation',
+        gaps: 'Écarts',
+        next: 'Prochaines étapes',
+      },
+      profile: {
+        headline: 'Infirmière, soins intensifs',
+        location: 'Casablanca, Maroc',
+        domain: 'Santé & soins',
+        experienceLabel: 'Expérience',
+        experience: '6 ans 3 mois',
+        specLabel: 'Spécialisation',
+        spec: 'Soins intensifs',
+        eduLabel: 'Formation',
+        edu: 'Licence en soins infirmiers, 2018',
+        langLabel: 'Langues',
+        lang: 'Arabe natif · Français C1 · Allemand B1',
+        evidenced: 'Compétences que vos postes démontrent réellement',
+      },
+      readiness: {
+        foot: 'Pondéré pour cet objectif — en télétravail, l’allemand compterait bien moins.',
+      },
+      gaps: {
+        german: {
+          skill: 'Allemand',
+          tag: 'Bloquant',
+          from: 'B1',
+          to: 'B2',
+          action: 'Réserver un cours B2 — environ 12 semaines',
+        },
+        recognition: {
+          skill: 'Reconnaissance du diplôme',
+          tag: 'Important',
+          from: 'Non commencé',
+          to: 'Demande déposée',
+          action: 'Lancer la reconnaissance de votre diplôme',
+        },
+        certificate: {
+          skill: 'Attestation soins intensifs',
+          tag: 'Souhaitable',
+          from: 'Expérience seule',
+          to: 'Attesté',
+          action: 'Demander une attestation écrite à votre employeur',
+        },
+      },
+      next: {
+        german: {
+          title: 'Atteindre l’allemand B2',
+          text: 'Le plus grand gain possible sur votre score',
+        },
+        questions: {
+          title: 'Répondre à 4 questions',
+          text: 'Autorisation de travail et disponibilité restent inconnues',
+        },
+        certificate: {
+          title: 'Ajouter une attestation',
+          text: 'Transforme une expérience déclarée en expérience prouvée',
+        },
+        relocation: {
+          title: 'Confirmer votre mobilité',
+          text: 'Les employeurs filtrent très tôt là-dessus',
+        },
+      },
+      priority: {
+        critical: 'En priorité',
+        important: 'Utile',
+        nice: 'Optionnel',
+      },
+    },
+    readiness: {
+      eyebrow: 'Préparation',
+      title: 'Un score n’est utile que si l’on voit ce qui le compose',
+      lead: 'MeinRoots ne vous dit pas si vous êtes un bon candidat. Il vous montre où vous en êtes pour l’objectif choisi, ce qui vous porte et ce qui vous freine.',
+      p1Title: 'Pondéré selon votre objectif',
+      p1Text: 'L’allemand pèse lourd pour un emploi en Allemagne et presque rien en télétravail. Le même profil obtient des scores différents selon la voie.',
+      p2Title: 'Chaque facteur est expliqué',
+      p2Text: 'Le raisonnement est à côté du chiffre — ce qui est solide, ce qui est inconnu, et pourquoi.',
+      p3Title: 'Inconnu est une vraie réponse',
+      p3Text: 'Si votre CV ne dit rien de votre autorisation de travail, c’est marqué inconnu plutôt que deviné.',
+      caveat: 'C’est une aide à la décision, pas un résultat d’examen. Cela indique où porter vos efforts — cela ne décide rien à votre sujet.',
+      improve: '3 changements feraient monter ce score',
+      state: {
+        strong: 'Solide',
+        ok: 'Correct',
+        weak: 'À renforcer',
+      },
+    },
+    gaps: {
+      eyebrow: 'Écarts de compétences',
+      title: 'Chaque écart vient avec une première étape',
+      lead: 'Trouver une faiblesse est facile. Ce qui est utile, c’est le niveau cible, la raison pour votre objectif, et ce que vous pouvez faire lundi matin.',
+      current: 'Actuel',
+      target: 'Cible',
+      why: 'Pourquoi c’est important',
+      items: {
+        german: {
+          skill: 'Allemand',
+          tag: 'Bloquant',
+          from: 'B1',
+          to: 'B2',
+          why: 'Les postes infirmiers en hôpital allemand exigent le B2 pour le contact patient. C’est le seul écart qui bloque directement l’objectif.',
+          action: 'Réserver un cours B2 — environ 12 semaines depuis votre niveau',
+        },
+        recognition: {
+          skill: 'Reconnaissance du diplôme',
+          tag: 'Important',
+          from: 'Non commencé',
+          to: 'Demande déposée',
+          why: 'Un diplôme infirmier étranger doit être formellement reconnu avant d’exercer. La procédure prend des mois : mieux vaut commencer tôt.',
+          action: 'Lancer la procédure de reconnaissance de votre diplôme',
+        },
+        certificate: {
+          skill: 'Attestation soins intensifs',
+          tag: 'Souhaitable',
+          from: 'Expérience seule',
+          to: 'Attesté',
+          why: 'Votre expérience en réanimation ressort de vos postes, mais rien ne la documente. Une attestation transforme une déclaration en preuve.',
+          action: 'Demander à votre employeur une attestation écrite de votre travail en réanimation',
+        },
+      },
+    },
+    human: {
+      eyebrow: 'L’IA et les personnes',
+      title: 'L’analyse déclare sa propre incertitude',
+      lead: 'Un modèle qui se trompe avec assurance sur votre carrière est pire que pas de modèle du tout. Chaque valeur extraite porte donc un indice de confiance, et une confiance faible est remontée plutôt que masquée.',
+      stages: {
+        analyse: {
+          title: 'L’IA lit votre CV',
+          text: 'Elle extrait expérience, formation, compétences et langues dans des champs structurés.',
+        },
+        confidence: {
+          title: 'Elle évalue sa propre certitude',
+          text: 'Chaque bloc extrait porte un indice de confiance. Un CV difficile à lire en produit de faibles.',
+        },
+        review: {
+          title: 'La faible confiance atteint une personne',
+          text: 'Les profils que l’IA n’a pas pu lire proprement sont signalés et rejoignent la file de notre équipe.',
+        },
+        profile: {
+          title: 'Vous voyez ce qui était incertain',
+          text: 'Tout ce qui a été lu avec une faible confiance est signalé sur votre profil, et vous pouvez le corriger vous-même.',
+        },
+      },
+      honest: 'Pour être précis : tous les profils ne sont pas relus par une personne. Ceux que l’IA a traités avec assurance sont validés automatiquement — la relecture humaine existe pour les cas où elle n’a pas pu.',
+    },
+    cv: {
+      eyebrow: 'Votre CV, trois langues',
+      title: 'Un employeur allemand lit un CV allemand',
+      lead: 'MeinRoots génère votre CV en anglais, allemand et français à partir du fichier envoyé. Les termes techniques allemands restent en allemand, car c’est ce que les employeurs recherchent.',
+      p1: 'Votre fichier original est conservé exactement tel qu’envoyé et n’est jamais modifié',
+      p2: 'Les versions générées sont clairement signalées comme générées',
+      p3: 'Une version relue par notre équipe est marquée comme relue',
+      originalTitle: 'Votre CV original',
+      originalMeta: 'PDF · envoyé par vous',
+      untouched: 'Jamais modifié',
+      generated: 'Généré depuis votre CV',
+    },
+    domains: {
+      eyebrow: 'Classification',
+      title: 'Il comprend quel type de professionnel vous êtes',
+      lead: 'Pas une correspondance de mots-clés. Le classement lit ce que vous avez fait de plus récent et de plus substantiel, et vous place dans un domaine avec une spécialisation et un niveau — comme le ferait un recruteur.',
+      input: 'Votre CV envoyé',
+      domainLabel: 'Domaine professionnel',
+      domainValue: 'Santé & soins',
+      specLabel: 'Spécialisation',
+      specValue: 'Soins intensifs',
+      seniorityLabel: 'Niveau',
+      seniorityValue: 'Confirmé',
+      listLabel: 'Domaines actuellement couverts',
+      items: {
+        it: 'Informatique & logiciel',
+        health: 'Santé & soins',
+        engineering: 'Ingénierie',
+        logistics: 'Logistique',
+        finance: 'Finance',
+        construction: 'Construction & artisanat',
+        hospitality: 'Hôtellerie',
+        sales: 'Ventes & marketing',
+      },
+    },
+    privacy: {
+      eyebrow: 'Vos données',
+      title: 'Un CV est personnel. Nous le traitons comme tel',
+      lead: 'Dit simplement, parce qu’on vous demande votre vie professionnelle. Tout ce qui suit est quelque chose que la plateforme fait réellement.',
+      items: {
+        consent: {
+          title: 'Consentement avant traitement',
+          text: 'Rien n’est analysé tant que vous n’avez pas explicitement accepté à l’inscription.',
+        },
+        untouched: {
+          title: 'Votre fichier n’est pas altéré',
+          text: 'Le document envoyé est conservé octet par octet. Tout le reste est construit à côté.',
+        },
+        audit: {
+          title: 'Les accès sont journalisés',
+          text: 'Chaque action sur vos données est enregistrée — y compris l’ouverture de votre profil par notre équipe.',
+        },
+        erase: {
+          title: 'Supprimez vous-même',
+          text: 'Une action dans vos paramètres supprime compte, profil et fichiers. Sans e-mail à envoyer.',
+        },
+      },
+    },
+    final: {
+      titleA: 'Votre CV contient déjà votre expérience.',
+      titleB: 'Découvrez ce qu’elle vaut pour l’Allemagne.',
+      lead: 'Un envoi, moins d’une minute, et vous saurez où vous en êtes et quoi faire ensuite. Vous n’avez à y perdre que le fichier que vous avez déjà.',
+      secondary: 'Voir d’abord comment ça marche',
+      note: 'Gratuit pour commencer · Supprimez vos données à tout moment',
+    },
   },
 }
