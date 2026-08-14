@@ -143,8 +143,8 @@ Already provisioned and running. Node 22, PostgreSQL 16, nginx.
 
 ```
 /opt/meinroots/server         this API, run by systemd as user `meinroots`
-/opt/meinroots/client         the candidate site build   — nginx :80
-/opt/meinroots/admin          the review console build   — nginx :8443
+/opt/meinroots/client         the candidate site build   — meinroots.de
+/opt/meinroots/admin          the review console build   — admin.meinroots.de
 /opt/meinroots/server/storage uploaded CVs
 ```
 
@@ -154,19 +154,36 @@ journalctl -u meinroots-api -f
 ```
 
 `deploy/meinroots-api.service` and `deploy/nginx.conf` are the files installed on the box.
-nginx runs **two server blocks**: port 80 serves the candidate site, port 8443 serves the
-review console, and each proxies `/api` to the Node process so both stay same-origin with
-first-party cookies.
+nginx serves **two hostnames over HTTPS** — `meinroots.de` and `admin.meinroots.de` —
+each with its own certificate and document root, and each proxying `/api` to the Node
+process so both stay same-origin with first-party cookies. Port 80 exists only to answer
+Let's Encrypt challenges and redirect everything else to HTTPS.
+
+### TLS
+
+Certificates come from Let’s Encrypt via `certbot certonly --webroot`, deliberately not
+the nginx plugin: the plugin rewrites `nginx.conf`, which would make the copy in this repo
+stop matching the box. Two certificates, both ECDSA, renewed automatically by
+`certbot.timer`.
+
+`deploy/certbot-reload-nginx.sh` is installed to
+`/etc/letsencrypt/renewal-hooks/deploy/`. Without it renewal succeeds and nothing changes —
+nginx keeps the old certificate in memory until something reloads it, and the site simply
+becomes untrusted one day with no warning.
+
+Verified: TLS 1.2/1.3 only (1.0 and 1.1 refused), HSTS a year with `includeSubDomains`,
+HTTP 301s to HTTPS, `www` 301s to the apex, session cookies `HttpOnly; Secure; SameSite=Lax`,
+and `certbot renew --dry-run` passing for both certificates.
 
 The console is not reachable from the public site: `/admin` and the usual guesses return a
 flat 404 on port 80, and nothing on the site links to it. Restricting it further — an
-office-IP `allow`/`deny` pair or `auth_basic` — is a few lines in the `:8443` block, not a
+office-IP `allow`/`deny` pair or `auth_basic` — is a few lines in the `admin.meinroots.de` block, not a
 code change. Both are written out as comments in `deploy/nginx.conf`.
 
 ### Before this is production
 
-1. **TLS.** Point a domain at the server, run `certbot --nginx`, then set `COOKIE_SECURE=true`
-   in `.env` and restart. Until then cookies travel in clear.
+1. ~~**TLS.**~~ Done — `meinroots.de` and `admin.meinroots.de` are on HTTPS with automatic
+   renewal, and `COOKIE_SECURE=true` is set.
 2. **Rotate the credentials** that were shared over chat: the OpenAI key and the server's root
    password. Then disable root password login in favour of an SSH key.
 3. **Off-server backup copies.** `deploy/backup.sh` runs nightly at 03:20 through

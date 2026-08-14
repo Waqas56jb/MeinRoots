@@ -8,15 +8,18 @@ are for work in Germany, remote work, freelance or an Ausbildung.
 
 | Folder | What it is | Deployed at |
 | --- | --- | --- |
-| [client/](client/) | Candidate site: landing page, auth, CV upload, dashboard, questionnaire | `http://169.58.169.182` |
-| [admin/](admin/) | Internal review console: queue, candidate review, jobs, audit log | `http://169.58.169.182:8443` |
-| [server/](server/) | Node.js + Express API, PostgreSQL, OpenAI pipeline, background worker | `/api` on both |
+| [client/](client/) | Candidate workspace: landing page, auth, CV upload, profile, readiness, questionnaire | **https://meinroots.de** |
+| [admin/](admin/) | Internal review console: queue, candidate review, jobs, audit log | **https://admin.meinroots.de** |
+| [server/](server/) | Node.js + Express API, PostgreSQL, OpenAI pipeline, background worker | `/api` on both hostnames |
 
-**The console is on its own origin and nothing links to it.** The candidate site
-has no admin link, no admin route, and no admin code in its bundle — `/admin`
-there returns 404. A candidate cannot discover the console from the site. See
-[admin/README.md](admin/README.md) for what that isolation does and does not
-guarantee, and how to lock it down further.
+**The console is on its own hostname and nothing links to it.** The candidate site
+has no admin link, no admin route, and no admin code in its bundle — `/admin` there
+returns 404. Because the hostnames differ, the session cookies are host-only: a
+candidate's cookie is never sent to the console's origin, and vice versa.
+
+Everything is HTTPS with HSTS; plain HTTP redirects. The console hostname is not a
+secret — every certificate is published to Certificate Transparency logs — so see
+[admin/README.md](admin/README.md) for how to put a real second gate in front of it.
 
 All three interfaces are EN/DE/FR, and every dictionary is verified key-for-key
 against English.

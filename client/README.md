@@ -39,8 +39,7 @@ where nginx serves this build and proxies `/api` to the Node process.
 ## Deploying to Vercel
 
 1. **New Project → import the repo.**
-2. Set **Root Directory** to `client` (the repo root also holds `server/`, `admin/`,
-   `super-admin/`).
+2. Set **Root Directory** to `client` (the repo root also holds `server/` and `admin/`).
 3. Framework preset **Vite**, build `npm run build`, output `dist` — [vercel.json](vercel.json)
    already declares all of this, so the defaults it detects will be correct.
 4. Deploy.
@@ -111,7 +110,7 @@ added to `script-src` / `connect-src` or they will be blocked.
 - The Unsplash photos are hotlinked from their CDN. Fine for a demo; for production, license
   or self-host the images and drop them in `public/`.
 - Update the `Sitemap:` line in [public/robots.txt](public/robots.txt) and the `og:image` /
-  canonical URL in [index.html](index.html) to the real domain.
+  canonical URL in [index.html](index.html) to `https://meinroots.de`.
 - The placeholder figures ("40+ countries", "82% need no manual review", the €19/€15 pricing)
   are unconfirmed — replace or remove them before launch.
 
@@ -138,10 +137,10 @@ added to `script-src` / `connect-src` or they will be blocked.
 every refresh.
 
 There is no admin route here, and no link to one anywhere in this application. The
-[review console](../admin/README.md) is a separate app on a separate origin
-(`:8443`); none of it — not even behind a role check — is part of what a candidate
-downloads, and `/admin` on this origin returns 404. A candidate must not be able to
-discover that a review tool exists, let alone find its address.
+[review console](../admin/README.md) is a separate app on its own hostname
+(`admin.meinroots.de`); none of it — not even behind a role check — is part of what
+a candidate downloads, and `/admin` on this origin returns 404. Because the hostnames
+differ, this app's session cookie is never sent there either.
 
 ## The CV upload rule
 
@@ -150,14 +149,14 @@ A CV is personal data, so it can only be uploaded by a signed-in candidate. Ever
 section, CTA dropzone — routes through one hook, [`useCvGate`](src/hooks/useCvGate.js):
 
 ```
-signed in      → /upload
-not signed in  → /login?next=/upload&gate=cv
+signed in      → /cv
+not signed in  → /login?next=/cv&gate=cv
                  ├─ the login page shows the "one step before your CV" notice
                  ├─ "create a free account" carries ?next through to /signup
-                 └─ after login or signup → /upload
+                 └─ after login or signup → /cv
 ```
 
-`/upload` is independently protected by the `Protected` wrapper in [App.jsx](src/App.jsx),
+`/cv` is independently protected by the `Protected` wrapper in [App.jsx](src/App.jsx),
 so typing the URL directly bounces to the same gate. The CTA email field short-circuits
 to `/signup?email=…` so the address is never typed twice.
 
@@ -241,9 +240,12 @@ client/
 
 ## Where it is deployed
 
-`http://169.58.169.182` — nginx on the Contabo box serves this build and proxies `/api`
-to the Node process, so the front end and API are one origin. The review console is a
-different origin on the same box and is not reachable from here.
+**https://meinroots.de** — nginx on the Contabo box serves this build and proxies `/api`
+to the Node process, so the front end and API are one origin. `www` redirects to the apex,
+and plain HTTP redirects to HTTPS.
+
+The review console is a different hostname (`admin.meinroots.de`) with its own certificate,
+and is not reachable from here.
 
 The Vercel deployment cannot talk to that API yet: Vercel is HTTPS and the API is still
 plain HTTP, so the browser blocks the request as mixed content. Once a domain and a
@@ -278,7 +280,7 @@ the landing page is still indicative, and the placeholder figures ("40+ countrie
 ## Web fundamentals checklist
 
 Rules this project already follows, and the reasoning — useful as a baseline for the
-admin, super-admin and server apps too.
+admin and server apps too.
 
 ### Routing & deployment
 - **Every URL must survive a refresh.** SPA host → rewrite unknown paths to `index.html`.

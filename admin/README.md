@@ -10,8 +10,8 @@ Trilingual (EN/DE/FR) like the rest of the platform.
 
 | | |
 | --- | --- |
-| Candidate site | `http://169.58.169.182` |
-| **Review console** | **`http://169.58.169.182:8443`** |
+| Candidate site | https://meinroots.de |
+| **Review console** | **https://admin.meinroots.de** |
 
 Nothing connects the two. The candidate site has no admin link, no admin route
 and no admin code in its bundle; `/admin` and the usual guesses (`/administrator`,
@@ -26,18 +26,19 @@ console on its own origin with its own document root, its own security headers
 (`X-Frame-Options: DENY`, `noindex`, `no-referrer`) and its own access rules;
 keep the console out of the candidate bundle entirely.
 
-**It does not:** separate the two cryptographically. A different port is a
-different origin for CORS, but **cookies ignore ports** — a session cookie set on
-this host is sent to both. That is safe here because the API authorises every
-admin route by role on the server, never by which port asked, but it is worth
-stating plainly rather than implying more than is true.
+**Cookies are now genuinely separate.** The console has its own hostname and its
+own certificate, so its session cookie is scoped to `admin.meinroots.de` and is
+never sent to the candidate site — and a candidate's cookie is never sent here.
+The earlier port split could not do this: cookies ignore ports.
 
-**Full isolation** is a separate hostname with its own certificate
-(`admin.meinroots.com`), available the moment a domain exists. See below.
+**The hostname is not a secret.** Every certificate is published to Certificate
+Transparency logs, so `admin.meinroots.de` is discoverable by anyone who looks.
+Obscurity was never the control — the role check in the API is. If you want a
+second one, add it in nginx.
 
 ### Restricting access further
 
-Both are nginx-level, in the `:8443` block of
+Both are nginx-level, in the `admin.meinroots.de` server block of
 [`../server/deploy/nginx.conf`](../server/deploy/nginx.conf) — no code change:
 
 ```nginx
@@ -45,7 +46,8 @@ Both are nginx-level, in the `:8443` block of
 allow 203.0.113.4;
 deny all;
 
-# Or a second password in front of the app
+# Or a second password in front of the app. Exclude /api/, or the
+# console's own fetches will be rejected before they reach the API.
 auth_basic "MeinRoots";
 auth_basic_user_file /etc/nginx/.meinroots-admin;
 ```
@@ -74,16 +76,17 @@ npm run build                      # served at the root of its own host/port
 ADMIN_BASE=/tools/ npm run build   # served under a subpath
 ```
 
-**On Vercel or another host**, the console and the API are then on different
+**On Vercel or another host**, the console and the API would be on different
 origins, which needs two things:
 
-1. `VITE_API_URL=https://api.meinroots.com` at build time.
+1. `VITE_API_URL=https://meinroots.de` at build time.
 2. That address in `CORS_ORIGINS` in the API's `.env`.
 
-And one prerequisite that is not optional: **the API must be on HTTPS first.**
-A page served over HTTPS cannot call a plain-HTTP API — the browser blocks it as
-mixed content, and the cookies would be cross-site. So: domain → certificate →
-then Vercel. Until then, the port-8443 deployment is the working one.
+Worth knowing before choosing that: the cookies become cross-site, which means
+`SameSite=None` and a genuine third-party-cookie dependency. The current setup —
+the console served from `admin.meinroots.de` by the same nginx that proxies its
+`/api` — keeps everything same-origin and avoids that entirely. There is no
+reason to move it unless you want the console off this machine.
 
 ## Why it is not part of the client app
 
