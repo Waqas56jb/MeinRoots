@@ -1,120 +1,169 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppShell from '../components/app/AppShell.jsx'
+import ErrorState from '../components/app/ErrorState.jsx'
+import ProfileCompletion from '../components/app/ProfileCompletion.jsx'
+import { Loading, ProfileSkeleton } from '../components/app/Skeletons.jsx'
 import Icon from '../components/ui/Icon.jsx'
 import {
   EducationList, ExperienceList, LanguagesBlock, SkillsBlock,
 } from '../components/app/ProfileBlocks.jsx'
-import { Badge, Card, ConfidenceBadge, Empty, Note, Ring, Skeleton } from '../components/app/widgets.jsx'
+import { Badge, ConfidenceBadge, Note } from '../components/app/widgets.jsx'
+import { formatMonths } from '../components/app/insight.js'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useWorkspace } from '../context/WorkspaceContext.jsx'
 import { profileApi } from '../lib/api.js'
 import { useApiMessage } from '../lib/apiMessage.js'
 
 /**
- * The candidate's structured profile — everything the AI extracted, and every
- * correction they have made to it, in one editable place.
+ * The candidate's structured professional identity.
+ *
+ * Everything on this page was read out of a CV by a model, and the page is
+ * honest about that without making a performance of it. Rows the extractor was
+ * unsure about carry a marker; rows the candidate has corrected say so and drop
+ * the marker, because at that point the model's uncertainty is no longer about
+ * anything. What it never does is show a confidence percentage on data that is
+ * simply correct — that would turn a useful signal into noise.
  */
 export default function ProfilePage() {
   const { t } = useI18n()
-  const apiMessage = useApiMessage()
   const ws = useWorkspace()
 
   const [editingHeader, setEditingHeader] = useState(false)
 
+  const shell = {
+    eyebrow: t('app.nav.profile'),
+    title: t('app.profile.title'),
+    subtitle: t('app.profile.editHint'),
+    badges: { questionnaire: ws.outstandingQuestions },
+  }
+
+  if (ws.loading) {
+    return (
+      <AppShell {...shell}>
+        <Loading label={t('common.loading')}>
+          <ProfileSkeleton />
+        </Loading>
+      </AppShell>
+    )
+  }
+
+  if (ws.error) {
+    return (
+      <AppShell {...shell}>
+        <ErrorState code={ws.error} what={t('app.error.profile')} onRetry={ws.reload} />
+      </AppShell>
+    )
+  }
+
+  if (!ws.profile || !ws.hasProfileData) {
+    return (
+      <AppShell {...shell}>
+        <section className="rpanel rpanel--empty">
+          <span className="rpanel__emptyIcon"><Icon name="upload" size={24} /></span>
+          <h2>{t('app.dash.noCvTitle')}</h2>
+          <p>{t('app.dash.noCvText')}</p>
+          <Link to="/cv" className="btn btn--primary">
+            {t('nav.cta')} <Icon name="arrowRight" size={16} />
+          </Link>
+        </section>
+      </AppShell>
+    )
+  }
+
+  const p = ws.profile
+
   return (
-    <AppShell
-      eyebrow={t('app.nav.profile')}
-      title={t('app.profile.title')}
-      subtitle={t('app.profile.editHint')}
-      badges={{ questionnaire: ws.outstandingQuestions }}
-    >
-      {ws.loading ? (
-        <Skeleton rows={4} />
-      ) : !ws.profile || !ws.hasProfileData ? (
-        <Card>
-          <Empty
-            icon="upload"
-            title={t('app.dash.noCvTitle')}
-            text={t('app.dash.noCvText')}
-            action={<Link to="/cv" className="btn btn--primary">{t('nav.cta')} <Icon name="arrowRight" /></Link>}
+    <AppShell {...shell}>
+      {/* ------------------------- who this person is ----------------------- */}
+      <section className="ident ident--hero">
+        {editingHeader ? (
+          <HeaderForm
+            profile={p}
+            onCancel={() => setEditingHeader(false)}
+            onSaved={(next) => {
+              ws.setProfile(next)
+              setEditingHeader(false)
+            }}
           />
-        </Card>
-      ) : (
-        <>
-          <Card>
-            <div className="phead">
-              <Ring value={ws.profile.completeness} size={92} sublabel={t('app.dash.complete')} />
-              <div className="phead__body">
-                {editingHeader ? (
-                  <HeaderForm
-                    profile={ws.profile}
-                    onCancel={() => setEditingHeader(false)}
-                    onSaved={(p) => {
-                      ws.setProfile(p)
-                      setEditingHeader(false)
-                    }}
-                  />
-                ) : (
-                  <>
-                    <h2>{ws.profile.headline || t('app.profile.noHeadline')}</h2>
-                    {ws.profile.summary && <p className="phead__summary">{ws.profile.summary}</p>}
-                    <div className="phead__tags">
-                      {ws.profile.classification && (
-                        <Badge tone="brand" icon="compass">
-                          {ws.profile.classification.label}
-                          {ws.profile.classification.specialisation
-                            ? ` · ${ws.profile.classification.specialisation}`
-                            : ''}
-                        </Badge>
-                      )}
-                      {(ws.profile.city || ws.profile.country) && (
-                        <Badge icon="pin">{[ws.profile.city, ws.profile.country].filter(Boolean).join(', ')}</Badge>
-                      )}
-                      {ws.profile.willingToRelocate === true && (
-                        <Badge tone="good" icon="check">{t('app.profile.willRelocate')}</Badge>
-                      )}
-                      {ws.profile.noticePeriodWeeks !== null && ws.profile.noticePeriodWeeks !== undefined && (
-                        <Badge icon="clock">{t('app.profile.notice', { weeks: ws.profile.noticePeriodWeeks })}</Badge>
-                      )}
-                      {ws.profile.extractionConfidence !== null && (
-                        <ConfidenceBadge value={ws.profile.extractionConfidence} />
-                      )}
-                    </div>
-                  </>
+        ) : (
+          <>
+            <div className="ident__heroTop">
+              <div className="ident__heroText">
+                <h2>{p.headline || t('app.profile.noHeadline')}</h2>
+                {p.classification && (
+                  <p className="ident__heroDomain">
+                    <Icon name="compass" size={15} />
+                    <span>
+                      <strong>{p.classification.label}</strong>
+                      {p.classification.specialisation && ` · ${p.classification.specialisation}`}
+                    </span>
+                  </p>
                 )}
               </div>
-              {!editingHeader && (
-                <button type="button" className="btn btn--ghost btn--sm" onClick={() => setEditingHeader(true)}>
-                  <Icon name="pencil" size={15} /> {t('app.edit.edit')}
-                </button>
+              <button type="button" className="btn btn--ghost btn--sm" onClick={() => setEditingHeader(true)}>
+                <Icon name="pencil" size={15} /> {t('app.edit.edit')}
+              </button>
+            </div>
+
+            {p.summary && <p className="ident__summary">{p.summary}</p>}
+
+            <div className="ident__tags">
+              {formatMonths(p.totalExperienceMonths, t) && (
+                <Badge icon="briefcase">
+                  {t('app.profile.experienceOf', { value: formatMonths(p.totalExperienceMonths, t) })}
+                </Badge>
+              )}
+              {(p.city || p.country) && (
+                <Badge icon="pin">{[p.city, p.country].filter(Boolean).join(', ')}</Badge>
+              )}
+              {p.willingToRelocate === true && (
+                <Badge tone="good" icon="check">{t('app.profile.willRelocate')}</Badge>
+              )}
+              {p.noticePeriodWeeks !== null && p.noticePeriodWeeks !== undefined && (
+                <Badge icon="clock">{t('app.profile.notice', { weeks: p.noticePeriodWeeks })}</Badge>
+              )}
+              {p.extractionConfidence !== null && p.extractionConfidence !== undefined && (
+                <ConfidenceBadge value={p.extractionConfidence} />
               )}
             </div>
-          </Card>
+          </>
+        )}
+      </section>
 
-          {ws.profile.flags?.length > 0 && (
-            <Note tone="warn" icon="info" title={t('app.dash.flagsTitle')}>
-              {ws.profile.flags.map((f) => t(`app.flags.${f.code}`)).join(' · ')}
-            </Note>
-          )}
-
-          <div className="wgrid wgrid--main">
-            <div className="wsection">
-              <ExperienceList items={ws.profile.experiences} editable onSaved={ws.setProfile} />
-              <EducationList
-                items={ws.profile.education}
-                certifications={ws.profile.certifications}
-                editable
-                onSaved={ws.setProfile}
-              />
-            </div>
-            <div className="wsection">
-              <SkillsBlock skills={ws.profile.skills} editable onSaved={ws.setProfile} />
-              <LanguagesBlock languages={ws.profile.languages} editable onSaved={ws.setProfile} />
-            </div>
-          </div>
-        </>
+      {p.flags?.length > 0 && (
+        <Note tone="warn" icon="info" title={t('app.dash.flagsTitle')}>
+          {p.flags.map((f) => t(`app.flags.${f.code}`)).join(' · ')}
+        </Note>
       )}
+
+      {/* How to read the markers, said once rather than on every row. */}
+      <p className="ident__legend">
+        <Icon name="info" size={14} />
+        <span>
+          <span className="prov prov--low"><Icon name="alert" size={11} />%</span>
+          {t('app.profile.legendLow')}
+          <span className="prov prov--mine"><Icon name="check" size={11} />{t('app.edit.edited')}</span>
+          {t('app.profile.legendMine')}
+        </span>
+      </p>
+
+      <div className="pgrid">
+        <div className="pgrid__main">
+          <ExperienceList items={p.experiences} editable onSaved={ws.setProfile} />
+          <EducationList
+            items={p.education}
+            certifications={p.certifications}
+            editable
+            onSaved={ws.setProfile}
+          />
+        </div>
+        <div className="pgrid__side">
+          <ProfileCompletion profile={p} outstandingQuestions={ws.outstandingQuestions} />
+          <SkillsBlock skills={p.skills} editable onSaved={ws.setProfile} />
+          <LanguagesBlock languages={p.languages} editable onSaved={ws.setProfile} />
+        </div>
+      </div>
     </AppShell>
   )
 }

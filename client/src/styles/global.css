@@ -42,6 +42,32 @@
   --red: #ef4444;
   --red-soft: #fdecec;
 
+  /*
+   * Semantic status.
+   *
+   * Blue means action, progress and selection. Status is a separate language,
+   * defined once here rather than as the twelve hand-typed hexes that were
+   * spread across four stylesheets — a "good" green must be the same green on
+   * the dashboard, in a badge and on a factor bar, or the colour stops meaning
+   * anything. Each tone carries the four values a status surface needs: the
+   * solid fill, the text ink readable on white, and the tinted background and
+   * border for chips and notices.
+   */
+  --ok: #16a34a;
+  --ok-ink: #15803d;
+  --ok-bg: #f0fdf4;
+  --ok-line: #bbf7d0;
+
+  --warn: #d97706;
+  --warn-ink: #b45309;
+  --warn-bg: #fffbeb;
+  --warn-line: #fde68a;
+
+  --risk: #dc2626;
+  --risk-ink: #b91c1c;
+  --risk-bg: #fef2f2;
+  --risk-line: #fecaca;
+
   /* Elevation */
   --shadow-xs: 0 1px 2px rgba(12, 32, 74, 0.06);
   --shadow-sm: 0 2px 8px rgba(12, 32, 74, 0.06);

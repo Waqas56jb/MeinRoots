@@ -5,11 +5,22 @@ import { useI18n } from '../context/I18nContext.jsx'
 /**
  * Language selector. `variant="menu"` renders the dropdown used in headers,
  * `variant="inline"` renders a flat list for the mobile drawer and footer.
+ *
+ * `onChange` fires after the language is applied. The signed-in workspace uses
+ * it to store the choice on the account as well as in the browser, so the
+ * emails we send follow the language the candidate is actually reading — before
+ * this existed, switching language in the header changed the interface but left
+ * the account still set to the old one.
  */
-export default function LanguageSwitcher({ variant = 'menu', align = 'right' }) {
+export default function LanguageSwitcher({ variant = 'menu', align = 'right', onChange }) {
   const { locale, setLocale, locales, t } = useI18n()
   const [open, setOpen] = useState(false)
   const wrapRef = useRef(null)
+
+  const choose = (code) => {
+    setLocale(code)
+    onChange?.(code)
+  }
 
   useEffect(() => {
     if (!open) return undefined
@@ -35,7 +46,7 @@ export default function LanguageSwitcher({ variant = 'menu', align = 'right' }) 
             key={l.code}
             type="button"
             className={l.code === locale ? 'is-active' : ''}
-            onClick={() => setLocale(l.code)}
+            onClick={() => choose(l.code)}
             aria-pressed={l.code === locale}
           >
             <span className="lang-inline__flag" aria-hidden="true">{l.flag}</span>
@@ -70,7 +81,7 @@ export default function LanguageSwitcher({ variant = 'menu', align = 'right' }) 
             aria-selected={l.code === locale}
             className={l.code === locale ? 'is-active' : ''}
             onClick={() => {
-              setLocale(l.code)
+              choose(l.code)
               setOpen(false)
             }}
           >

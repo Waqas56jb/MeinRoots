@@ -1,25 +1,29 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import AppShell from '../components/app/AppShell.jsx'
+import ErrorState from '../components/app/ErrorState.jsx'
+import ReadinessPanel, { SkillGap } from '../components/app/ReadinessPanel.jsx'
+import { Loading, ReadinessSkeleton } from '../components/app/Skeletons.jsx'
 import Icon from '../components/ui/Icon.jsx'
-import { Badge, Card, Empty, Meter, Note, Ring, ScoreBadge, Skeleton, band } from '../components/app/widgets.jsx'
+import { Note } from '../components/app/widgets.jsx'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useWorkspace } from '../context/WorkspaceContext.jsx'
 import { profileApi } from '../lib/api.js'
 import { useApiMessage } from '../lib/apiMessage.js'
 
-const FACTOR_TONE = { strong: 'good', adequate: undefined, weak: 'warn', unknown: 'bad' }
-const GAP_TONE = { critical: 'bad', important: 'warn', nice_to_have: 'brand' }
-
 /**
  * Readiness, per objective.
  *
- * The score is never shown alone. Every card answers three questions in order:
- * where am I, what is it based on, and what would move it — which is the whole
- * reason the assessment stores its factors alongside the number.
+ * The page answers one question — how ready am I, and why — and it answers the
+ * "why" before the candidate has to ask. The number never appears alone: it is
+ * followed immediately by what it measures, then by the factors it was built
+ * from, then by the specific things that would move it.
+ *
+ * A score people cannot interrogate is a score they cannot trust, and this is a
+ * screen someone reads while deciding whether to move countries.
  */
 export default function ReadinessPage() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const apiMessage = useApiMessage()
   const ws = useWorkspace()
 
@@ -44,21 +48,41 @@ export default function ReadinessPage() {
 
   const assessments = ws.profile?.assessments ?? []
 
+  const shell = {
+    eyebrow: t('app.nav.readiness'),
+    title: t('app.readiness.title'),
+    subtitle: t('app.readiness.hint'),
+    badges: { questionnaire: ws.outstandingQuestions },
+    actions: assessments.length > 0 && (
+      <button type="button" className="btn btn--ghost btn--sm" onClick={recalculate} disabled={busy}>
+        <Icon name="refresh" size={15} />
+        <span className="hide-xs">
+          {busy ? t('app.readiness.recalculating') : t('app.readiness.recalculate')}
+        </span>
+      </button>
+    ),
+  }
+
+  if (ws.loading) {
+    return (
+      <AppShell {...shell}>
+        <Loading label={t('common.loading')}>
+          <ReadinessSkeleton panels={2} />
+        </Loading>
+      </AppShell>
+    )
+  }
+
+  if (ws.error) {
+    return (
+      <AppShell {...shell}>
+        <ErrorState code={ws.error} what={t('app.error.readiness')} onRetry={ws.reload} />
+      </AppShell>
+    )
+  }
+
   return (
-    <AppShell
-      eyebrow={t('app.nav.readiness')}
-      title={t('app.readiness.title')}
-      subtitle={t('app.readiness.hint')}
-      badges={{ questionnaire: ws.outstandingQuestions }}
-      actions={
-        assessments.length > 0 && (
-          <button type="button" className="btn btn--ghost btn--sm" onClick={recalculate} disabled={busy}>
-            <Icon name="refresh" size={15} />
-            <span className="hide-xs">{busy ? t('app.readiness.recalculating') : t('app.readiness.recalculate')}</span>
-          </button>
-        )
-      }
-    >
+    <AppShell {...shell}>
       {error && <Note tone="bad">{error}</Note>}
       {done && <Note tone="good" icon="check">{t('app.readiness.recalculated')}</Note>}
 
@@ -77,89 +101,59 @@ export default function ReadinessPage() {
         </Note>
       )}
 
-      {ws.loading ? (
-        <Skeleton rows={3} />
-      ) : !assessments.length ? (
-        <Card>
-          <Empty
-            icon="target"
-            title={t('app.readiness.empty')}
-            text={t('app.readiness.emptyText')}
-            action={<Link to="/cv" className="btn btn--primary">{t('nav.cta')} <Icon name="arrowRight" /></Link>}
-          />
-        </Card>
+      {!assessments.length ? (
+        <section className="rpanel rpanel--empty">
+          <span className="rpanel__emptyIcon"><Icon name="target" size={24} /></span>
+          <h2>{t('app.readiness.empty')}</h2>
+          <p>{t('app.readiness.emptyText')}</p>
+          <Link to="/cv" className="btn btn--primary">
+            {t('nav.cta')} <Icon name="arrowRight" size={16} />
+          </Link>
+        </section>
       ) : (
-        <div className="wgrid wgrid--2">
+        <div className="rlist">
           {assessments.map((a) => (
-            <Card key={a.id} className={`readiness readiness--${band(a.score)}`}>
-              <div className="readiness__head">
-                <Ring value={a.score} size={104} stroke={9} sublabel={t('app.readiness.of100')} />
-                <div>
-                  <span className="readiness__goal">
-                    <Icon name="target" size={14} />{t(`goals.items.${a.goal}.title`)}
-                  </span>
-                  <h2>{t(`app.readiness.bands.${a.band}`)}</h2>
-                  <ScoreBadge score={a.score} />
-                </div>
-              </div>
-
-              {a.summary && <p className="readiness__summary">{a.summary}</p>}
-
-              {a.factors?.length > 0 && (
-                <>
-                  <h3 className="readiness__sub">{t('app.readiness.factorsTitle')}</h3>
-                  <div className="readiness__factors">
-                    {a.factors.map((f) => (
-                      <Meter
-                        key={f.key + f.label}
-                        label={f.label}
-                        value={f.score}
-                        tone={FACTOR_TONE[f.status]}
-                        note={f.detail}
-                      />
-                    ))}
+            <article key={a.id} className="rentry">
+              <ReadinessPanel assessment={a} variant="full">
+                {a.gaps?.length > 0 && (
+                  <div className="rpanel__group">
+                    <h3 className="rpanel__sub">
+                      <Icon name="bolt" size={13} />
+                      {t('app.readiness.gapsTitle')}
+                    </h3>
+                    <ul className="sgaps">
+                      {a.gaps.map((g) => (
+                        <SkillGap key={g.id} gap={g} />
+                      ))}
+                    </ul>
                   </div>
-                </>
-              )}
+                )}
 
-              {a.gaps?.length > 0 && (
-                <>
-                  <h3 className="readiness__sub">{t('app.readiness.gapsTitle')}</h3>
-                  <ul className="gaps">
-                    {a.gaps.map((g) => (
-                      <li key={g.id} className={`gap gap--${g.importance}`}>
-                        <div className="gap__head">
-                          <strong>{g.skill}</strong>
-                          <Badge tone={GAP_TONE[g.importance]}>
-                            {t(`app.readiness.importance.${g.importance}`)}
-                          </Badge>
-                          {g.estimatedWeeks ? (
-                            <span className="gap__weeks">
-                              <Icon name="clock" size={12} />
-                              {t('app.readiness.weeks', { count: g.estimatedWeeks })}
-                            </span>
-                          ) : null}
-                        </div>
-                        {(g.currentLevel || g.targetLevel) && (
-                          <p className="gap__levels">
-                            <span>{g.currentLevel ?? '—'}</span>
-                            <Icon name="arrowRight" size={13} />
-                            <strong>{g.targetLevel ?? '—'}</strong>
-                          </p>
-                        )}
-                        {g.why && <p className="gap__why">{g.why}</p>}
-                        {g.howToClose && (
-                          <p className="gap__action">
-                            <Icon name="bolt" size={13} />{g.howToClose}
-                          </p>
-                        )}
-                      </li>
-                    ))}
-                  </ul>
-                </>
-              )}
-            </Card>
+                <div className="rpanel__foot">
+                  {a.createdAt && (
+                    <span className="rpanel__stamp">
+                      <Icon name="clock" size={13} />
+                      {t('app.readiness.assessed', {
+                        date: new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(
+                          new Date(a.createdAt),
+                        ),
+                      })}
+                    </span>
+                  )}
+                  <Link to="/recommendations" className="btn btn--ghost btn--sm">
+                    {t('app.nav.recommendations')} <Icon name="arrowRight" size={14} />
+                  </Link>
+                </div>
+              </ReadinessPanel>
+            </article>
           ))}
+
+          {/* Said once, at the end, rather than repeated under every panel:
+              a readiness score describes a profile, not an outcome. */}
+          <p className="rlist__caveat">
+            <Icon name="info" size={14} />
+            {t('app.readiness.caveat')}
+          </p>
         </div>
       )}
     </AppShell>

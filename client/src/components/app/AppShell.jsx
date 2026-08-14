@@ -34,7 +34,7 @@ const COLLAPSE_KEY = 'meinroots.nav.collapsed'
 
 export default function AppShell({ title, subtitle, eyebrow, actions, children, badges = {} }) {
   const { t } = useI18n()
-  const { user, logout } = useAuth()
+  const { user, logout, syncLocale } = useAuth()
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -109,7 +109,13 @@ export default function AppShell({ title, subtitle, eyebrow, actions, children, 
     </NavLink>
   )
 
-  const sidebar = (
+  /**
+   * `inDrawer` exists for one reason: the top bar drops the language switcher on
+   * a phone to keep the header uncluttered, which left changing language buried
+   * in settings — a poor outcome for a product whose users may not read the
+   * interface language well. The drawer carries it instead.
+   */
+  const sidebar = (inDrawer = false) => (
     <>
       <Link to="/dashboard" className="ws__brand">
         <img src="/logo.png" alt="" width="36" height="36" />
@@ -126,6 +132,15 @@ export default function AppShell({ title, subtitle, eyebrow, actions, children, 
       </nav>
 
       <div className="ws__foot">
+        {inDrawer && (
+          <div className="ws__drawerLang">
+            <span className="ws__drawerLangLabel">{t('nav.language')}</span>
+            {/* A flat list rather than a dropdown: at the bottom of a drawer a
+                popup has nowhere to open into. */}
+            <LanguageSwitcher variant="inline" onChange={syncLocale} />
+          </div>
+        )}
+
         <div className="ws__user">
           <span className="ws__avatar" aria-hidden="true">{initials || 'M'}</span>
           <span className="ws__userText">
@@ -145,10 +160,10 @@ export default function AppShell({ title, subtitle, eyebrow, actions, children, 
     <div className={`ws ${collapsed ? 'is-collapsed' : ''}`}>
       <a className="skip-link" href="#main">{t('common.skip')}</a>
 
-      <aside className="ws__side ws__side--fixed">{sidebar}</aside>
+      <aside className="ws__side ws__side--fixed">{sidebar()}</aside>
 
       <div className={`ws__drawer ${drawer ? 'is-open' : ''}`}>
-        <aside className="ws__side ws__side--drawer">{sidebar}</aside>
+        <aside className="ws__side ws__side--drawer">{sidebar(true)}</aside>
         <button
           type="button"
           className="ws__scrim"
@@ -188,7 +203,7 @@ export default function AppShell({ title, subtitle, eyebrow, actions, children, 
 
           <div className="ws__topActions">
             {actions}
-            <LanguageSwitcher />
+            <LanguageSwitcher onChange={syncLocale} />
 
             <div className="ws__menu" ref={menuRef}>
               <button
