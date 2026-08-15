@@ -4,7 +4,7 @@ import Reveal from './ui/Reveal.jsx'
 import { useCountUp } from '../hooks/useCountUp.js'
 import { useI18n, RichText } from '../context/I18nContext.jsx'
 import { useCvGate } from '../hooks/useCvGate.js'
-import { heroStatKeys, testimonialKeys, domainKeys, images } from '../data/content.js'
+import { heroStatKeys, domainKeys, images } from '../data/content.js'
 
 function Stat({ statKey }) {
   const { t } = useI18n()
@@ -42,19 +42,18 @@ export default function Hero() {
       <div className="hero__grain" aria-hidden="true" />
 
       <div className="container hero__inner">
+        {/*
+          This badge used to carry a five-star rating, a row of stock-photo
+          faces and "trusted by candidates from 40+ countries". None of it was
+          true: there are no reviews, those are not our users, and nobody had
+          counted the countries. It now states something the platform actually
+          does and that anyone can check by using it.
+        */}
         <Reveal className="hero__proof">
-          <span className="avatars">
-            {testimonialKeys.map((tk) => (
-              <SmartImage key={tk.key} src={tk.avatar} alt="" className="avatars__img" ratio="1 / 1" />
-            ))}
-            <i className="avatars__more">+</i>
+          <span className="hero__proofIcon" aria-hidden="true">
+            <Icon name="shield" size={15} />
           </span>
           <span className="hero__proofText">
-            <span className="hero__stars">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Icon key={i} name="star" size={12} fill="currentColor" strokeWidth={1} />
-              ))}
-            </span>
             <RichText path="hero.proof" />
           </span>
         </Reveal>

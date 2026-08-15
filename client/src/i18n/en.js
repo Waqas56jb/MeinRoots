@@ -96,7 +96,7 @@ export default {
   },
 
   hero: {
-    proof: 'Trusted by candidates from <b>40+ countries</b>',
+    proof: 'Your CV is <b>never modified</b>, and nothing is analysed until you agree.',
     titleA: 'Talent has no borders.',
     titleB: 'Your future',
     titleC: 'Career in Germany.',
@@ -249,7 +249,7 @@ export default {
       goalHint: 'You can change this later.',
       terms: 'I agree to the privacy notice and the processing of my CV under GDPR.',
       aside: {
-        title: 'Join candidates from 40+ countries.',
+        title: 'Find out where you stand, before you apply.',
         text: 'One upload gives you a structured profile, a professional category and a plan for what to learn next.',
         points: ['Free forever tier', 'Original CV never modified', 'Delete your data at any time'],
       },

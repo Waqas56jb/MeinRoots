@@ -1485,3 +1485,21 @@
   .billing__switch { width: 100%; }
   .billing__switch button { flex: 1; }
 }
+
+/*
+ * The hero trust badge.
+ *
+ * Replaces a five-star rating, a row of stock-photo faces and a "40+ countries"
+ * claim — none of which were true. The slot keeps its shape and weight; what it
+ * now says is something the platform actually does.
+ */
+.hero__proofIcon {
+  display: grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #fff;
+}

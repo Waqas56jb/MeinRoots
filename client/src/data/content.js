@@ -73,14 +73,14 @@ export const featureKeys = [
 ]
 
 export const domainKeys = [
-  { key: 'it', icon: 'code', count: 38, image: unsplash('1498050108023-c5249f4df085', 700, 520) },
-  { key: 'health', icon: 'heartPulse', count: 22, image: unsplash('1576091160399-112ba8d25d1d', 700, 520) },
-  { key: 'engineering', icon: 'gear', count: 26, image: unsplash('1581091226825-a6a2a5aee158', 700, 520) },
-  { key: 'logistics', icon: 'truck', count: 14, image: unsplash('1553413077-190dd305871c', 700, 520) },
-  { key: 'finance', icon: 'wallet', count: 17, image: unsplash('1554224155-6726b3ff858f', 700, 520) },
-  { key: 'construction', icon: 'building', count: 19, image: unsplash('1503387762-592deb58ef4e', 700, 520) },
-  { key: 'hospitality', icon: 'cup', count: 12, image: unsplash('1414235077428-338989a2e8c0', 700, 520) },
-  { key: 'sales', icon: 'megaphone', count: 15, image: unsplash('1557804506-669a67965ba0', 700, 520) },
+  { key: 'it', icon: 'code', image: unsplash('1498050108023-c5249f4df085', 700, 520) },
+  { key: 'health', icon: 'heartPulse', image: unsplash('1576091160399-112ba8d25d1d', 700, 520) },
+  { key: 'engineering', icon: 'gear', image: unsplash('1581091226825-a6a2a5aee158', 700, 520) },
+  { key: 'logistics', icon: 'truck', image: unsplash('1553413077-190dd305871c', 700, 520) },
+  { key: 'finance', icon: 'wallet', image: unsplash('1554224155-6726b3ff858f', 700, 520) },
+  { key: 'construction', icon: 'building', image: unsplash('1503387762-592deb58ef4e', 700, 520) },
+  { key: 'hospitality', icon: 'cup', image: unsplash('1414235077428-338989a2e8c0', 700, 520) },
+  { key: 'sales', icon: 'megaphone', image: unsplash('1557804506-669a67965ba0', 700, 520) },
 ]
 
 /** CV language versions: the first is the uploaded original, the rest AI-generated. */
@@ -94,12 +94,6 @@ export const adminPointKeys = [
   { key: 'filter', icon: 'search' },
   { key: 'exceptions', icon: 'shield' },
   { key: 'audit', icon: 'clipboard' },
-]
-
-export const testimonialKeys = [
-  { key: 'amina', avatar: unsplash('1580489944761-15a19d654956', 160, 160) },
-  { key: 'rajesh', avatar: unsplash('1507003211169-0a1dd7228f2d', 160, 160) },
-  { key: 'lena', avatar: unsplash('1438761681033-6461ffad8d80', 160, 160) },
 ]
 
 export const planKeys = [

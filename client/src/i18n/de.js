@@ -96,7 +96,7 @@ export default {
   },
 
   hero: {
-    proof: 'Genutzt von Kandidat:innen aus <b>40+ Ländern</b>',
+    proof: 'Dein Lebenslauf wird <b>nie verändert</b>, und nichts wird analysiert, bevor du zustimmst.',
     titleA: 'Talent kennt keine Grenzen.',
     titleB: 'Deine Zukunft:',
     titleC: 'Karriere in Deutschland.',
@@ -249,7 +249,7 @@ export default {
       goalHint: 'Du kannst das später ändern.',
       terms: 'Ich akzeptiere die Datenschutzhinweise und die Verarbeitung meines Lebenslaufs nach DSGVO.',
       aside: {
-        title: 'Schließ dich Kandidat:innen aus 40+ Ländern an.',
+        title: 'Finde heraus, wo du stehst — bevor du dich bewirbst.',
         text: 'Ein Upload liefert dir ein strukturiertes Profil, ein Berufsfeld und einen Plan, was du als Nächstes lernst.',
         points: ['Dauerhaft kostenlose Stufe', 'Original bleibt unverändert', 'Daten jederzeit löschbar'],
       },

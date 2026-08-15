@@ -96,7 +96,7 @@ export default {
   },
 
   hero: {
-    proof: 'Utilisé par des candidats de <b>40+ pays</b>',
+    proof: 'Votre CV n’est <b>jamais modifié</b>, et rien n’est analysé sans votre accord.',
     titleA: 'Le talent n’a pas de frontières.',
     titleB: 'Votre avenir :',
     titleC: 'une carrière en Allemagne.',
@@ -257,7 +257,7 @@ export default {
       goalHint: 'Modifiable plus tard.',
       terms: 'J’accepte la politique de confidentialité et le traitement de mon CV conformément au RGPD.',
       aside: {
-        title: 'Rejoignez des candidats de 40+ pays.',
+        title: 'Sachez où vous en êtes, avant de postuler.',
         text: 'Un seul téléversement vous donne un profil structuré, une catégorie professionnelle et un plan d’apprentissage.',
         points: ['Offre gratuite à vie', 'CV original jamais modifié', 'Suppression à tout moment'],
       },
