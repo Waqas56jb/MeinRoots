@@ -73,6 +73,7 @@ import {
   LuShieldAlert,
   LuCircleDot,
   LuLoader,
+  LuHandshake,
 } from 'react-icons/lu'
 
 /**
@@ -82,6 +83,7 @@ import {
  */
 const icons = {
   loader: LuLoader,
+  handshake: LuHandshake,
   dot: LuCircleDot,
   shieldAlert: LuShieldAlert,
   bell: LuBell,

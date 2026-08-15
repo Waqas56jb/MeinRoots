@@ -779,3 +779,96 @@
   max-width: 76ch; line-height: 1.6;
 }
 .rlist__caveat svg { flex: none; margin-top: 3px; }
+
+/* ============================ recruitment (M2) =========================== */
+
+/*
+ * The candidate side of recruitment.
+ *
+ * Deliberately warmer than the recruiter's equivalent: this is a person being
+ * approached about their career, not a pipeline being worked. What happens on
+ * "yes" is stated above the button that says yes, and declining is given the
+ * same visual weight as accepting — an interface that makes one answer easier
+ * than the other is not asking a question.
+ */
+
+.rfilters { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; }
+.rfilters button {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 16px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong);
+  background: #fff;
+  font-size: var(--t-sm); font-weight: 600; color: var(--ink-2);
+  white-space: nowrap; min-height: 44px;
+  transition: background var(--t-fast) var(--ease-ui), border-color var(--t-fast) var(--ease-ui), color var(--t-fast) var(--ease-ui);
+}
+.rfilters button:hover { border-color: var(--blue-300); }
+.rfilters button.is-on { background: var(--blue-600); border-color: var(--blue-600); color: #fff; }
+.rfilters em {
+  display: grid; place-items: center;
+  min-width: 20px; height: 20px; padding: 0 5px;
+  border-radius: var(--r-pill);
+  background: var(--warn); color: #fff;
+  font-style: normal; font-size: 0.7rem; font-weight: 800;
+}
+.rfilters button.is-on em { background: rgba(255, 255, 255, 0.28); }
+
+.rrequests { display: flex; flex-direction: column; gap: var(--s-4); }
+.rrequest {
+  display: flex; flex-direction: column; gap: var(--s-3);
+  padding: clamp(var(--s-4), 2vw, var(--s-5));
+  border-radius: var(--r-card);
+  border: 1px solid var(--line);
+  border-left-width: 3px;
+  background: var(--surface);
+  box-shadow: 0 1px 2px rgba(13, 27, 52, 0.04);
+}
+.rrequest--pending { border-left-color: var(--warn); }
+.rrequest--accepted { border-left-color: var(--ok); }
+.rrequest--declined, .rrequest--cancelled, .rrequest--expired { border-left-color: var(--line-strong); }
+.rrequest--completed { border-left-color: var(--ok); }
+
+.rrequest__head { display: flex; align-items: flex-start; gap: var(--s-3); flex-wrap: wrap; }
+.rrequest__icon {
+  display: grid; place-items: center;
+  width: 42px; height: 42px; flex: none;
+  border-radius: var(--r-field);
+  background: var(--blue-50); color: var(--blue-600);
+}
+.rrequest__who { flex: 1; min-width: 160px; }
+.rrequest__who h3 { font-size: var(--t-section); letter-spacing: -0.02em; }
+.rrequest__who p { font-size: var(--t-xs); color: var(--muted-2); margin-top: 2px; }
+
+.rrequest__role { font-size: var(--t-sm); color: var(--ink-2); }
+.rrequest__role em {
+  display: block; font-style: normal;
+  font-size: 0.66rem; font-weight: 800; letter-spacing: 0.07em;
+  text-transform: uppercase; color: var(--muted-2); margin-bottom: 2px;
+}
+.rrequest__message {
+  display: flex; align-items: flex-start; gap: 9px;
+  margin: 0; padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-field);
+  background: var(--surface-2);
+  font-size: var(--t-sm); color: var(--ink-2); line-height: 1.65;
+}
+.rrequest__message svg { flex: none; margin-top: 3px; color: var(--muted-2); }
+
+/* What "yes" actually does, above the button that says yes. */
+.rrequest__what {
+  display: flex; align-items: flex-start; gap: 8px;
+  padding: var(--s-3) var(--s-4);
+  border-radius: var(--r-field);
+  background: var(--blue-50);
+  border: 1px solid var(--blue-100);
+  font-size: var(--t-sm); color: var(--ink-2); line-height: 1.6;
+}
+.rrequest__what svg { flex: none; margin-top: 3px; color: var(--blue-600); }
+
+.rrequest__actions { display: flex; align-items: center; gap: var(--s-2); flex-wrap: wrap; }
+.rrequest__noPressure { font-size: var(--t-xs); color: var(--muted-2); }
+@media (max-width: 620px) {
+  .rrequest__actions .btn { flex: 1 1 100%; justify-content: center; }
+  .rrequest__noPressure { width: 100%; text-align: center; }
+}

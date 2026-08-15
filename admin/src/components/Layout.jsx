@@ -29,6 +29,17 @@ const GROUPS = [
     ],
   },
   {
+    // Milestone 2. Its own group: the candidate pipeline and the recruiter
+    // ecosystem are different operations and mixing them into one list would
+    // make neither scannable.
+    key: 'market',
+    items: [
+      { to: '/recruiters', key: 'recruiters', icon: 'company' },
+      { to: '/requests', key: 'requests', icon: 'message' },
+      { to: '/subscriptions', key: 'subscriptions', icon: 'card' },
+    ],
+  },
+  {
     key: 'insights',
     items: [{ to: '/audit', key: 'audit', icon: 'scroll' }],
   },

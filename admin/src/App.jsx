@@ -6,6 +6,9 @@ import CandidatesPage from './pages/CandidatesPage.jsx'
 import CandidatePage from './pages/CandidatePage.jsx'
 import QueuePage from './pages/QueuePage.jsx'
 import AuditPage from './pages/AuditPage.jsx'
+import RecruitersPage from './pages/RecruitersPage.jsx'
+import RequestsPage from './pages/RequestsPage.jsx'
+import SubscriptionsPage from './pages/SubscriptionsPage.jsx'
 import { Spinner } from './components/ui.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 import { StatsProvider } from './context/StatsContext.jsx'
@@ -67,6 +70,10 @@ export default function App() {
         <Route path="/candidates/:userId" element={<Protected><CandidatePage /></Protected>} />
         <Route path="/queue" element={<Protected><QueuePage /></Protected>} />
         <Route path="/audit" element={<Protected><AuditPage /></Protected>} />
+        {/* Milestone 2 — the recruiter ecosystem. */}
+        <Route path="/recruiters" element={<Protected><RecruitersPage /></Protected>} />
+        <Route path="/requests" element={<Protected><RequestsPage /></Protected>} />
+        <Route path="/subscriptions" element={<Protected><SubscriptionsPage /></Protected>} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </>

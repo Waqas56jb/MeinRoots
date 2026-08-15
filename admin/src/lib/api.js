@@ -119,4 +119,27 @@ export const adminApi = {
   retryJob: (jobId) => api.post(`/api/admin/jobs/${jobId}/retry`),
   audit: (params = {}) => api.get(`/api/admin/audit${qs(params)}`),
   cvDownloadUrl: (documentId) => api.fileUrl(`/api/admin/documents/${documentId}/file`),
+
+  /* ------------------------- PENDING (Milestone 2) ------------------------
+   *
+   * The recruiter ecosystem. These routes do not exist yet — they return 404
+   * until the Milestone 2 backend ships, and each page says so rather than
+   * showing an empty table, which would be a claim that no recruiter has
+   * signed up.
+   */
+
+  /** PENDING — GET /api/admin/recruiters?q=&status=&plan= */
+  recruiters: (params = {}) => api.get(`/api/admin/recruiters${qs(params)}`),
+  /** PENDING — GET /api/admin/companies?q=&verification=&plan= */
+  companies: (params = {}) => api.get(`/api/admin/companies${qs(params)}`),
+  /** PENDING — GET /api/admin/companies/:id */
+  company: (id) => api.get(`/api/admin/companies/${id}`),
+  /** PENDING — POST /api/admin/companies/:id/verify  body: { status, note? } */
+  verifyCompany: (id, payload) => api.post(`/api/admin/companies/${id}/verify`, payload),
+  /** PENDING — GET /api/admin/subscriptions?status=&plan= */
+  subscriptions: (params = {}) => api.get(`/api/admin/subscriptions${qs(params)}`),
+  /** PENDING — GET /api/admin/plans */
+  plans: () => api.get("/api/admin/plans"),
+  /** PENDING — GET /api/admin/requests?type=&status= */
+  requests: (params = {}) => api.get(`/api/admin/requests${qs(params)}`),
 }

@@ -138,6 +138,29 @@ export const authApi = {
   deleteAccount: (password) => request('/api/auth/account', { method: 'DELETE', body: { password } }),
 }
 
+/**
+ * PENDING (Milestone 2) — the candidate side of recruitment.
+ *
+ * These routes do not exist yet. They return 404 until the Milestone 2
+ * backend ships, and the pages that call them say so rather than showing an
+ * empty list, which would be a claim that no recruiter has been in touch.
+ */
+export const recruitmentApi = {
+  /** PENDING — GET /api/recruitment/requests?status= → { data: [Request], meta } */
+  requests: (params = {}) => {
+    const search = new URLSearchParams(
+      Object.entries(params).filter(([, v]) => v !== undefined && v !== null && v !== ''),
+    ).toString()
+    return api.get(`/api/recruitment/requests${search ? `?${search}` : ''}`)
+  },
+  /** PENDING — GET /api/recruitment/requests/:id */
+  request: (id) => api.get(`/api/recruitment/requests/${id}`),
+  /** PENDING — POST /api/recruitment/requests/:id/accept  body: { message? } */
+  accept: (id, message) => api.post(`/api/recruitment/requests/${id}/accept`, { message }),
+  /** PENDING — POST /api/recruitment/requests/:id/decline  body: { reason? } */
+  decline: (id, reason) => api.post(`/api/recruitment/requests/${id}/decline`, { reason }),
+}
+
 export const cvApi = {
   upload: (file, onProgress) => {
     const form = new FormData()

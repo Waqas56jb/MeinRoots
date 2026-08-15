@@ -25,6 +25,9 @@ const NAV = [
   { to: '/readiness', key: 'readiness', icon: 'target' },
   { to: '/recommendations', key: 'recommendations', icon: 'listChecks' },
   { to: '/questionnaire', key: 'questionnaire', icon: 'clipboard' },
+  // Milestone 2. Sits after the readiness journey rather than above it: an
+  // employer getting in touch is what the earlier steps lead to.
+  { to: '/recruitment', key: 'recruitment', icon: 'handshake' },
 ]
 
 const SETTINGS = { to: '/settings', key: 'settings', icon: 'settings' }

@@ -28,6 +28,7 @@ const ReadinessPage = lazy(() => import('./pages/ReadinessPage.jsx'))
 const RecommendationsPage = lazy(() => import('./pages/RecommendationsPage.jsx'))
 const QuestionnairePage = lazy(() => import('./pages/QuestionnairePage.jsx'))
 const SettingsPage = lazy(() => import('./pages/SettingsPage.jsx'))
+const RecruitmentPage = lazy(() => import('./pages/RecruitmentPage.jsx'))
 
 /**
  * Sends anonymous visitors to the login gate, remembering where they wanted to
@@ -96,6 +97,7 @@ export default function App() {
         <Route path="/recommendations" element={<Protected><RecommendationsPage /></Protected>} />
         <Route path="/questionnaire" element={<Protected><QuestionnairePage /></Protected>} />
         <Route path="/settings" element={<Protected><SettingsPage /></Protected>} />
+        <Route path="/recruitment" element={<Protected><RecruitmentPage /></Protected>} />
 
         {/* The upload screen is now part of the CV page. Kept as a redirect so
             the landing-page CTA and any shared link still arrive somewhere. */}

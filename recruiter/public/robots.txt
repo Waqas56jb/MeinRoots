@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Authenticated / transactional screens have no SEO value
+Disallow: /upload
+Disallow: /login
+Disallow: /signup
+Disallow: /reset-password
+
+Sitemap: https://meinroots.com/sitemap.xml

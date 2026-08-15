@@ -47,6 +47,9 @@ import {
   LuUsers,
   LuX,
   LuZap,
+  LuBuilding,
+  LuCreditCard,
+  LuMessageSquare,
 } from 'react-icons/lu'
 
 /**
@@ -102,6 +105,9 @@ const icons = {
   chevronLeft: LuChevronLeft,
   chevronRight: LuChevronRight,
   spinner: LuLoader,
+  company: LuBuilding,
+  card: LuCreditCard,
+  message: LuMessageSquare,
 }
 
 export default function Icon({ name, size = 20, className = '', strokeWidth = 1.9, ...rest }) {
