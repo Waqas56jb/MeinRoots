@@ -27,8 +27,12 @@ export const audit = async (req, { action, entityType, entityId, metadata = {}, 
         metadata,
       ],
     )
+    return true
   } catch (err) {
     logger.error('audit write failed', { action, message: err.message })
+    // Reported rather than thrown, so a caller for whom the record is the whole
+    // point — an erasure — can escalate, while everyone else carries on.
+    return false
   }
 }
 

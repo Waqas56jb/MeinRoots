@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import Layout from '../components/Layout.jsx'
 import Icon from '../components/Icon.jsx'
@@ -93,7 +93,7 @@ export default function CandidatePage() {
     )
   }
 
-  const { candidate, profile, documents, questionnaire, reviews, cvVersions, consents, consentLog } = data
+  const { candidate, profile, documents, questionnaire, reviews, cvVersions, consents, consentLog, cleanup } = data
   const maySharePro = Boolean(consents?.employer_sharing)
   const primaryDoc = documents?.[0]
   const openFlags = profile?.flags ?? []
@@ -262,6 +262,13 @@ export default function CandidatePage() {
         ))}
       </div>
 
+      {/* An account with no CV is on its way out, and the reason an empty
+          profile is empty is worth saying on the page rather than leaving an
+          administrator to wonder where the record went a day later. Both the
+          flag and the date come from the server, which derives them from the
+          same two facts the cleanup job uses. */}
+      {cleanup?.eligible && <CleanupNotice cleanup={cleanup} />}
+
       {!profile && tab !== 'documents' && tab !== 'history' ? (
         <Empty icon="file" title={t('detail.noProfile')} />
       ) : null}
@@ -294,7 +301,8 @@ export default function CandidatePage() {
 
       {eraseOpen && (
         <EraseDialog
-          email={candidate.email}
+          reference={candidate.reference}
+          userId={candidate.id}
           onClose={() => setEraseOpen(false)}
           onConfirm={async () => {
             await adminApi.erase(userId)
@@ -304,6 +312,37 @@ export default function CandidatePage() {
         />
       )}
     </Layout>
+  )
+}
+
+/**
+ * Says that this account has no CV and will be removed, and when.
+ *
+ * Once the due date has passed the wording stops giving a date — the account is
+ * already eligible and goes at the next sweep, and a timestamp in the past
+ * reads as a promise that was missed rather than one about to be kept.
+ */
+function CleanupNotice({ cleanup }) {
+  const { t, locale } = useI18n()
+  const due = cleanup.dueAt ? new Date(cleanup.dueAt) : null
+  const overdue = due ? due.getTime() <= Date.now() : true
+
+  return (
+    <section className="notice notice--warn">
+      <span className="notice__icon"><Icon name="clock" size={17} /></span>
+      <div>
+        <strong>{t('detail.cleanup.title')}</strong>
+        <p>
+          {t('detail.cleanup.text', {
+            when: overdue
+              ? t('detail.cleanup.overdue')
+              : t('detail.cleanup.due', {
+                  date: new Intl.DateTimeFormat(locale, { dateStyle: 'medium', timeStyle: 'short' }).format(due),
+                }),
+          })}
+        </p>
+      </div>
+    </section>
   )
 }
 
@@ -739,20 +778,36 @@ function HistoryTab({ reviews }) {
 }
 
 /**
- * Erasure is irreversible, so it asks the admin to type the candidate's email.
- * A yes/no dialog is muscle memory; retyping the address is not.
+ * Confirms an irreversible deletion by naming the record, not by dictation.
+ *
+ * This used to make the administrator retype the candidate's email address. The
+ * reasoning was that a yes/no dialog is muscle memory — fair — but the check
+ * only ever ran in the browser, so it stopped nobody who meant it and slowed
+ * down everybody who did. It also made getting rid of someone's personal data
+ * begin with copying that data out of the record, which is the wrong direction.
+ *
+ * What replaces it is the identification, shown large: the reference the rest of
+ * the console uses, the id, and a plain sentence about what disappears. The
+ * operator reads who is being deleted instead of proof-reading their own typing.
+ * The destructive button is not the default focus, and the dialog closes on
+ * Escape like every other one.
  */
-function EraseDialog({ email, onClose, onConfirm }) {
+function EraseDialog({ reference, userId, onClose, onConfirm }) {
   const { t, tError } = useI18n()
   const toast = useToast()
-  const [value, setValue] = useState('')
   const [busy, setBusy] = useState(false)
+  const cancelRef = useRef(null)
 
-  const matches = value.trim().toLowerCase() === email.toLowerCase()
+  useEffect(() => {
+    cancelRef.current?.focus()
+    const onKey = (e) => e.key === 'Escape' && !busy && onClose()
+    document.addEventListener('keydown', onKey)
+    return () => document.removeEventListener('keydown', onKey)
+  }, [busy, onClose])
 
   const submit = async (e) => {
     e.preventDefault()
-    if (!matches) return
+    if (busy) return
     setBusy(true)
     try {
       await onConfirm()
@@ -767,28 +822,30 @@ function EraseDialog({ email, onClose, onConfirm }) {
       <button type="button" className="modal__scrim" onClick={onClose} aria-label={t('common.close')} />
       <form className="modal__panel" onSubmit={submit}>
         <h2><Icon name="warning" size={18} />{t('detail.danger.title')}</h2>
-        <p className="small">{t('detail.danger.text')}</p>
+        <p className="small">{t('detail.danger.aboutTo')}</p>
 
-        <label className="field">
-          <span className="field__label">{t('detail.danger.confirm')}</span>
-          <span className="field__box">
-            <input
-              type="text"
-              value={value}
-              onChange={(e) => setValue(e.target.value)}
-              placeholder={email}
-              autoCapitalize="none"
-              autoCorrect="off"
-              spellCheck="false"
-            />
-          </span>
-          {value && !matches && <span className="field__err">{t('detail.danger.mismatch')}</span>}
-        </label>
+        <dl className="erasetarget">
+          <div>
+            <dt>{t('detail.danger.reference')}</dt>
+            <dd className="num">{reference || <em>{t('detail.danger.noReference')}</em>}</dd>
+          </div>
+          <div>
+            <dt>{t('detail.danger.id')}</dt>
+            <dd className="num erasetarget__id">{userId}</dd>
+          </div>
+        </dl>
+
+        <p className="small">{t('detail.danger.removes')}</p>
+        <p className="small erasetarget__warn">
+          <Icon name="warning" size={14} /> {t('detail.danger.irreversible')}
+        </p>
 
         <div className="modal__act">
-          <button type="button" className="btn btn--ghost" onClick={onClose}>{t('common.cancel')}</button>
-          <button type="submit" className="btn btn--danger" disabled={!matches || busy}>
-            <Icon name="trash" size={16} /> {t('detail.danger.button')}
+          <button type="button" className="btn btn--ghost" ref={cancelRef} onClick={onClose} disabled={busy}>
+            {t('common.cancel')}
+          </button>
+          <button type="submit" className="btn btn--danger" disabled={busy}>
+            <Icon name="trash" size={16} /> {busy ? t('common.loading') : t('detail.danger.button')}
           </button>
         </div>
       </form>

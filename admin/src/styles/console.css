@@ -1722,3 +1722,49 @@
 @media (max-width: 760px) {
   .btn--sm { min-height: 44px; padding-block: 10px; }
 }
+
+/* ------------------- cleanup notice + delete confirmation -----------------
+   Both belong to the candidate record: one says the account is going to be
+   removed automatically, the other confirms removing it by hand.
+   -------------------------------------------------------------------------- */
+
+.notice {
+  display: flex; align-items: flex-start; gap: 12px;
+  padding: 13px 16px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--surface);
+}
+.notice__icon { display: grid; place-items: center; width: 30px; height: 30px; flex: none; border-radius: 9px; }
+.notice strong { display: block; font-family: var(--font-display); font-size: 0.92rem; }
+.notice p { font-size: 0.85rem; color: var(--muted); margin-top: 2px; max-width: 70ch; }
+.notice--warn { border-color: var(--warn-line); background: var(--warn-bg); }
+.notice--warn .notice__icon { background: rgba(180, 83, 9, 0.1); color: var(--warn); }
+.notice--warn strong { color: var(--warn); }
+
+/* The record being deleted, stated plainly. Large enough to actually read
+   before pressing the red button — that is the whole job of this block. */
+.erasetarget {
+  display: grid; gap: 10px;
+  margin: 14px 0;
+  padding: 13px 15px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--bad-line);
+  background: var(--bad-bg);
+}
+.erasetarget > div { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.erasetarget dt {
+  flex: none; min-width: 104px;
+  font-size: var(--t-micro); font-weight: 800; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--muted);
+}
+.erasetarget dd { font-family: var(--font-display); font-weight: 700; font-size: 1rem; color: var(--ink); }
+.erasetarget dd em { font-weight: 500; font-size: 0.85rem; color: var(--muted); font-style: normal; }
+/* The id is long and must be allowed to wrap rather than widen the dialog. */
+.erasetarget__id { font-size: 0.8rem; font-weight: 600; overflow-wrap: anywhere; }
+.erasetarget__warn { display: flex; align-items: center; gap: 7px; color: var(--bad); font-weight: 600; }
+
+@media (max-width: 520px) {
+  .erasetarget dt { min-width: 0; }
+  .erasetarget > div { gap: 2px; }
+}

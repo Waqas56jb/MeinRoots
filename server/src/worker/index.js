@@ -3,6 +3,7 @@ import config from '../config.js'
 import { logger } from '../lib/logger.js'
 import { claim, fail, reclaimStale, succeed } from './queue.js'
 import { analyseCv, onAnalyseFailed } from './handlers/analyseCv.js'
+import { CLEANUP_JOB, ensureCleanupScheduled, runCleanupJob } from './handlers/cleanupNoCv.js'
 import { deliverEmail } from '../lib/mailer.js'
 
 /**
@@ -14,6 +15,10 @@ const HANDLERS = {
   // Delivery is retried with the queue's backoff; a mail server refusing a
   // connection for a minute should not cost a candidate their reset link.
   'email.send': { run: (job) => deliverEmail(job.payload) },
+  // Retires candidate accounts that never uploaded a CV. Reschedules itself
+  // when it finishes, so the queue is the scheduler and there is no second
+  // timer system to keep alive.
+  [CLEANUP_JOB]: { run: runCleanupJob },
 }
 
 const WORKER_ID = `${hostname()}:${process.pid}`
@@ -95,6 +100,16 @@ export const startWorker = async () => {
 
   const reclaimed = await reclaimStale()
   if (reclaimed.rowCount) logger.warn('requeued stale jobs', { count: reclaimed.rowCount })
+
+  // The cleanup normally schedules its own successor. This covers the cases
+  // where that chain was never started or was broken — a first deploy, a job
+  // that exhausted its attempts and went dead, a database restored from a
+  // backup taken mid-run. Guarded twice over, so calling it every boot leaves
+  // exactly one scheduled sweep. Runs an hour after start rather than
+  // immediately: a boot is the worst moment to begin deleting accounts, and it
+  // leaves room to stop the service if the deploy turns out to be wrong.
+  await ensureCleanupScheduled({ delayHours: 1 }).catch((err) =>
+    logger.error('could not schedule the candidate cleanup', { message: err.message }))
 
   logger.info('worker started', { id: WORKER_ID, concurrency: config.worker.concurrency })
   tick()

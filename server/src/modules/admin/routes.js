@@ -7,8 +7,10 @@ import { validateBody, validateQuery, z } from '../../lib/validate.js'
 import { requireAuth, requireRole } from '../../middleware/auth.js'
 import { getFullProfile } from '../profile/repository.js'
 import { presentFullProfile } from '../profile/present.js'
-import { absolutePath, deleteUserFiles } from '../cv/storage.js'
+import { absolutePath } from '../cv/storage.js'
 import { consentHistory, currentConsents, hasConsent, presentConsents } from '../auth/consents.js'
+import { eraseUser } from '../../lib/erasure.js'
+import { cleanupConfig, hasAnyCvDocument } from '../../worker/handlers/cleanupNoCv.js'
 
 const router = Router()
 router.use(requireAuth, requireRole('admin'))
@@ -126,7 +128,7 @@ router.get(
     )
     if (!user) throw notFound('candidate_not_found', 'Candidate not found')
 
-    const profile = await one('SELECT id FROM candidate_profiles WHERE user_id = $1', [user.id])
+    const profile = await one('SELECT id, reference FROM candidate_profiles WHERE user_id = $1', [user.id])
     const full = profile ? await getFullProfile(profile.id) : null
 
     const [documents, versions, questionnaire, reviews, consents, consentLog] = await Promise.all([
@@ -162,6 +164,8 @@ router.get(
       consentHistory(user.id),
     ])
 
+    const uploadedCv = await hasAnyCvDocument(user.id)
+
     // Opening a candidate record is itself an event worth recording — it is
     // personal data, and "who looked at this" must be answerable.
     await audit(req, { action: 'admin.candidate_view', entityType: 'user', entityId: user.id })
@@ -169,6 +173,11 @@ router.get(
     ok(res, {
       candidate: {
         id: user.id,
+        // The reference is what the delete dialog identifies the person by, so
+        // an operator confirms a destructive action against the same label the
+        // rest of the console uses. Null until a CV creates the profile row —
+        // which is exactly the account the cleanup below is about.
+        reference: profile?.reference ?? null,
         name: user.full_name,
         email: user.email,
         locale: user.locale,
@@ -178,6 +187,20 @@ router.get(
         lastLoginAt: user.last_login_at,
         gdprConsentAt: user.gdpr_consent_at,
       },
+      // Whether this account is on course to be removed automatically, derived
+      // from the same two facts the cleanup job uses and nothing else. Shown so
+      // an administrator looking at an empty profile knows why it is empty and
+      // what is going to happen to it, rather than being surprised later.
+      cleanup: uploadedCv
+        ? { eligible: false, reason: 'has_cv' }
+        : {
+            eligible: true,
+            reason: 'no_cv',
+            thresholdHours: cleanupConfig.MAX_AGE_HOURS,
+            dueAt: new Date(
+              new Date(user.created_at).getTime() + cleanupConfig.MAX_AGE_HOURS * 3600 * 1000,
+            ).toISOString(),
+          },
       // Both the current answers and how they got there. A reviewer deciding
       // whether a profile may go to an employer needs the first; anyone asked
       // to prove it later needs the second.
@@ -478,25 +501,27 @@ router.get(
  * the files are unlinked, and only an anonymised audit entry survives to record
  * that an erasure happened — which is itself a GDPR obligation. Restricted to
  * super_admin because there is no undo.
+ *
+ * The request body is not read. It never was — the address an administrator had
+ * to type was only ever checked in the browser, which means it was a speed bump
+ * rather than a security control, and one that made the operator handle the
+ * candidate's email to get rid of it. The confirmation now happens in the
+ * dialog, and the thing that actually decides whether this is allowed is the
+ * role check above, which is where it always was.
  */
 router.delete(
   '/candidates/:userId',
   requireRole('super_admin'),
   asyncHandler(async (req, res) => {
-    const user = await one('SELECT id, email FROM users WHERE id = $1', [req.params.userId])
+    // Deletion is scoped to candidates. Without this an id typo could erase a
+    // recruiter or another administrator through the candidate screen.
+    const user = await one(
+      "SELECT id, role FROM users WHERE id = $1 AND role = 'candidate'",
+      [req.params.userId],
+    )
     if (!user) throw notFound('candidate_not_found', 'Candidate not found')
 
-    await deleteUserFiles(user.id)
-    await query('DELETE FROM users WHERE id = $1', [user.id])
-
-    await audit(req, {
-      action: 'admin.gdpr_erasure',
-      entityType: 'user',
-      entityId: user.id,
-      // The address is hashed, not stored: the log must prove an erasure
-      // happened without preserving the personal data it erased.
-      metadata: { emailDigest: Buffer.from(user.email).toString('base64').slice(0, 12) },
-    })
+    await eraseUser({ userId: user.id, req, action: 'admin.gdpr_erasure' })
     ok(res, { erased: true })
   }),
 )
