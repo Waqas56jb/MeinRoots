@@ -82,7 +82,14 @@ export const deliverEmail = async ({ emailId, template, locale, vars, url, to })
   await query('UPDATE outbound_emails SET attempts = attempts + 1 WHERE id = $1', [emailId])
 
   try {
-    const result = await mailer.sendMail({ from: config.mail.from, to, subject, text, html })
+    const result = await mailer.sendMail({
+      from: config.mail.from,
+      ...(config.mail.replyTo ? { replyTo: config.mail.replyTo } : {}),
+      to,
+      subject,
+      text,
+      html,
+    })
     await query(
       "UPDATE outbound_emails SET status = 'sent', sent_at = now(), provider_id = $2, error = NULL WHERE id = $1",
       [emailId, result.messageId ?? null],

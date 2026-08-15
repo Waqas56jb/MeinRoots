@@ -2,7 +2,7 @@
 /**
  * Creates (or promotes) an admin account.
  *
- *   node src/scripts/create-admin.js "Name" admin@meinroots.com 'password' [--super]
+ *   node src/scripts/create-admin.js "Name" admin@meinroots.de 'password' [--super]
  *
  * Admins are made from the CLI on purpose: a self-service "become admin" route
  * is one misconfiguration away from being the whole security model's weak point.

@@ -102,7 +102,16 @@ export const planKeys = [
   { key: 'premium', variant: 'ghost' },
 ]
 
+/**
+ * MeinRoots' own contact details, and nowhere else in the front end.
+ *
+ * Both values here were placeholders: a hello@ address on a .com the company
+ * does not own, and a Berlin landline in the 1234 5678 pattern nobody dials.
+ * These are the real ones, and they are also the mailbox the platform's
+ * transactional email is sent from, so a reply to any MeinRoots email lands in
+ * the same inbox as a click on the footer.
+ */
 export const contact = {
-  email: 'hello@meinroots.com',
-  phone: '+49 30 1234 5678',
+  email: 'recruiting@meinroots.de',
+  phone: '+4917677861007',
 }

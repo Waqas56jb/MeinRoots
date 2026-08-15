@@ -90,7 +90,7 @@ export default function LoginPage() {
                     setEmail(e.target.value)
                     setErrors((s) => ({ ...s, email: undefined, form: undefined }))
                   }}
-                  placeholder="admin@meinroots.com"
+                  placeholder="admin@meinroots.de"
                 />
               </span>
               {errors.email && <span className="field__err">{errors.email}</span>}

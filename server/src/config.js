@@ -110,7 +110,14 @@ export const config = {
     secure: bool('SMTP_SECURE', int('SMTP_PORT', 587) === 465),
     user: optional('SMTP_USER', ''),
     pass: optional('SMTP_PASS', ''),
-    from: optional('MAIL_FROM', 'MeinRoots <no-reply@meinroots.com>'),
+    // The one place the platform's own address is written down. Templates never
+    // set a sender of their own, so changing the company mailbox is this line
+    // and the .env, not a sweep through five templates.
+    from: optional('MAIL_FROM', 'MeinRoots <recruiting@meinroots.de>'),
+    // Replies go to a mailbox a person reads. Left empty the header is omitted
+    // rather than set to the sender, because a Reply-To identical to From is
+    // noise some clients render as a second address.
+    replyTo: optional('MAIL_REPLY_TO', ''),
   },
 
   appUrl: optional('APP_URL', 'http://localhost:5173'),
