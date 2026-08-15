@@ -75,12 +75,22 @@ const registerSchema = z.object({
   consents: consentsSchema,
 })
 
-/** Only the optional three are writable after signup — see consents.js. */
-const optionalConsentsSchema = z.object({
-  employer_sharing: z.boolean().optional(),
-  job_alerts: z.boolean().optional(),
-  marketing: z.boolean().optional(),
-})
+/**
+ * Only the optional three are writable after signup.
+ *
+ * `.strict()` rather than the default, which silently drops unknown keys. If a
+ * client sends `{ terms: false }` believing it is withdrawing acceptance of the
+ * terms, the worst possible answer is 200 and no change: the caller walks away
+ * thinking it worked. It is refused loudly instead — withdrawing a required
+ * consent means closing the account, and that is a different endpoint.
+ */
+const optionalConsentsSchema = z
+  .object({
+    employer_sharing: z.boolean().optional(),
+    job_alerts: z.boolean().optional(),
+    marketing: z.boolean().optional(),
+  })
+  .strict()
 
 const loginSchema = z.object({ email: emailField, password: z.string().min(1, 'password_required') })
 const resetRequestSchema = z.object({ email: emailField })

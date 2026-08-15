@@ -121,6 +121,36 @@ const run = async () => {
   const me = await call('GET', '/api/auth/me')
   check('session cookie authenticates', me.status === 200 && me.body?.data?.user?.email === email)
 
+  // ------------------------------ consent ------------------------------------
+  const consents = me.body?.data?.user?.consents
+  check('consents are returned with the session', Boolean(consents), JSON.stringify(consents))
+  check('required consents are recorded as given', consents?.terms === true && consents?.data_processing === true)
+  // The registration above sent no optional consents at all. They must come back
+  // false — an omitted optional consent is a refusal, never an assumption.
+  check(
+    'omitted optional consents default to refused',
+    consents?.employer_sharing === false && consents?.marketing === false,
+    JSON.stringify(consents),
+  )
+  check('the accepted terms version is recorded', Boolean(consents?.acceptedVersion))
+
+  const grant = await call('PATCH', '/api/auth/consents', { employer_sharing: true })
+  check('an optional consent can be granted later', grant.body?.data?.consents?.employer_sharing === true)
+
+  const withdraw = await call('PATCH', '/api/auth/consents', { employer_sharing: false })
+  check(
+    'and withdrawn as easily as it was granted',
+    withdraw.body?.data?.consents?.employer_sharing === false,
+    JSON.stringify(withdraw.body?.data?.consents),
+  )
+
+  const forceRequired = await call('PATCH', '/api/auth/consents', { terms: false })
+  check(
+    'a required consent cannot be withdrawn through the settings endpoint',
+    forceRequired.status === 400,
+    `status ${forceRequired.status}`,
+  )
+
   const emptyProfile = await call('GET', '/api/profile/me')
   check('profile exists from registration', emptyProfile.status === 200)
 
