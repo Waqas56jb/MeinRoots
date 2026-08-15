@@ -158,59 +158,78 @@ const COPY = {
   /**
    * An employer has asked to speak to a candidate.
    *
-   * Deliberately does not name the recruiter or carry their message: the email
-   * says that something is waiting and where to read it. What the company wrote
-   * belongs behind a login, next to the accept and decline buttons and the
-   * explanation of what each one does.
+   * Deliberately does not carry what the recruiter wrote. The email says that
+   * something is waiting and where to read it; the message, the two buttons and
+   * the explanation of what each one does belong together behind a login, not
+   * scattered across an inbox.
    */
   recruitment_request: {
-    en: {
+    en: (v) => ({
       subject: 'An employer would like to speak with you',
-      heading: '{company} has been in touch',
-      body: 'A company on MeinRoots has asked to get in touch with you. You decide whether to share your details — nothing has been passed on.',
-      cta: 'Read the request',
-      foot: 'Declining costs you nothing and no reason is passed on.',
-    },
-    de: {
+      heading: `${v.company} has been in touch`,
+      body: 'A company on MeinRoots has asked to get in touch with you. You decide whether to share your details — nothing has been passed on yet.',
+      button: 'Read the request',
+      footer: 'Declining costs you nothing, and no reason is passed on. You can stop employer requests at any time in your settings.',
+      text: (url) =>
+        `${v.company} has been in touch.\n\nA company on MeinRoots has asked to get in touch with you. You decide whether to share your details — nothing has been passed on yet.\n\nRead the request:\n${url}\n\nDeclining costs you nothing, and no reason is passed on.`,
+    }),
+    de: (v) => ({
       subject: 'Ein Arbeitgeber möchte mit dir sprechen',
-      heading: '{company} hat sich gemeldet',
+      heading: `${v.company} hat sich gemeldet`,
       body: 'Ein Unternehmen auf MeinRoots möchte mit dir in Kontakt treten. Du entscheidest, ob du deine Daten teilst — bisher wurde nichts weitergegeben.',
-      cta: 'Anfrage ansehen',
-      foot: 'Ablehnen kostet dich nichts, und es wird kein Grund weitergegeben.',
-    },
-    fr: {
+      button: 'Anfrage ansehen',
+      footer: 'Ablehnen kostet dich nichts, und es wird kein Grund weitergegeben. Du kannst Arbeitgeber-Anfragen jederzeit in den Einstellungen abschalten.',
+      text: (url) =>
+        `${v.company} hat sich gemeldet.\n\nEin Unternehmen auf MeinRoots möchte mit dir in Kontakt treten. Du entscheidest, ob du deine Daten teilst — bisher wurde nichts weitergegeben.\n\nAnfrage ansehen:\n${url}\n\nAblehnen kostet dich nichts.`,
+    }),
+    fr: (v) => ({
       subject: 'Un employeur souhaite vous parler',
-      heading: '{company} vous a contacté',
-      body: 'Une entreprise sur MeinRoots souhaite entrer en contact avec vous. Vous décidez de partager vos coordonnées — rien n’a été transmis.',
-      cta: 'Voir la demande',
-      foot: 'Refuser ne vous coûte rien et aucun motif n’est transmis.',
-    },
+      heading: `${v.company} vous a contacté`,
+      body: 'Une entreprise sur MeinRoots souhaite entrer en contact avec vous. Vous décidez de partager vos coordonnées — rien n’a encore été transmis.',
+      button: 'Voir la demande',
+      footer: 'Refuser ne vous coûte rien et aucun motif n’est transmis. Vous pouvez désactiver les demandes d’employeurs à tout moment dans vos paramètres.',
+      text: (url) =>
+        `${v.company} vous a contacté.\n\nUne entreprise sur MeinRoots souhaite entrer en contact avec vous. Vous décidez de partager vos coordonnées — rien n’a encore été transmis.\n\nVoir la demande :\n${url}\n\nRefuser ne vous coûte rien.`,
+    }),
   },
 
-  /** The candidate answered. */
+  /** The candidate answered. Says which way, and nothing else about them. */
   recruitment_response: {
-    en: {
-      subject: 'A candidate has answered your request',
-      heading: 'You have a response',
-      body: 'A candidate has replied to one of your requests. Open the portal to see what they said.',
-      cta: 'Open the portal',
-      foot: '',
-    },
-    de: {
-      subject: 'Eine Person hat auf deine Anfrage geantwortet',
-      heading: 'Du hast eine Antwort',
-      body: 'Eine Person hat auf eine deiner Anfragen geantwortet. Öffne das Portal, um die Antwort zu sehen.',
-      cta: 'Portal öffnen',
-      foot: '',
-    },
-    fr: {
-      subject: 'Un candidat a répondu à votre demande',
-      heading: 'Vous avez une réponse',
-      body: 'Un candidat a répondu à l’une de vos demandes. Ouvrez le portail pour la consulter.',
-      cta: 'Ouvrir le portail',
-      foot: '',
-    },
-  },}
+    en: (v) => ({
+      subject: v.accepted ? 'A candidate accepted your request' : 'A candidate declined your request',
+      heading: v.accepted ? 'Your request was accepted' : 'Your request was declined',
+      body: v.accepted
+        ? 'A candidate has accepted your request. Open the portal to see their details and carry on from there.'
+        : 'A candidate has declined your request. Their profile stays searchable, but please do not approach them again about this role.',
+      button: 'Open the portal',
+      footer: 'You are receiving this because your company sent the request.',
+      text: (url) =>
+        `${v.accepted ? 'Your request was accepted.' : 'Your request was declined.'}\n\nOpen the portal:\n${url}`,
+    }),
+    de: (v) => ({
+      subject: v.accepted ? 'Eine Person hat deine Anfrage angenommen' : 'Eine Person hat deine Anfrage abgelehnt',
+      heading: v.accepted ? 'Deine Anfrage wurde angenommen' : 'Deine Anfrage wurde abgelehnt',
+      body: v.accepted
+        ? 'Eine Person hat deine Anfrage angenommen. Öffne das Portal, um die Kontaktdaten zu sehen und weiterzumachen.'
+        : 'Eine Person hat deine Anfrage abgelehnt. Das Profil bleibt durchsuchbar, sprich die Person zu dieser Position aber bitte nicht erneut an.',
+      button: 'Portal öffnen',
+      footer: 'Du erhältst diese Nachricht, weil dein Unternehmen die Anfrage gesendet hat.',
+      text: (url) =>
+        `${v.accepted ? 'Deine Anfrage wurde angenommen.' : 'Deine Anfrage wurde abgelehnt.'}\n\nPortal öffnen:\n${url}`,
+    }),
+    fr: (v) => ({
+      subject: v.accepted ? 'Un candidat a accepté votre demande' : 'Un candidat a refusé votre demande',
+      heading: v.accepted ? 'Votre demande a été acceptée' : 'Votre demande a été refusée',
+      body: v.accepted
+        ? 'Un candidat a accepté votre demande. Ouvrez le portail pour voir ses coordonnées et poursuivre.'
+        : 'Un candidat a refusé votre demande. Son profil reste consultable, mais merci de ne pas le recontacter pour ce poste.',
+      button: 'Ouvrir le portail',
+      footer: 'Vous recevez ce message parce que votre entreprise a envoyé la demande.',
+      text: (url) =>
+        `${v.accepted ? 'Votre demande a été acceptée.' : 'Votre demande a été refusée.'}\n\nOuvrir le portail :\n${url}`,
+    }),
+  },
+}
 
 export const TEMPLATES = Object.keys(COPY)
 
