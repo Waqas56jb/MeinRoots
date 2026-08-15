@@ -71,20 +71,22 @@ const run = async () => {
   check('protected route rejects anonymous', anon.status === 401, `status ${anon.status}`)
 
   const badRegister = await call('POST', '/api/auth/register', {
-    name: 'No Consent',
+    name: 'Partial Consent',
     email: `x${Date.now()}@meinroots.test`,
     password,
     goals: ['germany'],
-    gdprConsent: false,
+    // A required consent left out entirely: the request must be refused, not
+    // silently defaulted to false and the account created without it.
+    consents: { terms: true, privacy: true },
   })
-  check('register without GDPR consent is rejected', badRegister.status === 400, `status ${badRegister.status}`)
+  check('register without every required consent is rejected', badRegister.status === 400, `status ${badRegister.status}`)
 
   const shortPw = await call('POST', '/api/auth/register', {
     name: 'Short',
     email: `y${Date.now()}@meinroots.test`,
     password: 'abc',
     goals: ['germany'],
-    gdprConsent: true,
+    consents: { terms: true, privacy: true, data_processing: true },
   })
   check('short password is rejected', shortPw.status === 400)
 
@@ -94,7 +96,7 @@ const run = async () => {
     password,
     goals: ['germany', 'ausbildung'],
     locale: 'de',
-    gdprConsent: true,
+    consents: { terms: true, privacy: true, data_processing: true },
   })
   check('register succeeds', register.status === 201, JSON.stringify(register.body).slice(0, 160))
   // Array.isArray matters: a Postgres enum array with no type parser comes back
@@ -112,7 +114,7 @@ const run = async () => {
     email,
     password,
     goals: ['remote'],
-    gdprConsent: true,
+    consents: { terms: true, privacy: true, data_processing: true },
   })
   check('duplicate email is rejected', duplicate.status === 409, `status ${duplicate.status}`)
 

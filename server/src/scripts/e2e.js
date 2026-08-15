@@ -154,7 +154,7 @@ const run = async () => {
     password: 'E2E-Test-Password-1',
     goals: ['germany', 'ausbildung'],
     locale: 'en',
-    gdprConsent: true,
+    consents: { terms: true, privacy: true, data_processing: true, employer_sharing: true },
   })
   check('candidate registered', register.status === 201, JSON.stringify(register.body).slice(0, 200))
 
