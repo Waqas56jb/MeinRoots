@@ -8,11 +8,16 @@ import QueuePage from './pages/QueuePage.jsx'
 import AuditPage from './pages/AuditPage.jsx'
 import { Spinner } from './components/ui.jsx'
 import { useAuth } from './context/AuthContext.jsx'
+import { StatsProvider } from './context/StatsContext.jsx'
 
 /**
  * Waits for the session check before deciding anything. Redirecting while
  * /auth/me is still in flight would bounce a signed-in admin to the login form
  * on every refresh.
+ *
+ * The stats provider sits inside the gate: it is an authenticated read, and
+ * every signed-in page uses it — the overview for its figures, the candidates
+ * filter for the domain list, the sidebar for its badges.
  */
 function Protected({ children }) {
   const { isAuthenticated, ready } = useAuth()
@@ -22,7 +27,7 @@ function Protected({ children }) {
   if (!isAuthenticated) {
     return <Navigate to="/login" replace state={{ from: location.pathname + location.search }} />
   }
-  return children
+  return <StatsProvider>{children}</StatsProvider>
 }
 
 /**

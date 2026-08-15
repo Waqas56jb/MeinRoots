@@ -33,6 +33,7 @@ export default {
     perPage: 'pro Seite',
     copied: 'Kopiert',
     skip: 'Zum Inhalt springen',
+    updated: 'Aktualisiert {when}',
   },
 
   nav: {
@@ -41,6 +42,11 @@ export default {
     candidates: 'Kandidat:innen',
     queue: 'Warteschlange',
     audit: 'Audit',
+    waiting: '{count} offen',
+    groups: {
+      operations: 'Betrieb',
+      insights: 'Auswertung',
+    },
   },
 
   login: {
@@ -86,6 +92,37 @@ export default {
       tokens: 'KI-Tokens (30 Tage)',
       tokensHint: 'Über alle Analyseschritte',
     },
+    clear: {
+      title: 'Alles erledigt',
+      text: 'Gerade braucht nichts einen Menschen. Alle analysierten Profile wurden automatisch freigegeben, und kein Job hat abgebrochen.',
+    },
+    attention: {
+      title: 'Braucht deine Aufmerksamkeit',
+      flagged: '{count} Profil(e) zur Prüfung markiert',
+      flaggedText: 'Die Analyse ist fertig, aber etwas daran muss ein Mensch bestätigen.',
+      failed: '{count} Lebenslauf/Lebensläufe nicht analysierbar',
+      failedText: 'Das Dokument war nicht lesbar. In der Warteschlange erneut starten.',
+      dead: '{count} Job(s) abgebrochen',
+      deadText: 'Die Versuche sind aufgebraucht. Die Ursache liegt meist außerhalb des Jobs.',
+    },
+    pipeline: {
+      title: 'Eingang und Verarbeitung',
+      hint: 'Wo der aktuelle Eingang steht. Jede Zahl ist direkt gezählt.',
+      uploaded: 'Lebensläufe hochgeladen',
+      uploadedHint: 'Inklusive Ersetzungen',
+      analysedHint: '{percent}% der Uploads',
+      resolves: 'Davon endeten als',
+      cleared: 'Automatisch freigegeben',
+      flagged: 'Zur Prüfung markiert',
+      failed: 'Nicht analysierbar',
+    },
+    automationOf: '{cleared} von {analysed} analysierten Profilen brauchten niemanden',
+    automationNone: 'Noch keine Analysen',
+    inFlightDetail: '{queued} wartend · {running} laufend',
+    inFlightIdle: 'Nichts in Arbeit',
+    byDomainHint: 'Wohin die KI jedes Profil eingeordnet hat',
+    byGoalHint: 'Was die Kandidatinnen und Kandidaten angegeben haben',
+    moreDomains: 'und {count} weitere mit Kandidaten',
   },
 
   candidates: {
@@ -104,6 +141,10 @@ export default {
       needsReview: 'Prüfung nötig',
       clear: 'Filter zurücksetzen',
       active: '{count} Filter aktiv',
+      searchChip: 'Suche: {q}',
+      clearSearch: 'Suche löschen',
+      activeCount: '{count} Filter',
+      remove: 'Filter entfernen: {name}',
     },
     sort: {
       recent: 'Neueste zuerst',
@@ -120,9 +161,12 @@ export default {
       status: 'Status',
       cv: 'Lebenslauf',
       open: 'Öffnen',
+      registered: 'Registriert',
+      openNamed: '{name} öffnen',
     },
     noCv: 'Kein Lebenslauf',
     registered: 'Registriert {date}',
+    count: '{count} insgesamt',
   },
 
   detail: {
@@ -154,6 +198,8 @@ export default {
       reject: 'Ablehnen',
       saved: 'Prüfung gespeichert',
       confirmReject: 'Diese Person ablehnen? Sie bleibt auf der Plattform, wird aber als nicht weiterverfolgt markiert.',
+      requiredTitle: 'Prüfung erforderlich',
+      requiredText: 'Dieses Profil wurde nicht automatisch freigegeben. Die Ausnahmen unten sind der Grund.',
     },
     flags: {
       title: 'Offene Auffälligkeiten',
@@ -252,6 +298,8 @@ export default {
         text: 'Job erneut starten. Scheitert er weiterhin, sind die technischen Details unten das, was die Entwicklung braucht.',
       },
     },
+    emptyText: 'Es warten und laufen keine Analysejobs, und nichts ist fehlgeschlagen.',
+    emptyFilteredText: 'Gerade hat kein Job diesen Status.',
   },
 
   audit: {
@@ -264,6 +312,13 @@ export default {
     when: 'Wann',
     ip: 'IP',
     entity: 'Objekt',
+    emptyFilteredText: 'Für diesen Typ wurden noch keine Ereignisse aufgezeichnet.',
+    table: {
+      when: 'Wann',
+      event: 'Ereignis',
+      actor: 'Auslöser',
+      entity: 'Objekt',
+    },
   },
 
   actions: {

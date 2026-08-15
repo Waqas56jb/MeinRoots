@@ -70,7 +70,39 @@
 
   --font: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-display: 'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif;
+
+  /*
+   * An inset ground and a lighter divider.
+   *
+   * The console shows many panels at once, so depth cannot come from stacking
+   * shadows — a page of floating cards reads as confetti. It comes from two
+   * grounds instead: a panel sits on the page, and a header or a table stripe
+   * sits inset within it.
+   */
+  --surface-3: #eef3fb;
+  --line-soft: #eef2f8;
+
+  /*
+   * Type scale.
+   *
+   * Tighter than the candidate app on purpose: that product is read, this one
+   * is scanned. A page title here is a label on a working surface, not the
+   * loudest thing on screen.
+   */
+  --t-page: 1.32rem;    /* the page title in the top bar   */
+  --t-section: 1.02rem; /* a panel heading                 */
+  --t-body: 0.9rem;     /* body text inside the console    */
+  --t-sm: 0.84rem;      /* table cells, secondary text     */
+  --t-xs: 0.78rem;      /* meta, captions                  */
+  --t-micro: 0.68rem;   /* uppercase eyebrows and labels   */
 }
+
+/*
+ * Any figure read as a number — a count, a score, a percentage. Proportional
+ * digits change width as a value updates, so a self-refreshing count visibly
+ * twitches; tabular ones hold their column.
+ */
+.num { font-variant-numeric: tabular-nums; font-feature-settings: 'tnum' 1; }
 
 *, *::before, *::after { box-sizing: border-box; }
 

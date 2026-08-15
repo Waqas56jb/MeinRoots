@@ -96,6 +96,11 @@ export default function CandidatePage() {
   const { candidate, profile, documents, questionnaire, reviews, cvVersions } = data
   const primaryDoc = documents?.[0]
   const openFlags = profile?.flags ?? []
+  const bestScore = (profile?.assessments ?? []).reduce(
+    (best, a) => (best === null || a.score > best ? a.score : best),
+    null,
+  )
+  const needsReview = profile?.reviewStatus === 'flagged' || openFlags.length > 0
 
   return (
     <Layout
@@ -109,37 +114,38 @@ export default function CandidatePage() {
     >
       <ErrorNote message={error} onRetry={load} />
 
-      {/* Everything needed to decide, above the fold: status, confidence,
-          the open exceptions, and the three buttons that end the review. */}
-      <section className="card decide">
-        <div className="decide__facts">
-          <Fact label={t('detail.meta.status')} value={<ReviewBadge status={profile?.reviewStatus} />} />
-          <Fact label={t('candidates.table.cv')} value={<CvBadge status={primaryDoc?.status} />} />
-          <Fact label={t('detail.meta.confidence')} value={<Confidence value={profile?.extractionConfidence} />} />
-          <Fact
-            label={t('detail.meta.completeness')}
-            value={
-              profile ? (
-                <span className="withbar">
-                  <Progress value={profile.completeness} />
-                  {profile.completeness}%
-                </span>
-              ) : '—'
-            }
-          />
-          <Fact label={t('detail.meta.registered')} value={formatDate(candidate.createdAt, locale)} />
-          <Fact label={t('detail.meta.lastLogin')} value={formatDate(candidate.lastLoginAt, locale)} />
-          <Fact
-            label={t('detail.meta.consent')}
-            value={
-              candidate.gdprConsentAt ? (
-                <span className="is-good">{formatDate(candidate.gdprConsentAt, locale)}</span>
-              ) : (
-                <span className="is-bad">{t('detail.meta.noConsent')}</span>
-              )
-            }
-          />
-          <Fact label={t('detail.meta.locale')} value={candidate.locale?.toUpperCase()} />
+      {/*
+        The state of the candidate, on one line, before anything else. An
+        admin arriving from the queue needs to know whether this one still
+        needs them without reading a page or scrolling to find out.
+      */}
+      <section className="cstatus">
+        <div className="cstatus__row">
+          <span className="cstatus__item">
+            <span className="cstatus__label">{t('detail.meta.status')}</span>
+            <ReviewBadge status={profile?.reviewStatus} />
+          </span>
+          <span className="cstatus__item">
+            <span className="cstatus__label">{t('candidates.table.cv')}</span>
+            <CvBadge status={primaryDoc?.status} />
+          </span>
+          <span className="cstatus__item">
+            <span className="cstatus__label">{t('detail.meta.confidence')}</span>
+            <Confidence value={profile?.extractionConfidence} />
+          </span>
+          <span className="cstatus__item">
+            <span className="cstatus__label">{t('candidates.table.readiness')}</span>
+            <Score value={bestScore} />
+          </span>
+          <span className="cstatus__item cstatus__item--grow">
+            <span className="cstatus__label">{t('detail.meta.completeness')}</span>
+            {profile ? (
+              <span className="withbar">
+                <Progress value={profile.completeness} />
+                <em className="num">{profile.completeness}%</em>
+              </span>
+            ) : '—'}
+          </span>
         </div>
 
         <ul className="tags tags--lg">
@@ -154,6 +160,57 @@ export default function CandidatePage() {
             </li>
           )}
         </ul>
+      </section>
+
+      {/*
+        Why this one is here, stated before the buttons that resolve it. A
+        decision panel with no reason attached asks the reviewer to go and find
+        the reason themselves, which is the slow part of the job.
+      */}
+      {needsReview && (
+        <section className="review review--required">
+          <header className="review__head">
+            <span className="review__icon"><Icon name="warning" size={19} /></span>
+            <div>
+              <h2>{t('detail.review.requiredTitle')}</h2>
+              <p>{t('detail.review.requiredText')}</p>
+            </div>
+          </header>
+
+          {openFlags.length > 0 && (
+            <ul className="flags">
+              {openFlags.map((flag) => (
+                <li key={flag.id} className={`flags__item flags__item--${flag.severity}`}>
+                  <div>
+                    <strong>{t(`flags.${flag.code}`)}</strong>
+                    {flag.detail && <span>{flag.detail}</span>}
+                  </div>
+                  <button type="button" className="btn btn--ghost btn--sm" onClick={() => resolveFlag(flag.id)}>
+                    {t('detail.flags.resolve')}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
+
+      {/* The three actions that end a review, always in the same place. */}
+      <section className="decide">
+        <div className="decide__head">
+          <h2><Icon name="checks" size={16} />{t('detail.review.title')}</h2>
+          <span className="decide__meta">
+            {t('detail.meta.registered')}: {formatDate(candidate.createdAt, locale)}
+            {' · '}
+            {t('detail.meta.locale')}: {candidate.locale?.toUpperCase() ?? '—'}
+            {' · '}
+            {candidate.gdprConsentAt ? (
+              <span className="is-good">{t('detail.meta.consent')} {formatDate(candidate.gdprConsentAt, locale)}</span>
+            ) : (
+              <span className="is-bad">{t('detail.meta.noConsent')}</span>
+            )}
+          </span>
+        </div>
 
         <div className="decide__act">
           <textarea
@@ -176,25 +233,6 @@ export default function CandidatePage() {
           </div>
         </div>
       </section>
-
-      {openFlags.length > 0 && (
-        <section className="card">
-          <h2><Icon name="warning" size={17} />{t('detail.flags.title')}</h2>
-          <ul className="flags">
-            {openFlags.map((flag) => (
-              <li key={flag.id} className={`flags__item flags__item--${flag.severity}`}>
-                <div>
-                  <strong>{t(`flags.${flag.code}`)}</strong>
-                  {flag.detail && <span>{flag.detail}</span>}
-                </div>
-                <button type="button" className="btn btn--ghost btn--sm" onClick={() => resolveFlag(flag.id)}>
-                  {t('detail.flags.resolve')}
-                </button>
-              </li>
-            ))}
-          </ul>
-        </section>
-      )}
 
       <div className="tabs" role="tablist">
         {TABS.map((key) => (
@@ -247,15 +285,6 @@ export default function CandidatePage() {
         />
       )}
     </Layout>
-  )
-}
-
-function Fact({ label, value }) {
-  return (
-    <div className="fact">
-      <dt>{label}</dt>
-      <dd>{value ?? '—'}</dd>
-    </div>
   )
 }
 

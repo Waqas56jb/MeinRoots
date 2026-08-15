@@ -3,8 +3,10 @@ import { useSearchParams } from 'react-router-dom'
 import Layout from '../components/Layout.jsx'
 import Icon from '../components/Icon.jsx'
 import { Empty, ErrorNote, Skeleton } from '../components/ui.jsx'
+import { Freshness } from '../components/console.jsx'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useToast } from '../context/ToastContext.jsx'
+import { useStats } from '../context/StatsContext.jsx'
 import { adminApi } from '../lib/api.js'
 import { formatDateTime, formatRelative } from '../lib/format.js'
 
@@ -55,14 +57,23 @@ function JobError({ raw }) {
   )
 }
 
+/**
+ * The processing queue.
+ *
+ * Jobs move on their own, so the page refreshes itself — quietly, so the list
+ * does not blink back to skeletons every eight seconds while someone is reading
+ * an error message.
+ */
 export default function QueuePage() {
   const { t, tError, locale } = useI18n()
   const toast = useToast()
+  const { counts } = useStats()
   const [params, setParams] = useSearchParams()
 
   const [jobs, setJobs] = useState(null)
   const [error, setError] = useState('')
   const [busyId, setBusyId] = useState(null)
+  const [fetchedAt, setFetchedAt] = useState(null)
 
   const status = params.get('status') ?? ''
 
@@ -73,6 +84,7 @@ export default function QueuePage() {
       try {
         const data = await adminApi.jobs({ status: status || undefined, limit: 50 })
         setJobs(data.jobs ?? [])
+        setFetchedAt(Date.now())
       } catch (err) {
         setError(tError(err.code))
         setJobs([])
@@ -85,8 +97,6 @@ export default function QueuePage() {
     load()
   }, [load])
 
-  // Jobs move on their own, so the page refreshes itself — quietly, so the list
-  // does not blink back to skeletons every eight seconds.
   useEffect(() => {
     const id = setInterval(() => load({ quiet: true }), REFRESH_MS)
     return () => clearInterval(id)
@@ -112,18 +122,29 @@ export default function QueuePage() {
     setParams(p, { replace: true })
   }
 
+  /* Counts the stats read already knows, so the tabs say how much is behind
+     them rather than making the admin click each one to find out. */
+  const tabCount = { queued: counts?.jobs_queued, running: counts?.jobs_running, dead: counts?.jobs_dead }
+
   return (
     <Layout
       title={t('queue.title')}
       subtitle={t('queue.subtitle')}
+      meta={<Freshness at={fetchedAt} />}
       actions={
         <button type="button" className="btn btn--ghost btn--sm" onClick={() => load()}>
           <Icon name="refresh" size={16} /> <span className="hide-sm">{t('common.refresh')}</span>
         </button>
       }
     >
-      <div className="chipbar" role="tablist">
-        <button type="button" role="tab" aria-selected={!status} className={!status ? 'is-on' : ''} onClick={() => setStatus('')}>
+      <div className="chipbar" role="tablist" aria-label={t('queue.title')}>
+        <button
+          type="button"
+          role="tab"
+          aria-selected={!status}
+          className={!status ? 'is-on' : ''}
+          onClick={() => setStatus('')}
+        >
           {t('common.all')}
         </button>
         {STATUSES.map((s) => (
@@ -132,10 +153,11 @@ export default function QueuePage() {
             type="button"
             role="tab"
             aria-selected={status === s}
-            className={status === s ? 'is-on' : ''}
+            className={`${status === s ? 'is-on' : ''} ${s === 'dead' && tabCount.dead > 0 ? 'is-alarm' : ''}`}
             onClick={() => setStatus(s)}
           >
             {t(`queue.status.${s}`)}
+            {tabCount[s] > 0 && <em className="num">{tabCount[s]}</em>}
           </button>
         ))}
       </div>
@@ -145,7 +167,18 @@ export default function QueuePage() {
       {jobs === null ? (
         <Skeleton rows={5} />
       ) : jobs.length === 0 ? (
-        <Empty icon="layers" title={status ? t('queue.emptyFiltered') : t('queue.empty')} />
+        status ? (
+          <Empty icon="layers" title={t('queue.emptyFiltered')} text={t('queue.emptyFilteredText')} />
+        ) : (
+          /* Nothing queued is a healthy state, not a missing one. */
+          <section className="allclear">
+            <span className="allclear__icon"><Icon name="checkCircle" size={24} /></span>
+            <div>
+              <h2>{t('queue.empty')}</h2>
+              <p>{t('queue.emptyText')}</p>
+            </div>
+          </section>
+        )
       ) : (
         <ul className="joblist">
           {jobs.map((job) => {
@@ -162,14 +195,20 @@ export default function QueuePage() {
                       {t(`queue.status.${job.status}`)}
                     </span>
                     <strong>{job.type}</strong>
-                    <span className="muted small">{formatRelative(job.created_at, locale)}</span>
+                    <time dateTime={job.created_at} title={formatDateTime(job.created_at, locale)}>
+                      {formatRelative(job.created_at, locale)}
+                    </time>
                   </div>
 
                   <div className="job__meta">
                     <span>{t('queue.attempts', { attempts: job.attempts, max: job.max_attempts })}</span>
-                    {job.progress?.stage && <span>{t('queue.stage')}: {job.progress.stage}</span>}
+                    {job.progress?.stage && (
+                      <span className="job__stage">
+                        <Icon name="activity" size={12} />
+                        {t('queue.stage')}: {job.progress.stage}
+                      </span>
+                    )}
                     {seconds !== null && <span>{t('queue.duration', { seconds })}</span>}
-                    <span className="muted">{formatDateTime(job.created_at, locale)}</span>
                   </div>
 
                   {job.last_error && <JobError raw={job.last_error} />}
@@ -182,7 +221,8 @@ export default function QueuePage() {
                     disabled={busyId === job.id}
                     onClick={() => retry(job.id)}
                   >
-                    <Icon name="retry" size={15} /> {t('queue.retry')}
+                    <Icon name="retry" size={15} />
+                    {busyId === job.id ? t('common.loading') : t('queue.retry')}
                   </button>
                 )}
               </li>

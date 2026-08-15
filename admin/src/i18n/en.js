@@ -33,6 +33,7 @@ export default {
     perPage: 'per page',
     copied: 'Copied',
     skip: 'Skip to content',
+    updated: 'Updated {when}',
   },
 
   nav: {
@@ -41,6 +42,11 @@ export default {
     candidates: 'Candidates',
     queue: 'Queue',
     audit: 'Audit',
+    waiting: '{count} waiting',
+    groups: {
+      operations: 'Operations',
+      insights: 'Insights',
+    },
   },
 
   login: {
@@ -86,6 +92,37 @@ export default {
       tokens: 'AI tokens (30 days)',
       tokensHint: 'Across every analysis step',
     },
+    clear: {
+      title: 'All clear',
+      text: 'Nothing needs a person right now. Every analysed profile cleared on its own and no job has given up.',
+    },
+    attention: {
+      title: 'Needs your attention',
+      flagged: '{count} profile(s) flagged for review',
+      flaggedText: 'The analysis finished but something about it needs a person to confirm.',
+      failed: '{count} CV(s) could not be analysed',
+      failedText: 'The document could not be read. Retry it from the queue.',
+      dead: '{count} job(s) gave up',
+      deadText: 'These exhausted their retries. The cause is usually outside the job itself.',
+    },
+    pipeline: {
+      title: 'Intake and processing',
+      hint: 'Where the current intake stands. Every figure is counted directly.',
+      uploaded: 'CVs uploaded',
+      uploadedHint: 'Including replacements',
+      analysedHint: '{percent}% of uploads',
+      resolves: 'Which resolved as',
+      cleared: 'Cleared automatically',
+      flagged: 'Flagged for review',
+      failed: 'Could not be analysed',
+    },
+    automationOf: '{cleared} of {analysed} analysed profiles needed no one',
+    automationNone: 'No analyses yet',
+    inFlightDetail: '{queued} queued · {running} running',
+    inFlightIdle: 'Nothing processing',
+    byDomainHint: 'Where the AI classified each profile',
+    byGoalHint: 'What candidates said they are looking for',
+    moreDomains: 'and {count} more with candidates',
   },
 
   candidates: {
@@ -104,6 +141,10 @@ export default {
       needsReview: 'Needs review',
       clear: 'Clear filters',
       active: '{count} filter(s) active',
+      searchChip: 'Search: {q}',
+      clearSearch: 'Clear the search',
+      activeCount: '{count} filter(s)',
+      remove: 'Remove filter: {name}',
     },
     sort: {
       recent: 'Newest first',
@@ -120,9 +161,12 @@ export default {
       status: 'Status',
       cv: 'CV',
       open: 'Open',
+      registered: 'Registered',
+      openNamed: 'Open {name}',
     },
     noCv: 'No CV',
     registered: 'Registered {date}',
+    count: '{count} total',
   },
 
   detail: {
@@ -154,6 +198,8 @@ export default {
       reject: 'Reject',
       saved: 'Review saved',
       confirmReject: 'Reject this candidate? They stay on the platform, but are marked as not proceeding.',
+      requiredTitle: 'Review required',
+      requiredText: 'This profile did not clear on its own. The exceptions below are why.',
     },
     flags: {
       title: 'Open exceptions',
@@ -252,6 +298,8 @@ export default {
         text: 'Retry the job. If it keeps failing, the technical detail below is what the developer needs.',
       },
     },
+    emptyText: 'No analysis jobs are queued or running, and nothing has failed.',
+    emptyFilteredText: 'No jobs have this status right now.',
   },
 
   audit: {
@@ -264,6 +312,13 @@ export default {
     when: 'When',
     ip: 'IP',
     entity: 'Entity',
+    emptyFilteredText: 'No events of this type have been recorded yet.',
+    table: {
+      when: 'When',
+      event: 'Event',
+      actor: 'Actor',
+      entity: 'Entity',
+    },
   },
 
   actions: {

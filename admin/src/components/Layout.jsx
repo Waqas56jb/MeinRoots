@@ -6,13 +6,36 @@ import Icon from './Icon.jsx'
 import logo from '../assets/logo.png'
 import { useI18n } from '../context/I18nContext.jsx'
 import { useAuth } from '../context/AuthContext.jsx'
+import { useStats } from '../context/StatsContext.jsx'
 
-const NAV = [
-  { to: '/', key: 'overview', icon: 'gauge', end: true },
-  { to: '/candidates', key: 'candidates', icon: 'users' },
-  { to: '/queue', key: 'queue', icon: 'layers' },
-  { to: '/audit', key: 'audit', icon: 'scroll' },
+/**
+ * Navigation, grouped by what the admin is doing rather than listed flat.
+ *
+ * Only routes that exist appear here. There is no settings or analytics
+ * section because the console has neither, and a navigation item that leads
+ * nowhere is worse than a shorter menu.
+ *
+ * `badge` names the counter from the stats read that belongs on that item — the
+ * flagged profiles waiting on the candidates page, the jobs that gave up on the
+ * queue. It means an admin can see there is work without opening the page.
+ */
+const GROUPS = [
+  {
+    key: 'operations',
+    items: [
+      { to: '/', key: 'overview', icon: 'gauge', end: true },
+      { to: '/candidates', key: 'candidates', icon: 'users', badge: 'candidates' },
+      { to: '/queue', key: 'queue', icon: 'layers', badge: 'queue' },
+    ],
+  },
+  {
+    key: 'insights',
+    items: [{ to: '/audit', key: 'audit', icon: 'scroll' }],
+  },
 ]
+
+/** The same items, flat, for the phone tab bar where grouping has no room. */
+const NAV = GROUPS.flatMap((g) => g.items)
 
 /**
  * @param drop  Which way the list opens. The sidebar footer sits at the bottom
@@ -112,9 +135,10 @@ function LanguageSwitcher({ variant = 'menu', drop = 'down', align = 'left' }) {
  *   <1100px  sidebar becomes a slide-in drawer behind the burger
  *   <760px   plus a bottom tab bar, which is where a thumb actually reaches
  */
-export default function Layout({ title, subtitle, actions, children }) {
+export default function Layout({ title, subtitle, actions, meta, children }) {
   const { t } = useI18n()
   const { user, logout, isSuperAdmin } = useAuth()
+  const { badges } = useStats()
   const navigate = useNavigate()
   const location = useLocation()
   const [drawer, setDrawer] = useState(false)
@@ -151,11 +175,27 @@ export default function Layout({ title, subtitle, actions, children }) {
       </div>
 
       <nav className="side__nav" aria-label={t('nav.label')}>
-        {NAV.map((item) => (
-          <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => (isActive ? 'is-active' : '')}>
-            <Icon name={item.icon} size={19} />
-            <span>{t(`nav.${item.key}`)}</span>
-          </NavLink>
+        {GROUPS.map((group) => (
+          <div key={group.key} className="side__group">
+            <p className="side__groupLabel">{t(`nav.groups.${group.key}`)}</p>
+            {group.items.map((item) => {
+              const count = item.badge ? badges[item.badge] ?? 0 : 0
+              return (
+                <NavLink
+                  key={item.to}
+                  to={item.to}
+                  end={item.end}
+                  className={({ isActive }) => (isActive ? 'is-active' : '')}
+                >
+                  <Icon name={item.icon} size={18} />
+                  <span>{t(`nav.${item.key}`)}</span>
+                  {count > 0 && (
+                    <span className="side__badge" aria-label={t('nav.waiting', { count })}>{count}</span>
+                  )}
+                </NavLink>
+              )
+            })}
+          </div>
         ))}
         {/* Deliberately no link to the candidate site. The two applications
             stay unlinked in both directions so neither advertises the other. */}
@@ -211,10 +251,20 @@ export default function Layout({ title, subtitle, actions, children }) {
 
           <div className="topbar__title">
             <h1>{title}</h1>
+            {/*
+              Two lines, then clip. The German page subtitles run considerably
+              longer than the English, and a single clipped line turned several
+              of them into a fragment and an ellipsis.
+            */}
             {subtitle && <p>{subtitle}</p>}
           </div>
 
-          {actions && <div className="topbar__actions">{actions}</div>}
+          {(meta || actions) && (
+            <div className="topbar__actions">
+              {meta}
+              {actions}
+            </div>
+          )}
         </header>
 
         <main className="main" id="main">
@@ -222,12 +272,23 @@ export default function Layout({ title, subtitle, actions, children }) {
         </main>
 
         <nav className="tabbar" aria-label={t('nav.label')}>
-          {NAV.map((item) => (
-            <NavLink key={item.to} to={item.to} end={item.end} className={({ isActive }) => (isActive ? 'is-active' : '')}>
-              <Icon name={item.icon} size={20} />
-              <span>{t(`nav.${item.key}`)}</span>
-            </NavLink>
-          ))}
+          {NAV.map((item) => {
+            const count = item.badge ? badges[item.badge] ?? 0 : 0
+            return (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                end={item.end}
+                className={({ isActive }) => (isActive ? 'is-active' : '')}
+              >
+                <span className="tabbar__icon">
+                  <Icon name={item.icon} size={19} />
+                  {count > 0 && <span className="tabbar__dot" aria-label={t('nav.waiting', { count })} />}
+                </span>
+                <span>{t(`nav.${item.key}`)}</span>
+              </NavLink>
+            )
+          })}
         </nav>
       </div>
     </div>

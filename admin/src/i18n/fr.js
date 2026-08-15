@@ -33,6 +33,7 @@ export default {
     perPage: 'par page',
     copied: 'Copié',
     skip: 'Aller au contenu',
+    updated: 'Mis à jour {when}',
   },
 
   nav: {
@@ -41,6 +42,11 @@ export default {
     candidates: 'Candidats',
     queue: 'File',
     audit: 'Audit',
+    waiting: '{count} en attente',
+    groups: {
+      operations: 'Opérations',
+      insights: 'Analyse',
+    },
   },
 
   login: {
@@ -86,6 +92,37 @@ export default {
       tokens: 'Jetons IA (30 jours)',
       tokensHint: 'Toutes étapes confondues',
     },
+    clear: {
+      title: 'Rien à signaler',
+      text: 'Rien ne requiert une intervention. Tous les profils analysés ont été validés automatiquement et aucune tâche n’a abandonné.',
+    },
+    attention: {
+      title: 'Requiert votre attention',
+      flagged: '{count} profil(s) signalé(s) pour relecture',
+      flaggedText: 'L’analyse est terminée, mais un point demande confirmation humaine.',
+      failed: '{count} CV n’ont pas pu être analysés',
+      failedText: 'Le document n’a pas pu être lu. Relancez-le depuis la file.',
+      dead: '{count} tâche(s) ont abandonné',
+      deadText: 'Les tentatives sont épuisées. La cause est en général extérieure à la tâche.',
+    },
+    pipeline: {
+      title: 'Entrées et traitement',
+      hint: 'Où en sont les entrées actuelles. Chaque valeur est comptée directement.',
+      uploaded: 'CV téléversés',
+      uploadedHint: 'Remplacements compris',
+      analysedHint: '{percent}% des téléversements',
+      resolves: 'Qui se sont soldés par',
+      cleared: 'Validés automatiquement',
+      flagged: 'Signalés pour relecture',
+      failed: 'Non analysables',
+    },
+    automationOf: '{cleared} des {analysed} profils analysés n’ont demandé personne',
+    automationNone: 'Aucune analyse pour l’instant',
+    inFlightDetail: '{queued} en attente · {running} en cours',
+    inFlightIdle: 'Rien en traitement',
+    byDomainHint: 'Où l’IA a classé chaque profil',
+    byGoalHint: 'Ce que les candidats déclarent rechercher',
+    moreDomains: 'et {count} autres avec des candidats',
   },
 
   candidates: {
@@ -104,6 +141,10 @@ export default {
       needsReview: 'À vérifier',
       clear: 'Réinitialiser',
       active: '{count} filtre(s) actif(s)',
+      searchChip: 'Recherche : {q}',
+      clearSearch: 'Effacer la recherche',
+      activeCount: '{count} filtre(s)',
+      remove: 'Retirer le filtre : {name}',
     },
     sort: {
       recent: 'Plus récents',
@@ -120,9 +161,12 @@ export default {
       status: 'Statut',
       cv: 'CV',
       open: 'Ouvrir',
+      registered: 'Inscrit',
+      openNamed: 'Ouvrir {name}',
     },
     noCv: 'Pas de CV',
     registered: 'Inscrit le {date}',
+    count: '{count} au total',
   },
 
   detail: {
@@ -154,6 +198,8 @@ export default {
       reject: 'Refuser',
       saved: 'Revue enregistrée',
       confirmReject: 'Refuser ce candidat ? Il reste sur la plateforme, mais marqué comme non retenu.',
+      requiredTitle: 'Relecture requise',
+      requiredText: 'Ce profil n’a pas été validé automatiquement. Les exceptions ci-dessous en sont la raison.',
     },
     flags: {
       title: 'Anomalies ouvertes',
@@ -252,6 +298,8 @@ export default {
         text: 'Relancez la tâche. Si elle échoue encore, le détail technique ci-dessous est ce dont le développeur a besoin.',
       },
     },
+    emptyText: 'Aucune tâche d’analyse en attente ou en cours, et rien n’a échoué.',
+    emptyFilteredText: 'Aucune tâche n’a ce statut pour le moment.',
   },
 
   audit: {
@@ -264,6 +312,13 @@ export default {
     when: 'Quand',
     ip: 'IP',
     entity: 'Objet',
+    emptyFilteredText: 'Aucun événement de ce type n’a encore été enregistré.',
+    table: {
+      when: 'Quand',
+      event: 'Événement',
+      actor: 'Auteur',
+      entity: 'Objet',
+    },
   },
 
   actions: {
