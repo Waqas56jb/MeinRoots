@@ -1635,3 +1635,73 @@
   .decide__buttons { flex-direction: column; }
   .decide__buttons .btn { width: 100%; }
 }
+
+/* ------------------------------- consent --------------------------------- */
+
+/*
+ * Whether this candidate may be shown to an employer, on the status line.
+ *
+ * A reviewer deciding what to do with a profile should not have to open a tab
+ * to find the one permission that governs it, and should certainly never have
+ * to assume. The denial is the louder of the two states because acting on a
+ * wrong assumption there is the expensive mistake.
+ */
+.sharing {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+  padding: 9px 13px;
+  border-radius: var(--r-sm);
+  font-size: var(--t-sm);
+  border: 1px solid;
+}
+.sharing svg { flex: none; }
+.sharing strong { font-family: var(--font-display); font-weight: 700; }
+.sharing span { color: var(--muted); }
+.sharing--ok { background: var(--good-bg); border-color: var(--good-line); color: var(--good); }
+.sharing--no { background: var(--warn-bg); border-color: var(--warn-line); color: var(--warn); }
+
+.consentrows { display: grid; gap: var(--s-2); margin-top: var(--s-2); }
+.consentrows li { display: flex; align-items: center; gap: var(--s-3); }
+.consentrow__label { font-size: var(--t-sm); color: var(--ink-2); }
+.consentrows__foot { display: flex; align-items: center; gap: 6px; margin-top: var(--s-4); }
+
+.consentlog { display: grid; gap: var(--s-3); margin-top: var(--s-3); position: relative; padding-left: 18px; }
+.consentlog::before {
+  content: '';
+  position: absolute;
+  left: 4px; top: 6px; bottom: 6px;
+  width: 2px;
+  background: var(--line);
+}
+.consentlog li { position: relative; }
+.consentlog__mark {
+  position: absolute;
+  left: -18px; top: 6px;
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px #fff;
+}
+.consentlog li.is-on .consentlog__mark { background: var(--good); }
+.consentlog li.is-off .consentlog__mark { background: var(--muted-2); }
+.consentlog strong {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  flex-wrap: wrap;
+  font-family: var(--font-display);
+  font-size: var(--t-sm);
+  color: var(--ink);
+}
+.consentlog strong em {
+  font-style: normal;
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.consentlog li.is-on strong em { color: var(--good); }
+.consentlog li.is-off strong em { color: var(--muted-2); }
+
+.docs__consent { margin-bottom: var(--s-3); align-items: flex-start; }

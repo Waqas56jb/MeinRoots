@@ -185,6 +185,11 @@ export default {
     about: 'Wir verbinden globale Talente mit Jobs in Deutschland, Remote-Rollen, Freelance-Projekten und der Ausbildung — KI-Qualifizierung, menschliche Prüfung.',
     legalLinks: ['Datenschutz', 'AGB', 'Impressum'],
     rights: 'Alle Rechte vorbehalten.',
+    legal: {
+      privacy: 'Datenschutz',
+      terms: 'AGB',
+      imprint: 'Impressum',
+    },
   },
 
   auth: {
@@ -215,6 +220,7 @@ export default {
       unknownEmail: 'Für diese Adresse gibt es kein Konto.',
       fileType: 'Es werden nur PDF-, DOC- und DOCX-Dateien unterstützt.',
       fileSize: 'Diese Datei ist größer als 10 MB.',
+      consentsRequired: 'Bitte akzeptiere die drei erforderlichen Punkte, um dein Konto anzulegen.',
     },
     gate: {
       title: 'Ein Schritt vor deinem Lebenslauf',
@@ -247,6 +253,9 @@ export default {
         text: 'Ein Upload liefert dir ein strukturiertes Profil, ein Berufsfeld und einen Plan, was du als Nächstes lernst.',
         points: ['Dauerhaft kostenlose Stufe', 'Original bleibt unverändert', 'Daten jederzeit löschbar'],
       },
+      consentLegend: 'Bevor es weitergeht',
+      optionalLegend: 'Optional',
+      optionalHint: 'Ohne Häkchen ändert sich nichts an deiner Analyse oder deinen Ergebnissen. Du kannst das später in den Einstellungen ändern.',
     },
     reset: {
       title: 'Passwort zurücksetzen',
@@ -292,6 +301,15 @@ export default {
       signedInAs: 'Angemeldet als',
     },
     tagline: 'Kandidatenzugang',
+    consents: {
+      read: 'Lesen',
+      terms: 'Ich stimme den AGB von MeinRoots zu.',
+      privacy: 'Ich habe die Datenschutzerklärung von MeinRoots zur Kenntnis genommen.',
+      data_processing: 'Ich willige in die Verarbeitung meiner personenbezogenen Daten für die in der Datenschutzerklärung beschriebenen Zwecke ein.',
+      employer_sharing: 'Ich bin damit einverstanden, dass MeinRoots mein berufliches Profil passenden Arbeitgebern und Recruitern vorstellt.',
+      job_alerts: 'Ich möchte Informationen zu Stellenangeboten, Karriereservices und MeinRoots-Angeboten erhalten.',
+      marketing: 'Ich bin mit Marketing-Mitteilungen von MeinRoots einverstanden und weiß, dass ich dies jederzeit widerrufen kann.',
+    },
   },
 
   app: {
@@ -708,8 +726,28 @@ export default {
         notifications: 'Einstellung gespeichert.',
         password: 'Passwort geändert.',
         verification: 'Bestätigungs-E-Mail gesendet.',
+        consents: 'Berechtigung aktualisiert.',
       },
       memberSince: 'Mitglied seit {date}',
+      consents: 'Berechtigungen',
+      consentsHint: 'Was du uns erlaubt hast. Du kannst das jederzeit ändern; die Änderung gilt sofort.',
+      acceptedOn: 'Du hast Version {version} der AGB am {date} akzeptiert',
+      acceptedUnknown: 'Keine Zustimmung erfasst',
+      readTerms: 'AGB lesen',
+      consentLabels: {
+        employer_sharing: {
+          title: 'Mein Profil Arbeitgebern zeigen',
+          text: 'Erlaubt MeinRoots, dein berufliches Profil passenden Arbeitgebern und Recruitern vorzustellen. Ausschalten stoppt jede weitere Weitergabe.',
+        },
+        job_alerts: {
+          title: 'Stellenangebote und Karriereservices',
+          text: 'E-Mails zu Stellen, Karriereservices und MeinRoots-Angeboten, die zu deinem Profil passen.',
+        },
+        marketing: {
+          title: 'Marketing-Mitteilungen',
+          text: 'Allgemeine MeinRoots-News und Marketing. Getrennt von allem, was deine eigene Analyse betrifft.',
+        },
+      },
     },
     units: {
       years: 'J',
@@ -1124,6 +1162,56 @@ export default {
       sales: {
         name: 'Vertrieb & Marketing',
         spec: 'B2B-Vertrieb · Growth · Content',
+      },
+    },
+  },
+
+  legal: {
+    eyebrow: 'Rechtliches',
+    version: 'Version {version}',
+    contents: 'Inhalt',
+    important: 'Wichtig: ',
+    notYetOffered: 'MeinRoots bietet derzeit keine Abo-Pläne an. Dieser Abschnitt gilt, sobald kostenpflichtige Pläne eingeführt werden.',
+    englishOnly: 'Diese AGB liegen nur auf Englisch vor. Eine deutsche und französische Fassung wird vorbereitet; bis dahin ist der englische Text der verbindliche.',
+    questions: 'Fragen zu diesen AGB?',
+    backToSignup: 'Zurück zur Registrierung',
+    terms: {
+      title: 'Abonnement-AGB',
+    },
+    privacy: {
+      title: 'Datenschutz',
+      pendingTitle: 'Die vollständige Datenschutzerklärung wird vorbereitet. ',
+      pendingText: 'Diese Seite ist nicht dieses Dokument. Sie beschreibt, was die Plattform heute mit deinen Daten macht — damit du nichts bestätigen musst, was du nicht lesen kannst.',
+      todayTitle: 'Was heute mit deinen Daten passiert',
+      todayLead: 'Jeder Punkt beschreibt das tatsächliche Verhalten der Plattform, keine Absicht.',
+      rightsTitle: 'Deine Rechte',
+      rightsText: 'Du siehst in deinem Profil alles, was über dich gespeichert ist, kannst es selbst korrigieren und dein Konto, deinen Lebenslauf und alle daraus abgeleiteten Daten in den Einstellungen löschen — ohne jemanden zu fragen. Optionale Einwilligungen kannst du dort jederzeit widerrufen.',
+      contact: 'Fragen zu deinen Daten:',
+      facts: {
+        consent: {
+          title: 'Ohne deine Zustimmung wird nichts verarbeitet',
+          text: 'Dein Lebenslauf kann erst analysiert werden, wenn du bei der Registrierung die Verarbeitung erlaubt hast. Ohne sie wird der Upload abgelehnt.',
+        },
+        original: {
+          title: 'Deine Datei wird nie verändert',
+          text: 'Das hochgeladene Dokument wird exakt so gespeichert, wie du es gesendet hast. Alles andere — das strukturierte Profil, die Übersetzungen — entsteht daneben, nie darüber.',
+        },
+        ai: {
+          title: 'Eine KI liest deinen Lebenslauf',
+          text: 'Der Text deines Lebenslaufs wird an OpenAI übermittelt, um Erfahrung zu extrahieren, dein Berufsfeld einzuordnen und die Bereitschaft zu bewerten. Die Ergebnisse sind Entscheidungshilfe; Unsicheres prüft ein Mensch.',
+        },
+        audit: {
+          title: 'Jeder Zugriff wird protokolliert',
+          text: 'Auch wenn jemand aus unserem Team dein Profil öffnet oder deinen Lebenslauf herunterlädt. Protokolliert werden wer, wann und von wo.',
+        },
+        erase: {
+          title: 'Du kannst alles selbst löschen',
+          text: 'Eine Aktion in den Einstellungen entfernt dein Konto, dein Profil, deine Dateien und alles daraus Abgeleitete. Keine E-Mail, keine Wartezeit.',
+        },
+        transfer: {
+          title: 'Arbeitgeber sehen nichts ohne deine Erlaubnis',
+          text: 'Dein Profil einem Arbeitgeber oder Recruiter vorzustellen ist eine separate, optionale Einwilligung. Ohne sie wird dein Profil nicht weitergegeben, und du kannst sie später widerrufen.',
+        },
       },
     },
   },

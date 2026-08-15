@@ -13,6 +13,8 @@ import {
 } from '../../lib/validate.js'
 import { requireAuth } from '../../middleware/auth.js'
 import { authLimiter } from '../../middleware/rateLimit.js'
+import { TERMS_VERSION } from '../../lib/legal.js'
+import { currentConsents, presentConsents, updateOptionalConsents } from './consents.js'
 import * as service from './service.js'
 
 const router = Router()
@@ -47,15 +49,37 @@ const clearAuthCookies = (res) => {
 
 // ------------------------------- schemas ------------------------------------
 
+/**
+ * The six decisions the registration form collects.
+ *
+ * The three required ones are `z.literal(true)` — the request is rejected, not
+ * silently coerced, if any is missing. The three optional ones default to
+ * false: an omitted optional consent is a refusal, never an assumption, and a
+ * client that forgets to send one must not thereby opt a person in.
+ */
+const consentsSchema = z.object({
+  terms: z.literal(true, { errorMap: () => ({ message: 'consent_required' }) }),
+  privacy: z.literal(true, { errorMap: () => ({ message: 'consent_required' }) }),
+  data_processing: z.literal(true, { errorMap: () => ({ message: 'consent_required' }) }),
+  employer_sharing: z.boolean().default(false),
+  job_alerts: z.boolean().default(false),
+  marketing: z.boolean().default(false),
+})
+
 const registerSchema = z.object({
   name: z.string().trim().min(1, 'name_required').max(120),
   email: emailField,
   password: passwordField,
   goals: goalsField,
   locale: localeField.default('en'),
-  // The CV cannot lawfully be processed without this, so it is required rather
-  // than optional-with-a-default.
-  gdprConsent: z.literal(true, { errorMap: () => ({ message: 'consent_required' }) }),
+  consents: consentsSchema,
+})
+
+/** Only the optional three are writable after signup — see consents.js. */
+const optionalConsentsSchema = z.object({
+  employer_sharing: z.boolean().optional(),
+  job_alerts: z.boolean().optional(),
+  marketing: z.boolean().optional(),
 })
 
 const loginSchema = z.object({ email: emailField, password: z.string().min(1, 'password_required') })
@@ -79,9 +103,23 @@ router.post(
       entityId: result.user.id,
       actorId: result.user.id,
       actorRole: result.user.role,
-      metadata: { goals: result.user.goals },
+      // The optional answers and the document version go in the audit trail as
+      // well as the consent table. Two independent records of the same fact is
+      // the point: one of them can be produced without the other being trusted.
+      metadata: {
+        goals: result.user.goals,
+        termsVersion: TERMS_VERSION,
+        optionalConsents: {
+          employer_sharing: Boolean(req.body.consents.employer_sharing),
+          job_alerts: Boolean(req.body.consents.job_alerts),
+          marketing: Boolean(req.body.consents.marketing),
+        },
+      },
     })
-    created(res, { user: result.user })
+    const current = await currentConsents(result.user.id)
+    created(res, {
+      user: { ...result.user, consents: presentConsents(current), termsVersion: TERMS_VERSION },
+    })
   }),
 )
 
@@ -126,7 +164,16 @@ router.get(
   '/me',
   requireAuth,
   asyncHandler(async (req, res) => {
-    ok(res, { user: service.publicUser({ ...req.user, full_name: req.user.full_name }) })
+    const current = await currentConsents(req.user.id)
+    ok(res, {
+      user: {
+        ...service.publicUser({ ...req.user, full_name: req.user.full_name }),
+        consents: presentConsents(current),
+        // The client compares this with what it holds to know whether a
+        // re-acceptance is due after the document changes.
+        termsVersion: TERMS_VERSION,
+      },
+    })
   }),
 )
 
@@ -265,6 +312,41 @@ router.patch(
   asyncHandler(async (req, res) => {
     await service.updateLocale(req.user.id, req.body.locale)
     ok(res, { locale: req.body.locale })
+  }),
+)
+
+/**
+ * Withdrawing or granting an optional consent.
+ *
+ * Article 7(3): withdrawal has to be as easy as granting was. Granting took one
+ * tick on a form, so withdrawal is one toggle in settings on the same footing —
+ * not an email to support, and not buried behind account deletion.
+ *
+ * Only changes are written, and only the optional three are accepted; the
+ * required ones are not a preference and the schema will not take them.
+ */
+router.patch(
+  '/consents',
+  requireAuth,
+  validateBody(optionalConsentsSchema),
+  asyncHandler(async (req, res) => {
+    const { changed } = await updateOptionalConsents({
+      userId: req.user.id,
+      consents: req.body,
+      req,
+    })
+    if (changed.length) {
+      await audit(req, {
+        action: 'auth.consents_updated',
+        entityType: 'user',
+        entityId: req.user.id,
+        // What changed and to what — the log has to be able to answer "when did
+        // they withdraw it" without reading the consent table beside it.
+        metadata: Object.fromEntries(changed.map((type) => [type, Boolean(req.body[type])])),
+      })
+    }
+    const current = await currentConsents(req.user.id)
+    ok(res, { consents: presentConsents(current) })
   }),
 )
 

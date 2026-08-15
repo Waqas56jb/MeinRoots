@@ -179,6 +179,8 @@ export default function SettingsPage() {
         </Card>
       </div>
 
+      <ConsentCard onSaved={() => flash('consents')} onError={setError} />
+
       <PasswordCard onSaved={() => flash('password')} onError={setError} />
 
       <DangerCard
@@ -188,6 +190,70 @@ export default function SettingsPage() {
         }}
       />
     </AppShell>
+  )
+}
+
+/**
+ * The optional permissions, and the ability to take them back.
+ *
+ * Article 7(3): withdrawal must be as easy as consent was. Consent was one tick
+ * on a form, so withdrawal is one toggle here — no email to support, no hunting
+ * through account deletion, and it takes effect on the next request rather than
+ * on a promise to action it.
+ *
+ * The three required consents are deliberately absent. They are the basis for
+ * holding an account at all; the way to withdraw them is to delete the account,
+ * which is the card at the bottom of this page.
+ */
+function ConsentCard({ onSaved, onError }) {
+  const { t, locale } = useI18n()
+  const { user, updateConsents } = useAuth()
+  const apiMessage = useApiMessage()
+  const [busy, setBusy] = useState('')
+
+  const consents = user?.consents ?? {}
+
+  const toggle = async (key, value) => {
+    setBusy(key)
+    const result = await updateConsents({ [key]: value })
+    setBusy('')
+    if (!result.ok) onError(apiMessage(result.error))
+    else onSaved()
+  }
+
+  return (
+    <Card icon="shield" title={t('app.settings.consents')} hint={t('app.settings.consentsHint')}>
+      <div className="consentlist">
+        {['employer_sharing', 'job_alerts', 'marketing'].map((key) => (
+          <label key={key} className="settings__toggle">
+            <input
+              type="checkbox"
+              checked={Boolean(consents[key])}
+              disabled={busy === key}
+              onChange={(e) => toggle(key, e.target.checked)}
+            />
+            <span>
+              <strong>{t(`app.settings.consentLabels.${key}.title`)}</strong>
+              <small>{t(`app.settings.consentLabels.${key}.text`)}</small>
+            </span>
+          </label>
+        ))}
+      </div>
+
+      <p className="settings__since">
+        <Icon name="file" size={13} />
+        {consents.acceptedAt
+          ? t('app.settings.acceptedOn', {
+              version: consents.acceptedVersion ?? '—',
+              date: new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(
+                new Date(consents.acceptedAt),
+              ),
+            })
+          : t('app.settings.acceptedUnknown')}
+        {' · '}
+        <a href="/terms" target="_blank" rel="noreferrer">{t('app.settings.readTerms')}</a>
+      </p>
+    </Card>
   )
 }
 

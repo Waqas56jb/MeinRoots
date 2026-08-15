@@ -179,6 +179,7 @@ export default {
       answers: 'Answers',
       documents: 'Documents',
       history: 'History',
+      consents: 'Consent',
     },
     meta: {
       registered: 'Registered',
@@ -225,6 +226,7 @@ export default {
       versionApproved: 'Version marked as reviewed',
       uploaded: 'Uploaded {date}',
       empty: 'No documents.',
+      noSharingConsent: 'This candidate has not consented to their profile being shown to employers. You may download the CV for internal review, but it must not be sent outside MeinRoots. The download is recorded.',
     },
     history: {
       title: 'Review history',
@@ -238,6 +240,37 @@ export default {
       mismatch: 'That does not match the email address.',
       done: 'Candidate erased.',
       superAdminOnly: 'Only a super admin can erase a candidate.',
+    },
+    sharing: {
+      allowed: 'May be shown to employers',
+      allowedText: 'The candidate has consented to their profile being presented to employers and recruiters.',
+      denied: 'Must not be shown to employers',
+      deniedText: 'The candidate has not consented to their profile being presented. Do not share this profile outside MeinRoots.',
+    },
+    consents: {
+      current: 'Current consent',
+      required: 'Required',
+      optional: 'Optional',
+      given: 'Given',
+      notGiven: 'Not given',
+      granted: 'granted',
+      withdrawn: 'withdrawn',
+      version: 'Accepted terms version {version}',
+      log: 'Consent history',
+      noLog: 'No consent records — this account predates consent logging.',
+      types: {
+        terms: 'Terms & Conditions',
+        privacy: 'Privacy Policy',
+        data_processing: 'Processing of personal data',
+        employer_sharing: 'Show profile to employers',
+        job_alerts: 'Job opportunity messages',
+        marketing: 'Marketing communications',
+      },
+      source: {
+        registration: 'at sign-up',
+        settings: 'in settings',
+        subscription: 'at subscription',
+      },
     },
   },
 
@@ -346,6 +379,8 @@ export default {
     'admin.cv_download': 'CV downloaded (admin)',
     'admin.job_retry': 'Job retried',
     'admin.gdpr_erasure': 'Candidate erased (GDPR)',
+    'auth.consents_updated': 'Consent changed',
+    'admin.cv_download_no_sharing_consent': 'CV downloaded (no sharing consent)',
   },
 
   review: {

@@ -179,6 +179,7 @@ export default {
       answers: 'Réponses',
       documents: 'Documents',
       history: 'Historique',
+      consents: 'Consentement',
     },
     meta: {
       registered: 'Inscrit',
@@ -225,6 +226,7 @@ export default {
       versionApproved: 'Version marquée comme relue',
       uploaded: 'Envoyé le {date}',
       empty: 'Aucun document.',
+      noSharingConsent: 'Ce candidat n’a pas consenti à ce que son profil soit montré aux employeurs. Vous pouvez télécharger le CV pour la revue interne, mais il ne doit pas sortir de MeinRoots. Le téléchargement est enregistré.',
     },
     history: {
       title: 'Historique de revue',
@@ -238,6 +240,37 @@ export default {
       mismatch: 'Cela ne correspond pas à l’adresse e-mail.',
       done: 'Candidat effacé.',
       superAdminOnly: 'Seul un super-administrateur peut effacer un candidat.',
+    },
+    sharing: {
+      allowed: 'Peut être montré aux employeurs',
+      allowedText: 'Le candidat a consenti à ce que son profil soit présenté à des employeurs et recruteurs.',
+      denied: 'Ne doit pas être montré aux employeurs',
+      deniedText: 'Aucun consentement n’a été donné. Ce profil ne doit pas sortir de MeinRoots.',
+    },
+    consents: {
+      current: 'Consentement actuel',
+      required: 'Requis',
+      optional: 'Facultatif',
+      given: 'Donné',
+      notGiven: 'Non donné',
+      granted: 'donné',
+      withdrawn: 'retiré',
+      version: 'Version des conditions acceptée : {version}',
+      log: 'Historique des consentements',
+      noLog: 'Aucun enregistrement — ce compte est antérieur à la journalisation des consentements.',
+      types: {
+        terms: 'Conditions générales',
+        privacy: 'Politique de confidentialité',
+        data_processing: 'Traitement des données personnelles',
+        employer_sharing: 'Montrer le profil aux employeurs',
+        job_alerts: 'Messages sur les offres d’emploi',
+        marketing: 'Communications marketing',
+      },
+      source: {
+        registration: 'à l’inscription',
+        settings: 'dans les paramètres',
+        subscription: 'à l’abonnement',
+      },
     },
   },
 
@@ -346,6 +379,8 @@ export default {
     'admin.cv_download': 'CV téléchargé (admin)',
     'admin.job_retry': 'Tâche relancée',
     'admin.gdpr_erasure': 'Candidat effacé (RGPD)',
+    'auth.consents_updated': 'Consentement modifié',
+    'admin.cv_download_no_sharing_consent': 'CV téléchargé (sans consentement de partage)',
   },
 
   review: {

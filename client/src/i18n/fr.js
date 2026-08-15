@@ -189,6 +189,11 @@ export default {
     about: 'Nous relions les talents du monde entier à l’emploi en Allemagne, au télétravail, aux missions freelance et à l’Ausbildung — qualification par IA, relecture humaine.',
     legalLinks: ['Confidentialité', 'Conditions d’utilisation', 'Mentions légales'],
     rights: 'Tous droits réservés.',
+    legal: {
+      privacy: 'Confidentialité',
+      terms: 'CGV',
+      imprint: 'Mentions légales',
+    },
   },
 
   auth: {
@@ -219,6 +224,7 @@ export default {
       unknownEmail: 'Aucun compte pour cette adresse.',
       fileType: 'Seuls les fichiers PDF, DOC et DOCX sont acceptés.',
       fileSize: 'Ce fichier dépasse 10 Mo.',
+      consentsRequired: 'Veuillez accepter les trois éléments requis pour créer votre compte.',
     },
     gate: {
       title: 'Une étape avant votre CV',
@@ -255,6 +261,9 @@ export default {
         text: 'Un seul téléversement vous donne un profil structuré, une catégorie professionnelle et un plan d’apprentissage.',
         points: ['Offre gratuite à vie', 'CV original jamais modifié', 'Suppression à tout moment'],
       },
+      consentLegend: 'Avant de continuer',
+      optionalLegend: 'Facultatif',
+      optionalHint: 'Ne rien cocher ici ne change rien à votre analyse ni à vos résultats. Vous pourrez le modifier plus tard dans les paramètres.',
     },
     reset: {
       title: 'Réinitialiser le mot de passe',
@@ -305,6 +314,15 @@ export default {
       signedInAs: 'Connecté en tant que',
     },
     tagline: 'Accès candidat',
+    consents: {
+      read: 'Lire',
+      terms: 'J’accepte les conditions générales de MeinRoots.',
+      privacy: 'Je reconnais avoir pris connaissance de la politique de confidentialité de MeinRoots.',
+      data_processing: 'Je consens au traitement de mes données personnelles aux fins décrites dans la politique de confidentialité.',
+      employer_sharing: 'J’accepte que MeinRoots présente mon profil professionnel à des employeurs et recruteurs appropriés.',
+      job_alerts: 'Je souhaite recevoir des informations sur les offres d’emploi, les services carrière et les offres MeinRoots.',
+      marketing: 'J’accepte de recevoir des communications marketing de MeinRoots et je sais que je peux le retirer à tout moment.',
+    },
   },
 
   app: {
@@ -721,8 +739,28 @@ export default {
         notifications: 'Préférence enregistrée.',
         password: 'Mot de passe modifié.',
         verification: 'E-mail de confirmation envoyé.',
+        consents: 'Autorisation mise à jour.',
       },
       memberSince: 'Membre depuis le {date}',
+      consents: 'Autorisations',
+      consentsHint: 'Ce que vous nous avez autorisé à faire. Vous pouvez le modifier à tout moment, avec effet immédiat.',
+      acceptedOn: 'Vous avez accepté la version {version} des conditions le {date}',
+      acceptedUnknown: 'Aucune acceptation enregistrée',
+      readTerms: 'Lire les conditions',
+      consentLabels: {
+        employer_sharing: {
+          title: 'Montrer mon profil aux employeurs',
+          text: 'Permet à MeinRoots de présenter votre profil professionnel à des employeurs et recruteurs appropriés. Le désactiver arrête tout partage ultérieur.',
+        },
+        job_alerts: {
+          title: 'Offres d’emploi et services carrière',
+          text: 'E-mails sur les postes, les services carrière et les offres MeinRoots correspondant à votre profil.',
+        },
+        marketing: {
+          title: 'Communications marketing',
+          text: 'Actualités et marketing MeinRoots en général. Distinct de tout ce qui concerne votre propre analyse.',
+        },
+      },
     },
     units: {
       years: 'a',
@@ -1137,6 +1175,56 @@ export default {
       sales: {
         name: 'Vente & Marketing',
         spec: 'Vente B2B · Growth · Contenu',
+      },
+    },
+  },
+
+  legal: {
+    eyebrow: 'Mentions légales',
+    version: 'Version {version}',
+    contents: 'Sommaire',
+    important: 'Important : ',
+    notYetOffered: 'MeinRoots ne propose pas d’abonnement pour le moment. Cette section s’appliquera dès l’introduction des offres payantes.',
+    englishOnly: 'Ces conditions ne sont publiées qu’en anglais. Une version allemande et française est en préparation ; d’ici là, le texte anglais fait foi.',
+    questions: 'Des questions sur ces conditions ?',
+    backToSignup: 'Retour à l’inscription',
+    terms: {
+      title: 'Conditions générales d’abonnement',
+    },
+    privacy: {
+      title: 'Confidentialité',
+      pendingTitle: 'La politique de confidentialité complète est en préparation. ',
+      pendingText: 'Cette page n’est pas ce document. Elle décrit ce que la plateforme fait aujourd’hui de vos données, pour ne pas vous demander de reconnaître un texte que vous ne pouvez pas lire.',
+      todayTitle: 'Ce qu’il advient de vos données aujourd’hui',
+      todayLead: 'Chaque point décrit le comportement réel de la plateforme, pas une intention.',
+      rightsTitle: 'Vos droits',
+      rightsText: 'Vous voyez dans votre profil tout ce qui est conservé à votre sujet, vous pouvez le corriger vous-même, et supprimer votre compte, votre CV et tout ce qui en découle depuis vos paramètres — sans demander à personne. Les consentements facultatifs peuvent y être retirés à tout moment.',
+      contact: 'Questions sur vos données :',
+      facts: {
+        consent: {
+          title: 'Rien n’est traité avant votre accord',
+          text: 'Votre CV ne peut être analysé qu’après le consentement au traitement donné à l’inscription. Sans lui, le téléversement est refusé.',
+        },
+        original: {
+          title: 'Votre fichier n’est jamais modifié',
+          text: 'Le document téléversé est conservé exactement tel que vous l’avez envoyé. Tout le reste — le profil structuré, les traductions — est construit à côté, jamais par-dessus.',
+        },
+        ai: {
+          title: 'Une IA lit votre CV',
+          text: 'Le texte de votre CV est transmis à OpenAI pour extraire votre expérience, classer votre domaine et évaluer votre préparation. Les résultats sont une aide à la décision ; une personne vérifie ce dont le système n’était pas sûr.',
+        },
+        audit: {
+          title: 'Chaque accès est enregistré',
+          text: 'Y compris lorsqu’un membre de notre équipe ouvre votre profil ou télécharge votre CV. L’enregistrement indique qui, quand et depuis où.',
+        },
+        erase: {
+          title: 'Vous pouvez tout supprimer vous-même',
+          text: 'Une action dans vos paramètres supprime votre compte, votre profil, vos fichiers et tout ce qui en découle. Sans e-mail, sans délai.',
+        },
+        transfer: {
+          title: 'Les employeurs ne voient rien sans votre accord',
+          text: 'Présenter votre profil à un employeur ou un recruteur relève d’un consentement distinct et facultatif. Sans lui, votre profil n’est pas partagé, et vous pouvez le retirer ensuite.',
+        },
       },
     },
   },

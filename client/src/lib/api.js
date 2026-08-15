@@ -131,6 +131,9 @@ export const authApi = {
   verifyEmail: (token) => api.post('/api/auth/email/verify', { token }),
   resendVerification: () => api.post('/api/auth/email/verify/resend'),
   updateNotifications: (notifyByEmail) => api.patch('/api/auth/notifications', { notifyByEmail }),
+  // Only the optional three are writable; withdrawing a required consent is
+  // closing the account, which is a different endpoint on purpose.
+  updateConsents: (consents) => api.patch('/api/auth/consents', consents),
   changePassword: (payload) => api.post('/api/auth/password/change', payload),
   deleteAccount: (password) => request('/api/auth/account', { method: 'DELETE', body: { password } }),
 }

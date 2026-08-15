@@ -8,6 +8,7 @@ import { requireAuth, requireRole } from '../../middleware/auth.js'
 import { getFullProfile } from '../profile/repository.js'
 import { presentFullProfile } from '../profile/present.js'
 import { absolutePath, deleteUserFiles } from '../cv/storage.js'
+import { consentHistory, currentConsents, hasConsent, presentConsents } from '../auth/consents.js'
 
 const router = Router()
 router.use(requireAuth, requireRole('admin'))
@@ -128,7 +129,7 @@ router.get(
     const profile = await one('SELECT id FROM candidate_profiles WHERE user_id = $1', [user.id])
     const full = profile ? await getFullProfile(profile.id) : null
 
-    const [documents, versions, questionnaire, reviews] = await Promise.all([
+    const [documents, versions, questionnaire, reviews, consents, consentLog] = await Promise.all([
       many(
         'SELECT id, original_filename, status, source_language, size_bytes, uploaded_at, processed_at, error_message FROM cv_documents WHERE user_id = $1 AND deleted_at IS NULL ORDER BY uploaded_at DESC',
         [user.id],
@@ -157,6 +158,8 @@ router.get(
             [profile.id],
           )
         : [],
+      currentConsents(user.id),
+      consentHistory(user.id),
     ])
 
     // Opening a candidate record is itself an event worth recording — it is
@@ -175,6 +178,17 @@ router.get(
         lastLoginAt: user.last_login_at,
         gdprConsentAt: user.gdpr_consent_at,
       },
+      // Both the current answers and how they got there. A reviewer deciding
+      // whether a profile may go to an employer needs the first; anyone asked
+      // to prove it later needs the second.
+      consents: presentConsents(consents),
+      consentLog: consentLog.map((row) => ({
+        type: row.type,
+        granted: row.granted,
+        version: row.doc_version,
+        source: row.source,
+        at: row.created_at,
+      })),
       profile: full ? presentFullProfile(full, 'en') : null,
       documents: documents.map((d) => ({
         id: d.id,
@@ -386,11 +400,26 @@ router.get(
     )
     if (!document) throw notFound('document_not_found', 'CV not found')
 
+    /*
+     * Downloading is the only way a CV physically leaves MeinRoots, so it is
+     * the point where "may this profile be shown to an employer" stops being a
+     * stored preference and becomes a real question.
+     *
+     * It is not blocked: reviewing a CV is done under the service contract, not
+     * under the sharing consent, and refusing the download would break the
+     * review the platform exists to do. What it does instead is record the
+     * consent state on the download itself, under a distinct action when the
+     * candidate has not agreed to being presented to employers — so the audit
+     * log can answer "was this CV taken out of the system while the candidate
+     * had said no", which it previously could not.
+     */
+    const mayShare = await hasConsent(document.user_id, 'employer_sharing')
+
     await audit(req, {
-      action: 'admin.cv_download',
+      action: mayShare ? 'admin.cv_download' : 'admin.cv_download_no_sharing_consent',
       entityType: 'cv_document',
       entityId: document.id,
-      metadata: { candidateId: document.user_id },
+      metadata: { candidateId: document.user_id, employerSharingConsent: mayShare },
     })
 
     res.type(document.mime_type)

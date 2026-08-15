@@ -6,6 +6,7 @@ import { hashToken, newOpaqueToken, signAccessToken } from '../../lib/tokens.js'
 import { clientIp } from '../../lib/audit.js'
 import { logger } from '../../lib/logger.js'
 import { queueEmail } from '../../lib/mailer.js'
+import { recordConsents } from './consents.js'
 
 /** The shape of a user the browser is allowed to see. Never includes the hash. */
 export const publicUser = (row) => ({
@@ -38,7 +39,7 @@ export const createSession = async (user, req) => {
   return { accessToken: signAccessToken(user), refreshToken: token }
 }
 
-export const register = async ({ name, email, password, goals, locale, gdprConsent }, req) => {
+export const register = async ({ name, email, password, goals, locale, consents }, req) => {
   const existing = await one('SELECT id FROM users WHERE email = $1 AND deleted_at IS NULL', [email])
   if (existing) throw conflict('email_taken', 'An account with this email already exists')
 
@@ -46,15 +47,32 @@ export const register = async ({ name, email, password, goals, locale, gdprConse
 
   const user = await transaction(async (client) => {
     const { rows } = await client.query(
-      `INSERT INTO users (full_name, email, password_hash, goals, locale, gdpr_consent_at)
-       VALUES ($1, $2, $3, $4::work_goal[], $5, $6)
+      `INSERT INTO users (full_name, email, password_hash, goals, locale, gdpr_consent_at,
+                          notify_by_email)
+       VALUES ($1, $2, $3, $4::work_goal[], $5, $6, $7)
        RETURNING *`,
-      [name, email, passwordHash, goals, locale, gdprConsent ? new Date() : null],
+      [
+        name,
+        email,
+        passwordHash,
+        goals,
+        locale,
+        // Kept in step with the consent log so the CV gate, which reads this
+        // column, keeps working exactly as before.
+        consents.data_processing ? new Date() : null,
+        // Opportunity messages are the thing notify_by_email actually controls;
+        // the candidate's answer at signup is its starting value rather than a
+        // default they never chose.
+        Boolean(consents.job_alerts),
+      ],
     )
     const created = rows[0]
     // The profile row exists from minute one so the dashboard has something to
     // read before any CV is uploaded — an empty profile is a valid state.
     await client.query('INSERT INTO candidate_profiles (user_id) VALUES ($1)', [created.id])
+    // Inside the same transaction: a user without their consent record, or a
+    // consent record without its user, is a state nothing should ever observe.
+    await recordConsents(client, { userId: created.id, consents, source: 'registration', req })
     return created
   })
 

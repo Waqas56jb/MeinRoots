@@ -9,7 +9,7 @@ import { useToast } from '../context/ToastContext.jsx'
 import { adminApi } from '../lib/api.js'
 import { formatBytes, formatDate, formatDateTime, formatExperience, formatMonth } from '../lib/format.js'
 
-const TABS = ['profile', 'readiness', 'answers', 'documents', 'history']
+const TABS = ['profile', 'readiness', 'answers', 'documents', 'consents', 'history']
 
 export default function CandidatePage() {
   const { userId } = useParams()
@@ -93,7 +93,8 @@ export default function CandidatePage() {
     )
   }
 
-  const { candidate, profile, documents, questionnaire, reviews, cvVersions } = data
+  const { candidate, profile, documents, questionnaire, reviews, cvVersions, consents, consentLog } = data
+  const maySharePro = Boolean(consents?.employer_sharing)
   const primaryDoc = documents?.[0]
   const openFlags = profile?.flags ?? []
   const bestScore = (profile?.assessments ?? []).reduce(
@@ -147,6 +148,18 @@ export default function CandidatePage() {
             ) : '—'}
           </span>
         </div>
+
+        {/*
+          Whether this profile may go to an employer, stated on the status line
+          rather than buried in a tab. A reviewer deciding what to do with a
+          candidate should not have to go looking for the one permission that
+          governs it — and should certainly not have to assume.
+        */}
+        <p className={`sharing sharing--${maySharePro ? 'ok' : 'no'}`}>
+          <Icon name={maySharePro ? 'checkCircle' : 'ban'} size={15} />
+          <strong>{t(maySharePro ? 'detail.sharing.allowed' : 'detail.sharing.denied')}</strong>
+          <span>{t(maySharePro ? 'detail.sharing.allowedText' : 'detail.sharing.deniedText')}</span>
+        </p>
 
         <ul className="tags tags--lg">
           {(candidate.goals ?? []).map((g) => (
@@ -257,8 +270,14 @@ export default function CandidatePage() {
       {tab === 'readiness' && profile && <ReadinessTab assessments={profile.assessments} />}
       {tab === 'answers' && profile && <AnswersTab questionnaire={questionnaire} />}
       {tab === 'documents' && (
-        <DocumentsTab documents={documents} versions={cvVersions} onApprove={approveVersion} />
+        <DocumentsTab
+          documents={documents}
+          versions={cvVersions}
+          onApprove={approveVersion}
+          maySharePro={maySharePro}
+        />
       )}
+      {tab === 'consents' && <ConsentsTab consents={consents} log={consentLog} />}
       {tab === 'history' && <HistoryTab reviews={reviews} />}
 
       {isSuperAdmin && (
@@ -547,7 +566,76 @@ function AnswersTab({ questionnaire }) {
   )
 }
 
-function DocumentsTab({ documents, versions, onApprove }) {
+/**
+ * The consent record: what they answered, and the trail behind it.
+ *
+ * The current state is what a reviewer needs to make a decision today. The log
+ * underneath is what the company needs when someone asks it to prove consent
+ * was held — including the rows that say no, and the rows where a permission
+ * was later withdrawn.
+ */
+function ConsentsTab({ consents, log }) {
+  const { t, locale } = useI18n()
+  const REQUIRED = ['terms', 'privacy', 'data_processing']
+  const OPTIONAL = ['employer_sharing', 'job_alerts', 'marketing']
+
+  const row = (key) => (
+    <li key={key}>
+      <span className={`badge badge--${consents?.[key] ? 'good' : 'neutral'}`}>
+        <Icon name={consents?.[key] ? 'check' : 'close'} size={12} />
+        {t(consents?.[key] ? 'detail.consents.given' : 'detail.consents.notGiven')}
+      </span>
+      <span className="consentrow__label">{t(`detail.consents.types.${key}`)}</span>
+    </li>
+  )
+
+  return (
+    <div className="grid2">
+      <section className="card">
+        <h2><Icon name="shield" size={17} />{t('detail.consents.current')}</h2>
+        <h3 className="sub">{t('detail.consents.required')}</h3>
+        <ul className="consentrows">{REQUIRED.map(row)}</ul>
+        <h3 className="sub">{t('detail.consents.optional')}</h3>
+        <ul className="consentrows">{OPTIONAL.map(row)}</ul>
+        {consents?.acceptedVersion && (
+          <p className="muted small consentrows__foot">
+            <Icon name="file" size={13} />
+            {t('detail.consents.version', { version: consents.acceptedVersion })}
+          </p>
+        )}
+      </section>
+
+      <section className="card">
+        <h2><Icon name="history" size={17} />{t('detail.consents.log')}</h2>
+        {log?.length ? (
+          <ol className="consentlog">
+            {log.map((entry, i) => (
+              <li key={`${entry.type}-${entry.at}-${i}`} className={entry.granted ? 'is-on' : 'is-off'}>
+                <span className="consentlog__mark" aria-hidden="true" />
+                <div>
+                  <strong>
+                    {t(`detail.consents.types.${entry.type}`)}
+                    <em>{t(entry.granted ? 'detail.consents.granted' : 'detail.consents.withdrawn')}</em>
+                  </strong>
+                  <span className="muted small">
+                    {formatDateTime(entry.at, locale)}
+                    {' · '}
+                    {t(`detail.consents.source.${entry.source}`)}
+                    {' · v'}{entry.version}
+                  </span>
+                </div>
+              </li>
+            ))}
+          </ol>
+        ) : (
+          <p className="muted small">{t('detail.consents.noLog')}</p>
+        )}
+      </section>
+    </div>
+  )
+}
+
+function DocumentsTab({ documents, versions, onApprove, maySharePro }) {
   const { t, locale } = useI18n()
   if (!documents?.length) return <Empty icon="file" title={t('detail.documents.empty')} />
 
@@ -555,6 +643,21 @@ function DocumentsTab({ documents, versions, onApprove }) {
     <div className="grid2">
       <section className="card">
         <h2><Icon name="file" size={17} />{t('detail.documents.original')}</h2>
+
+        {/*
+          Downloading is the only way a CV actually leaves MeinRoots, so it is
+          where the sharing permission stops being a stored preference. Not
+          blocked — reviewing runs on the service contract, not on this consent,
+          and blocking it would break the review the platform exists to do — but
+          said plainly, and the server records the download under a distinct
+          audit action when consent is absent.
+        */}
+        {!maySharePro && (
+          <p className="note note--warn docs__consent">
+            <Icon name="warning" size={16} />
+            <span>{t('detail.documents.noSharingConsent')}</span>
+          </p>
+        )}
         <ul className="docs">
           {documents.map((d) => (
             <li key={d.id}>

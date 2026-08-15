@@ -6,6 +6,8 @@ import SignupPage from './pages/SignupPage.jsx'
 import ResetPasswordPage from './pages/ResetPasswordPage.jsx'
 import VerifyEmailPage from './pages/VerifyEmailPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
+import TermsPage from './pages/TermsPage.jsx'
+import PrivacyPage from './pages/PrivacyPage.jsx'
 import Spinner from './components/ui/Spinner.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 import { WorkspaceProvider } from './context/WorkspaceContext.jsx'
@@ -81,6 +83,11 @@ export default function App() {
         <Route path="/reset-password" element={<ResetPasswordPage />} />
         {/* Opened from the confirmation email; works signed in or out. */}
         <Route path="/verify-email" element={<VerifyEmailPage />} />
+
+        {/* Public and unauthenticated on purpose: someone has to be able to
+            read what they are agreeing to before they have an account. */}
+        <Route path="/terms" element={<TermsPage />} />
+        <Route path="/privacy" element={<PrivacyPage />} />
 
         <Route path="/dashboard" element={<Protected><DashboardPage /></Protected>} />
         <Route path="/cv" element={<Protected gate="cv"><MyCvPage /></Protected>} />

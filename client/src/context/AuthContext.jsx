@@ -56,10 +56,10 @@ export function AuthProvider({ children }) {
   }, [])
 
   const signup = useCallback(
-    ({ name, email, password, goals, locale, gdprConsent }) =>
+    ({ name, email, password, goals, locale, consents }) =>
       run(async () => {
         try {
-          const data = await authApi.register({ name, email, password, goals, locale, gdprConsent })
+          const data = await authApi.register({ name, email, password, goals, locale, consents })
           setUser(data.user)
           return { ok: true, user: data.user }
         } catch (err) {
@@ -167,6 +167,25 @@ export function AuthProvider({ children }) {
     }
   }, [])
 
+  /**
+   * Granting or withdrawing an optional consent.
+   *
+   * Article 7(3) requires withdrawal to be as easy as granting, so this is the
+   * same one-toggle action in the opposite direction — and the response carries
+   * the server's own view of the resulting state rather than the UI assuming it
+   * succeeded, because a consent the interface believes it withdrew and the
+   * record still shows as granted is the worst outcome available.
+   */
+  const updateConsents = useCallback(async (patch) => {
+    try {
+      const data = await authApi.updateConsents(patch)
+      setUser((current) => (current ? { ...current, consents: data.consents } : current))
+      return { ok: true, consents: data.consents }
+    } catch (err) {
+      return toResult(err)
+    }
+  }, [])
+
   /** Fire-and-forget: a failed locale sync must never interrupt the UI. */
   const syncLocale = useCallback((locale) => {
     authApi.updateLocale(locale).catch(() => {})
@@ -190,10 +209,12 @@ export function AuthProvider({ children }) {
       verifyEmail,
       resendVerification,
       setEmailNotifications,
+      updateConsents,
     }),
     [
       user, ready, busy, signup, login, logout, requestReset, resetPassword,
       updateGoals, syncLocale, verifyEmail, resendVerification, setEmailNotifications,
+      updateConsents,
     ],
   )
 

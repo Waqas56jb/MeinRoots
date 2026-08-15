@@ -1,7 +1,22 @@
+import { Link } from 'react-router-dom'
 import Icon from './ui/Icon.jsx'
 import { Brand } from './Navbar.jsx'
 import { contact } from '../data/content.js'
 import { useI18n } from '../context/I18nContext.jsx'
+
+/**
+ * The legal links, wired to the pages that exist.
+ *
+ * All three used to point at `#top`. Two of them now lead somewhere real. The
+ * imprint has no page yet — a §5 TMG Impressum is a legal requirement for a
+ * German company and the details have to come from the company, not from here —
+ * so it stays inert rather than pretending.
+ */
+const LEGAL = [
+  { key: 'privacy', to: '/privacy' },
+  { key: 'terms', to: '/terms' },
+  { key: 'imprint', to: null },
+]
 
 export default function Footer() {
   const { t } = useI18n()
@@ -35,8 +50,14 @@ export default function Footer() {
         <div className="footer__bottom">
           <p>© {year} MeinRoots GmbH. {t('footer.rights')}</p>
           <ul className="footer__legal">
-            {t('footer.legalLinks').map((l) => (
-              <li key={l}><a href="#top">{l}</a></li>
+            {LEGAL.map((item) => (
+              <li key={item.key}>
+                {item.to ? (
+                  <Link to={item.to}>{t(`footer.legal.${item.key}`)}</Link>
+                ) : (
+                  <span className="footer__legalPending">{t(`footer.legal.${item.key}`)}</span>
+                )}
+              </li>
             ))}
           </ul>
         </div>

@@ -179,6 +179,7 @@ export default {
       answers: 'Antworten',
       documents: 'Dokumente',
       history: 'Verlauf',
+      consents: 'Einwilligung',
     },
     meta: {
       registered: 'Registriert',
@@ -225,6 +226,7 @@ export default {
       versionApproved: 'Version als geprüft markiert',
       uploaded: 'Hochgeladen {date}',
       empty: 'Keine Dokumente.',
+      noSharingConsent: 'Diese Person hat nicht eingewilligt, dass ihr Profil Arbeitgebern gezeigt wird. Für die interne Prüfung darfst du den Lebenslauf herunterladen, er darf MeinRoots aber nicht verlassen. Der Download wird protokolliert.',
     },
     history: {
       title: 'Prüfverlauf',
@@ -238,6 +240,37 @@ export default {
       mismatch: 'Das stimmt nicht mit der E-Mail-Adresse überein.',
       done: 'Person gelöscht.',
       superAdminOnly: 'Nur ein Super-Admin kann eine Person löschen.',
+    },
+    sharing: {
+      allowed: 'Darf Arbeitgebern gezeigt werden',
+      allowedText: 'Die Person hat eingewilligt, dass ihr Profil Arbeitgebern und Recruitern vorgestellt wird.',
+      denied: 'Darf Arbeitgebern nicht gezeigt werden',
+      deniedText: 'Es liegt keine Einwilligung vor. Dieses Profil darf MeinRoots nicht verlassen.',
+    },
+    consents: {
+      current: 'Aktuelle Einwilligung',
+      required: 'Erforderlich',
+      optional: 'Optional',
+      given: 'Erteilt',
+      notGiven: 'Nicht erteilt',
+      granted: 'erteilt',
+      withdrawn: 'widerrufen',
+      version: 'Akzeptierte AGB-Version {version}',
+      log: 'Einwilligungsverlauf',
+      noLog: 'Keine Einwilligungsdaten — dieses Konto stammt aus der Zeit vor der Protokollierung.',
+      types: {
+        terms: 'AGB',
+        privacy: 'Datenschutzerklärung',
+        data_processing: 'Verarbeitung personenbezogener Daten',
+        employer_sharing: 'Profil Arbeitgebern zeigen',
+        job_alerts: 'Nachrichten zu Stellenangeboten',
+        marketing: 'Marketing-Mitteilungen',
+      },
+      source: {
+        registration: 'bei der Registrierung',
+        settings: 'in den Einstellungen',
+        subscription: 'beim Abo',
+      },
     },
   },
 
@@ -346,6 +379,8 @@ export default {
     'admin.cv_download': 'Lebenslauf heruntergeladen (Admin)',
     'admin.job_retry': 'Job erneut gestartet',
     'admin.gdpr_erasure': 'Person gelöscht (DSGVO)',
+    'auth.consents_updated': 'Einwilligung geändert',
+    'admin.cv_download_no_sharing_consent': 'Lebenslauf geladen (keine Weitergabe-Einwilligung)',
   },
 
   review: {

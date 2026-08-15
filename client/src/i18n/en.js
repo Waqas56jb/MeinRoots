@@ -185,6 +185,11 @@ export default {
     about: 'Connecting global talent with employment in Germany, remote roles, freelance projects and Ausbildung — AI qualification, human review.',
     legalLinks: ['Privacy policy', 'Terms of service', 'Imprint'],
     rights: 'All rights reserved.',
+    legal: {
+      privacy: 'Privacy',
+      terms: 'Terms & Conditions',
+      imprint: 'Imprint',
+    },
   },
 
   auth: {
@@ -215,6 +220,7 @@ export default {
       unknownEmail: 'We have no account for that address.',
       fileType: 'Only PDF, DOC and DOCX files are supported.',
       fileSize: 'That file is larger than 10 MB.',
+      consentsRequired: 'Please accept the three required items to create your account.',
     },
     gate: {
       title: 'One step before your CV',
@@ -247,6 +253,9 @@ export default {
         text: 'One upload gives you a structured profile, a professional category and a plan for what to learn next.',
         points: ['Free forever tier', 'Original CV never modified', 'Delete your data at any time'],
       },
+      consentLegend: 'Before you continue',
+      optionalLegend: 'Optional',
+      optionalHint: 'Leaving these unticked changes nothing about your analysis or your results. You can change them later in settings.',
     },
     reset: {
       title: 'Reset your password',
@@ -292,6 +301,15 @@ export default {
       signedInAs: 'Signed in as',
     },
     tagline: 'Candidate access',
+    consents: {
+      read: 'Read it',
+      terms: 'I agree to the MeinRoots Terms & Conditions.',
+      privacy: 'I acknowledge the MeinRoots Privacy Policy.',
+      data_processing: 'I consent to the processing of my personal data for the purposes described in the Privacy Policy.',
+      employer_sharing: 'I agree that MeinRoots may present my professional profile to suitable employers and recruiters.',
+      job_alerts: 'I would like to receive information about job opportunities, career services and MeinRoots offers.',
+      marketing: 'I agree to receive marketing communications from MeinRoots, and understand that I can withdraw this at any time.',
+    },
   },
 
   app: {
@@ -708,8 +726,28 @@ export default {
         notifications: 'Notification preference saved.',
         password: 'Password changed.',
         verification: 'Confirmation email sent.',
+        consents: 'Permission updated.',
       },
       memberSince: 'Member since {date}',
+      consents: 'Permissions',
+      consentsHint: 'What you have allowed us to do. You can change any of these at any time, and doing so takes effect immediately.',
+      acceptedOn: 'You accepted version {version} of the Terms on {date}',
+      acceptedUnknown: 'No acceptance recorded',
+      readTerms: 'Read the Terms',
+      consentLabels: {
+        employer_sharing: {
+          title: 'Show my profile to employers',
+          text: 'Lets MeinRoots present your professional profile to suitable employers and recruiters. Turning this off stops any further sharing.',
+        },
+        job_alerts: {
+          title: 'Job opportunities and career services',
+          text: 'Emails about roles, career services and MeinRoots offers that match your profile.',
+        },
+        marketing: {
+          title: 'Marketing communications',
+          text: 'General MeinRoots news and marketing. Separate from anything about your own analysis.',
+        },
+      },
     },
     units: {
       years: 'y',
@@ -1124,6 +1162,56 @@ export default {
       sales: {
         name: 'Sales & Marketing',
         spec: 'B2B sales · Growth · Content',
+      },
+    },
+  },
+
+  legal: {
+    eyebrow: 'Legal',
+    version: 'Version {version}',
+    contents: 'Contents',
+    important: 'Important: ',
+    notYetOffered: 'MeinRoots does not currently offer subscription plans. This section applies once paid plans are introduced.',
+    englishOnly: 'These Terms are published in English only. A German and French version is being prepared; until then the English text is the binding one.',
+    questions: 'Questions about these Terms?',
+    backToSignup: 'Back to sign-up',
+    terms: {
+      title: 'Subscription Terms & Conditions',
+    },
+    privacy: {
+      title: 'Privacy',
+      pendingTitle: 'The full Privacy Policy is being prepared. ',
+      pendingText: 'This page is not that document. It sets out what the platform does with your data today so you are not asked to acknowledge something you cannot read.',
+      todayTitle: 'What happens to your data today',
+      todayLead: 'Each of the following describes how the platform actually behaves, not an intention.',
+      rightsTitle: 'Your rights',
+      rightsText: 'You can see everything held about you in your profile, correct any of it yourself, and delete your account, your CV and every record derived from it from your settings — without asking anyone. Where you have given an optional consent, you can withdraw it in settings at any time.',
+      contact: 'Questions about your data:',
+      facts: {
+        consent: {
+          title: 'Nothing is processed before you agree',
+          text: 'Your CV cannot be analysed until you have given the processing consent at sign-up. The upload is refused without it.',
+        },
+        original: {
+          title: 'Your file is never altered',
+          text: 'The document you upload is stored exactly as you sent it. Everything else — the structured profile, the translations — is built alongside it, never over it.',
+        },
+        ai: {
+          title: 'AI reads your CV',
+          text: 'The text of your CV is sent to OpenAI to extract your experience, classify your field and assess readiness. Results are decision-support, and a person checks the ones the system was unsure about.',
+        },
+        audit: {
+          title: 'Every access is recorded',
+          text: 'Including a member of our team opening your profile or downloading your CV. The record includes who, when and from where.',
+        },
+        erase: {
+          title: 'You can delete everything yourself',
+          text: 'One action in your settings removes your account, your profile, your files and everything derived from them. No email, no waiting.',
+        },
+        transfer: {
+          title: 'Employers see nothing unless you allow it',
+          text: 'Presenting your profile to an employer or recruiter is a separate, optional consent. If you have not given it, your profile is not shared, and you can withdraw it later.',
+        },
       },
     },
   },
