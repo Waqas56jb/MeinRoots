@@ -63,7 +63,7 @@ export default function CompanyPage() {
   }
 
   return (
-    <Layout title={t('company.title')} subtitle={t('company.subtitle')}>
+    <Layout title={t('company.title')} subtitle={t('company.subtitle')} narrow>
       {loading ? (
         <Skeleton variant="detail" />
       ) : pending ? (

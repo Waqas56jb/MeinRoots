@@ -27,13 +27,25 @@
 }
 .side--fixed { position: sticky; top: 0; height: 100dvh; }
 
-.side__brand { display: flex; align-items: center; gap: 10px; padding: 4px 8px 6px; }
+.side__brand { flex: none; display: flex; align-items: center; gap: 10px; padding: 4px 8px 6px; }
 .side__brand img { border-radius: 8px; }
 .side__brand span { display: flex; flex-direction: column; line-height: 1.15; }
 .side__brand strong { font-family: var(--font-display); font-size: 1rem; color: var(--ink); }
 .side__brand small { font-size: 0.68rem; color: var(--muted-2); letter-spacing: 0.04em; }
 
-.side__nav { display: flex; flex-direction: column; gap: var(--s-4); flex: 1; }
+/* The link list is the part that scrolls, not the whole sidebar.
+   Eleven links, four group labels and the footer need about 790px of height.
+   A 1366x768 laptop gives roughly 640px, so the company chip and the plan badge
+   at the bottom were being cut off the screen with no way to reach them. Making
+   the nav the scroll region keeps the brand pinned at the top and the company
+   you are signed in to pinned at the bottom, which is where they are useful.
+   min-height: 0 is what actually lets a flex child shrink below its content. */
+.side__nav {
+  display: flex; flex-direction: column; gap: var(--s-4);
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .side__group { display: flex; flex-direction: column; gap: 2px; }
 .side__group--last { margin-top: auto; padding-top: var(--s-3); border-top: 1px solid var(--line); }
 .side__groupLabel {
@@ -72,7 +84,7 @@
 }
 .side__nav svg { flex: none; }
 
-.side__foot { display: grid; gap: var(--s-2); padding-top: var(--s-3); border-top: 1px solid var(--line); }
+.side__foot { flex: none; display: grid; gap: var(--s-2); padding-top: var(--s-3); border-top: 1px solid var(--line); }
 .side__company { display: flex; align-items: center; gap: 8px; padding: 0 4px; min-width: 0; }
 .side__companyIcon {
   display: grid; place-items: center;
@@ -217,7 +229,19 @@
   padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
   display: flex; flex-direction: column; gap: 18px;
   width: 100%; max-width: 1440px;
+  /* Without this the column was pinned to the left of a 1920px screen with
+     200px of dead space down the right-hand side. */
+  margin-inline: auto;
 }
+
+/* Pages that are a form rather than a data table. A settings panel does not
+   get better at 1400px, it just makes the eye travel further between a label
+   and the field it belongs to. */
+.main--narrow { max-width: 1080px; }
+
+/* And a single stack of text inputs narrows again. A password box a metre wide
+   is harder to use than one you can take in at a glance. */
+.formcol { max-width: 620px; }
 
 /* -------------------------------- tab bar --------------------------------- */
 
@@ -1040,3 +1064,16 @@
 
 .lead { font-size: var(--t-body); color: var(--ink-2); line-height: 1.7; }
 @media (max-width: 620px) { .hide-sm { display: none; } }
+
+/* ---------------------------- touch targets -------------------------------
+   .btn--sm is 38px, which is a fair trade in a dense desktop row but is under
+   the 44px floor a thumb needs. On a phone the compact variant stops being
+   compact. Measured on iPhone SE through Pixel 7: this and the rule below were
+   the only controls left under 44px.
+   -------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .btn--sm { min-height: 44px; padding-block: 10px; }
+  /* "Manage subscription" sits in a flex row, so it is a block-level target
+     the height of one line of text rather than a link inside a sentence. */
+  .settings__meta a { min-height: 44px; display: inline-flex; align-items: center; }
+}

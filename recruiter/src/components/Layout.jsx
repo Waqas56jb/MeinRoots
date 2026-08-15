@@ -59,7 +59,7 @@ const SETTINGS = { to: '/settings', key: 'settings', icon: 'settings' }
 /** The bottom bar carries only what a thumb reaches for most. */
 const TABS = GROUPS.flatMap((g) => g.items).filter((i) => i.primary)
 
-export default function Layout({ title, subtitle, actions, meta, children }) {
+export default function Layout({ title, subtitle, actions, meta, narrow, children }) {
   const { t } = useI18n()
   const { user, logout } = useAuth()
   const { company, subscription, isTrial, trialDaysLeft, plan } = useAccount()
@@ -228,7 +228,7 @@ export default function Layout({ title, subtitle, actions, meta, children }) {
           </div>
         </header>
 
-        <main className="main" id="main">
+        <main className={narrow ? 'main main--narrow' : 'main'} id="main">
           <TrialBanner />
           {children}
         </main>

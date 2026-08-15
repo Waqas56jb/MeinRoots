@@ -25,7 +25,7 @@ export default function SettingsPage() {
   const toast = useToast()
 
   return (
-    <Layout title={t('settings.title')} subtitle={t('settings.subtitle')}>
+    <Layout title={t('settings.title')} subtitle={t('settings.subtitle')} narrow>
       <div className="settingsgrid">
         <Panel icon="user" title={t('settings.account')}>
           <div className="settings__identity">
@@ -134,7 +134,7 @@ function PasswordPanel() {
 
   return (
     <Panel icon="lock" title={t('settings.password')} hint={t('settings.passwordHint')}>
-      <form onSubmit={submit} noValidate>
+      <form onSubmit={submit} noValidate className="formcol">
         <Field
           label={t('settings.currentPassword')} name="currentPassword" type="password"
           value={values.currentPassword} onChange={(v) => set('currentPassword', v)}

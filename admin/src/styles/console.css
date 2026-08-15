@@ -28,13 +28,21 @@
   height: 100dvh;
 }
 
-.side__brand { display: flex; align-items: center; gap: 11px; padding: 4px 8px 22px; }
+.side__brand { flex: none; display: flex; align-items: center; gap: 11px; padding: 4px 8px 22px; }
 .side__brand img { border-radius: 9px; background: #fff; padding: 3px; }
 .side__brand span { display: flex; flex-direction: column; line-height: 1.15; }
 .side__brand strong { font-family: var(--font-display); font-size: 1.02rem; color: #fff; }
 .side__brand small { font-size: 0.7rem; color: rgba(255, 255, 255, 0.6); letter-spacing: 0.04em; }
 
-.side__nav { display: flex; flex-direction: column; gap: var(--s-5); flex: 1; }
+/* Same fix as the recruiter portal: the link list scrolls, the brand and the
+   signed-in footer stay put. A 100dvh sidebar with more links than height was
+   simply hiding the sign-out button on a short laptop screen. */
+.side__nav {
+  display: flex; flex-direction: column; gap: var(--s-5);
+  flex: 1; min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
 .side__group { display: flex; flex-direction: column; gap: 2px; }
 /* Grouping is what stops four flat links reading as an undifferentiated list;
    the labels say what kind of work each group is for. */
@@ -97,7 +105,7 @@
   text-align: center;
 }
 
-.side__foot { border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 14px; display: grid; gap: 12px; }
+.side__foot { flex: none; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 14px; display: grid; gap: 12px; }
 .side__user { display: flex; align-items: center; gap: 10px; padding: 0 4px; }
 .side__userText { display: flex; flex-direction: column; line-height: 1.2; min-width: 0; }
 .side__userText strong {
@@ -1705,3 +1713,12 @@
 .consentlog li.is-off strong em { color: var(--muted-2); }
 
 .docs__consent { margin-bottom: var(--s-3); align-items: flex-start; }
+
+/* ---------------------------- touch targets -------------------------------
+   Same measured fix as the recruiter portal. .btn--sm is 38px, which is a fair
+   trade in a dense desktop table row and under the 44px floor a thumb needs.
+   On a phone the compact variant stops being compact.
+   -------------------------------------------------------------------------- */
+@media (max-width: 760px) {
+  .btn--sm { min-height: 44px; padding-block: 10px; }
+}
