@@ -34,7 +34,14 @@ const baseCookie = {
  * can read them. The refresh cookie outlives the access cookie; the front end
  * calls /auth/refresh when a request comes back 401.
  */
-const setAuthCookies = (res, { accessToken, refreshToken }) => {
+/**
+ * The one place that knows how an auth cookie is shaped.
+ *
+ * Exported because recruiter registration also has to open a session, and a
+ * second copy of this is a second thing to get wrong — which it duly was:
+ * the copy read a config key that does not exist and set maxAge to NaN.
+ */
+export const setAuthCookies = (res, { accessToken, refreshToken }) => {
   res.cookie(config.cookie.accessName, accessToken, { ...baseCookie, maxAge: 20 * 60 * 1000 })
   res.cookie(config.cookie.name, refreshToken, {
     ...baseCookie,

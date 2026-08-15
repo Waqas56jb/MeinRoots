@@ -154,7 +154,63 @@ const COPY = {
         }${v.questions ? ` ${v.questions} question(s) vous attendent.` : ''}\n\nOuvrir votre profil :\n${url}`,
     }),
   },
-}
+
+  /**
+   * An employer has asked to speak to a candidate.
+   *
+   * Deliberately does not name the recruiter or carry their message: the email
+   * says that something is waiting and where to read it. What the company wrote
+   * belongs behind a login, next to the accept and decline buttons and the
+   * explanation of what each one does.
+   */
+  recruitment_request: {
+    en: {
+      subject: 'An employer would like to speak with you',
+      heading: '{company} has been in touch',
+      body: 'A company on MeinRoots has asked to get in touch with you. You decide whether to share your details — nothing has been passed on.',
+      cta: 'Read the request',
+      foot: 'Declining costs you nothing and no reason is passed on.',
+    },
+    de: {
+      subject: 'Ein Arbeitgeber möchte mit dir sprechen',
+      heading: '{company} hat sich gemeldet',
+      body: 'Ein Unternehmen auf MeinRoots möchte mit dir in Kontakt treten. Du entscheidest, ob du deine Daten teilst — bisher wurde nichts weitergegeben.',
+      cta: 'Anfrage ansehen',
+      foot: 'Ablehnen kostet dich nichts, und es wird kein Grund weitergegeben.',
+    },
+    fr: {
+      subject: 'Un employeur souhaite vous parler',
+      heading: '{company} vous a contacté',
+      body: 'Une entreprise sur MeinRoots souhaite entrer en contact avec vous. Vous décidez de partager vos coordonnées — rien n’a été transmis.',
+      cta: 'Voir la demande',
+      foot: 'Refuser ne vous coûte rien et aucun motif n’est transmis.',
+    },
+  },
+
+  /** The candidate answered. */
+  recruitment_response: {
+    en: {
+      subject: 'A candidate has answered your request',
+      heading: 'You have a response',
+      body: 'A candidate has replied to one of your requests. Open the portal to see what they said.',
+      cta: 'Open the portal',
+      foot: '',
+    },
+    de: {
+      subject: 'Eine Person hat auf deine Anfrage geantwortet',
+      heading: 'Du hast eine Antwort',
+      body: 'Eine Person hat auf eine deiner Anfragen geantwortet. Öffne das Portal, um die Antwort zu sehen.',
+      cta: 'Portal öffnen',
+      foot: '',
+    },
+    fr: {
+      subject: 'Un candidat a répondu à votre demande',
+      heading: 'Vous avez une réponse',
+      body: 'Un candidat a répondu à l’une de vos demandes. Ouvrez le portail pour la consulter.',
+      cta: 'Ouvrir le portail',
+      foot: '',
+    },
+  },}
 
 export const TEMPLATES = Object.keys(COPY)
 

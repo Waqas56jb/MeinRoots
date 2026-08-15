@@ -16,6 +16,9 @@ import profileRoutes from './modules/profile/routes.js'
 import profileEditRoutes from './modules/profile/editRoutes.js'
 import questionnaireRoutes from './modules/questionnaire/routes.js'
 import adminRoutes from './modules/admin/routes.js'
+import adminRecruiterRoutes from './modules/admin/recruiterRoutes.js'
+import recruiterRoutes from './modules/recruiter/routes.js'
+import recruitmentRoutes from './modules/recruitment/routes.js'
 
 export const createApp = () => {
   const app = express()
@@ -95,6 +98,10 @@ export const createApp = () => {
   app.use('/api/profile', profileEditRoutes)
   app.use('/api/questionnaire', questionnaireRoutes)
   app.use('/api/admin', adminRoutes)
+  app.use('/api/admin', adminRecruiterRoutes)
+  // Milestone 2. The recruiter portal and the candidate's side of it.
+  app.use('/api/recruiter', recruiterRoutes)
+  app.use('/api/recruitment', recruitmentRoutes)
 
   app.use(notFoundHandler)
   app.use(errorHandler)
