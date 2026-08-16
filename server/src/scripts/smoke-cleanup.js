@@ -15,7 +15,7 @@
  */
 import assert from 'node:assert'
 import { closePool, one, query } from '../db/pool.js'
-import { cleanupNoCv, countEligible, ensureCleanupScheduled, CLEANUP_JOB } from '../worker/handlers/cleanupNoCv.js'
+import { cleanupNoCv, countEligible, ensureCleanupScheduled, runCleanupJob, CLEANUP_JOB } from '../worker/handlers/cleanupNoCv.js'
 import { hashPassword } from '../lib/password.js'
 
 const API = process.env.API_URL ?? 'http://127.0.0.1:4000'
@@ -306,10 +306,45 @@ const main = async () => {
     await ensureCleanupScheduled()
     await ensureCleanupScheduled()
     const { rows } = await query(
-      `SELECT count(*)::int AS n FROM jobs WHERE type = $1 AND status IN ('queued','running')`,
+      `SELECT count(*)::int AS n FROM jobs WHERE type = $1 AND status = 'queued'`,
       [CLEANUP_JOB],
     )
-    assert.equal(rows[0].n, 1, `expected exactly one scheduled cleanup, found ${rows[0].n}`)
+    assert.equal(rows[0].n, 1, `expected exactly one queued cleanup, found ${rows[0].n}`)
+  })
+
+  await check('a running sweep can still queue its successor', async () => {
+    // The bug this exists for: the sweep reschedules from a finally block, so
+    // its own row is still 'running' at that moment. While the guard counted
+    // running jobs, every sweep saw itself, concluded one was already
+    // scheduled, and queued nothing — the chain died after one run and only a
+    // restart revived it. The earlier test missed it by calling
+    // ensureCleanupScheduled with no job in flight, which is not how it runs.
+    await query(`DELETE FROM jobs WHERE type = $1 AND status = 'queued'`, [CLEANUP_JOB])
+    const running = await one(
+      `INSERT INTO jobs (type, status, locked_at, locked_by, started_at)
+       VALUES ($1, 'running', now(), 'smoke-cleanup', now()) RETURNING id`,
+      [CLEANUP_JOB],
+    )
+    try {
+      await ensureCleanupScheduled({ delayHours: 6 })
+      const { rows } = await query(
+        `SELECT count(*)::int AS n FROM jobs WHERE type = $1 AND status = 'queued'`,
+        [CLEANUP_JOB],
+      )
+      assert.equal(rows[0].n, 1, 'a running sweep failed to queue the next one — the chain would stop here')
+    } finally {
+      await query('DELETE FROM jobs WHERE id = $1', [running.id])
+    }
+  })
+
+  await check('a full run leaves a successor queued', async () => {
+    await query(`DELETE FROM jobs WHERE type = $1 AND status = 'queued'`, [CLEANUP_JOB])
+    await runCleanupJob()
+    const { rows } = await query(
+      `SELECT count(*)::int AS n FROM jobs WHERE type = $1 AND status = 'queued'`,
+      [CLEANUP_JOB],
+    )
+    assert.equal(rows[0].n, 1, 'after a sweep there is no next sweep queued')
   })
 
   console.log(`\n  ${passed} passed, ${failed} failed\n`)

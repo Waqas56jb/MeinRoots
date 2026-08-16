@@ -220,10 +220,17 @@ export const cleanupNoCv = async () => {
  * calling this on every boot and at the end of every run still leaves exactly
  * one scheduled cleanup. The insert conflict is swallowed on purpose: losing
  * the race means somebody else scheduled it, which is the desired outcome.
+ *
+ * Only 'queued' counts, never 'running'. This is called from the finally block
+ * of the sweep itself, at which point that sweep's own row is still 'running' —
+ * the queue marks it 'succeeded' only after the handler returns. Counting
+ * 'running' meant every sweep looked at itself, decided a cleanup was already
+ * scheduled, and queued nothing; the chain died after the first run and only a
+ * service restart revived it. At most one sweep *waiting* is the real rule.
  */
 export const ensureCleanupScheduled = async ({ delayHours = INTERVAL_HOURS } = {}) => {
   const { rows } = await query(
-    `SELECT id FROM jobs WHERE type = $1 AND status IN ('queued', 'running') LIMIT 1`,
+    `SELECT id FROM jobs WHERE type = $1 AND status = 'queued' LIMIT 1`,
     [CLEANUP_JOB],
   )
   if (rows.length) return null
