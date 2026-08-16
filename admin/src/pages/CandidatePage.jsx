@@ -8,6 +8,7 @@ import { useAuth } from '../context/AuthContext.jsx'
 import { useToast } from '../context/ToastContext.jsx'
 import { adminApi } from '../lib/api.js'
 import { formatBytes, formatDate, formatDateTime, formatExperience, formatMonth } from '../lib/format.js'
+import { renderMarkdown } from '../lib/markdown.js'
 
 const TABS = ['profile', 'readiness', 'answers', 'documents', 'consents', 'history']
 
@@ -723,32 +724,85 @@ function DocumentsTab({ documents, versions, onApprove, maySharePro }) {
       <section className="card">
         <h2><Icon name="translate" size={17} />{t('detail.documents.versions')}</h2>
         {versions?.length ? (
-          <ul className="docs">
-            {versions.map((v) => (
-              <li key={v.id}>
-                <div>
-                  <strong>{v.language.toUpperCase()}</strong>
-                  <span className="muted small">
-                    {v.isSource ? t('detail.documents.source') : t('detail.documents.aiGenerated')}
-                  </span>
-                </div>
-                {v.isSource ? (
-                  <span className="badge badge--neutral">{t('detail.documents.source')}</span>
-                ) : v.reviewed ? (
-                  <span className="badge badge--good"><Icon name="check" size={12} />{t('detail.documents.reviewed')}</span>
-                ) : (
-                  <button type="button" className="btn btn--ghost btn--sm" onClick={() => onApprove(v.id)}>
-                    {t('detail.documents.markReviewed')}
-                  </button>
-                )}
-              </li>
-            ))}
-          </ul>
+          <VersionReader versions={versions} onApprove={onApprove} />
         ) : (
           <p className="muted small">{t('detail.documents.empty')}</p>
         )}
       </section>
     </div>
+  )
+}
+
+/**
+ * Reads the CV in each language it exists in.
+ *
+ * The console used to list the three languages and put a "mark reviewed"
+ * button next to each, with no way to open any of them — asking a reviewer to
+ * certify a translation they had never seen. Since approving is the one thing
+ * this section is for, the text has to be here.
+ *
+ * The source version is selected first. It is the document the candidate
+ * actually supplied, and every translation is judged against it, so it is what
+ * a reviewer should be looking at when the panel opens.
+ */
+function VersionReader({ versions, onApprove }) {
+  const { t } = useI18n()
+  const ordered = ['en', 'de', 'fr'].filter((code) => versions.some((v) => v.language === code))
+  const [active, setActive] = useState(
+    () => versions.find((v) => v.isSource)?.language ?? ordered[0],
+  )
+  const current = versions.find((v) => v.language === active)
+
+  return (
+    <>
+      <div className="cvtabs" role="tablist" aria-label={t('detail.documents.versions')}>
+        {ordered.map((code) => {
+          const v = versions.find((x) => x.language === code)
+          return (
+            <button
+              key={code}
+              type="button"
+              role="tab"
+              aria-selected={active === code}
+              className={`cvtabs__tab ${active === code ? 'is-on' : ''}`}
+              onClick={() => setActive(code)}
+            >
+              {code.toUpperCase()}
+              {v.isSource && <span className="cvtabs__flag">{t('detail.documents.source')}</span>}
+              {!v.isSource && v.reviewed && <Icon name="check" size={13} />}
+            </button>
+          )
+        })}
+      </div>
+
+      {current && (
+        <>
+          <div className="cvversion__bar">
+            <span className={`badge ${current.isSource ? 'badge--neutral' : current.reviewed ? 'badge--good' : 'badge--warn'}`}>
+              {current.isSource
+                ? t('detail.documents.source')
+                : current.reviewed
+                  ? t('detail.documents.reviewed')
+                  : t('detail.documents.aiGenerated')}
+            </span>
+            {/* Only a translation can be approved, and only once. The source is
+                the candidate's own document — there is nothing to sign off. */}
+            {!current.isSource && !current.reviewed && (
+              <button type="button" className="btn btn--ghost btn--sm" onClick={() => onApprove(current.id)}>
+                <Icon name="check" size={15} /> {t('detail.documents.markReviewed')}
+              </button>
+            )}
+          </div>
+
+          <div
+            className="cvdoc"
+            /* Model output, escaped inside renderMarkdown before any tag is
+               added to it. */
+            dangerouslySetInnerHTML={{ __html: renderMarkdown(current.content) }}
+          />
+        </>
+      )}
+    </>
   )
 }
 

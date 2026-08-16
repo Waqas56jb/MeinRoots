@@ -90,12 +90,24 @@ const SORTS = {
 export const searchCandidates = async ({
   q, profession, skills = [], germanLevel, minExperienceMonths, location,
   minReadiness, goal, sort = 'relevance', limit = 12, offset = 0,
+  ids = null,
 }) => {
   const where = [SHARING_CONSENT]
   const params = []
   const add = (value) => {
     params.push(value)
     return `$${params.length}`
+  }
+
+  // Restrict to a known set. The saved list used to ask for the first page of
+  // everything and filter it down to the rows it wanted, which quietly worked
+  // only while the searchable pool was smaller than one page: save a candidate,
+  // let twelve newer ones appear, and yours dropped out of your own saved list.
+  // The consent gate above still applies, so a candidate who withdraws still
+  // disappears — that part was right and is kept.
+  if (ids) {
+    if (!ids.length) return { rows: [], total: 0 }
+    where.push(`p.user_id = ANY(${add(ids)}::uuid[])`)
   }
 
   if (q) {

@@ -137,9 +137,15 @@ router.get(
         [user.id],
       ),
       many(
-        `SELECT v.id, v.language, v.is_source, v.reviewed_at, v.created_at
+        // `content` is selected because the console had no way to read a
+        // translation — it listed the languages and offered a "mark reviewed"
+        // button beside each one, which asked a reviewer to certify a document
+        // they could not open. Three versions of a CV is a few kilobytes next
+        // to the profile payload this already carries.
+        `SELECT v.id, v.language, v.is_source, v.reviewed_at, v.created_at, v.model, v.content
            FROM cv_versions v JOIN cv_documents d ON d.id = v.document_id
-          WHERE d.user_id = $1 AND d.is_primary AND d.deleted_at IS NULL`,
+          WHERE d.user_id = $1 AND d.is_primary AND d.deleted_at IS NULL
+          ORDER BY v.is_source DESC, v.language`,
         [user.id],
       ),
       profile
@@ -228,6 +234,10 @@ router.get(
         language: v.language,
         isSource: v.is_source,
         reviewed: Boolean(v.reviewed_at),
+        model: v.model,
+        // The text itself. Everything the model wrote stays labelled as such
+        // in the UI until a reviewer signs it off.
+        content: v.content,
       })),
       questionnaire: questionnaire.map((q) => ({
         key: q.key,

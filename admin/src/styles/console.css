@@ -1768,3 +1768,75 @@
   .erasetarget dt { min-width: 0; }
   .erasetarget > div { gap: 2px; }
 }
+
+/* --------------------------- CV version reader ----------------------------
+   The console listed the three languages and offered "mark reviewed" beside
+   each, with no way to open any of them. Approving a translation you cannot
+   read is not review, so the text lives here now.
+   -------------------------------------------------------------------------- */
+
+.cvtabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+.cvtabs__tab {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 14px;
+  min-height: 42px;
+  border-radius: var(--r-sm);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.84rem;
+  color: var(--muted);
+  cursor: pointer;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease), color 0.18s var(--ease);
+}
+.cvtabs__tab:hover { border-color: var(--brand-400); color: var(--ink); }
+.cvtabs__tab.is-on { background: var(--brand-50); border-color: var(--brand-500); color: var(--brand-700); }
+.cvtabs__tab svg { color: var(--good); }
+.cvtabs__flag {
+  font-size: 0.64rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase;
+  padding: 2px 6px; border-radius: 5px;
+  background: var(--surface-2); color: var(--muted-2);
+}
+.cvtabs__tab.is-on .cvtabs__flag { background: rgba(255, 255, 255, 0.7); }
+
+.cvversion__bar {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+/* The CV itself. A readable measure and generous line height, because this is
+   the one place in the console where someone reads rather than scans. */
+.cvdoc {
+  padding: 16px 18px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+  font-size: 0.89rem;
+  line-height: 1.72;
+  color: var(--ink-2);
+  max-height: 620px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.cvdoc h1, .cvdoc h2, .cvdoc h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  margin: 18px 0 7px;
+  line-height: 1.3;
+}
+.cvdoc h1 { font-size: 1.12rem; }
+.cvdoc h2 { font-size: 1rem; }
+.cvdoc h3 { font-size: 0.92rem; }
+.cvdoc > *:first-child { margin-top: 0; }
+.cvdoc p { margin: 0 0 11px; }
+.cvdoc ul, .cvdoc ol { margin: 0 0 11px; padding-left: 20px; }
+.cvdoc li { margin-bottom: 5px; }
+.cvdoc strong { color: var(--ink); font-weight: 700; }
+.cvdoc hr { border: 0; border-top: 1px solid var(--line); margin: 16px 0; }
+
+@media (max-width: 620px) {
+  .cvdoc { padding: 13px 14px; font-size: 0.86rem; max-height: 460px; }
+  .cvversion__bar .btn { width: 100%; justify-content: center; }
+}

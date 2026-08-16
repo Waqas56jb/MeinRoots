@@ -547,10 +547,17 @@ router.get(
     // Reuses the same consent-gated projection: a candidate who withdrew
     // consent after being saved drops out of the list rather than remaining
     // visible because the row is still there.
-    const { rows } = await searchCandidates({ limit, offset: 0 })
-    const wanted = new Set(ids.map((i) => i.candidate_id))
-    const filtered = rows.filter((r) => wanted.has(r.id))
-    const withDetail = await attachCardDetail(filtered)
+    //
+    // Asked for by id. It used to request the first page of the whole
+    // searchable pool and filter that down, which worked only while the pool
+    // was smaller than one page — twelve newer candidates and a recruiter's own
+    // saved list came back empty.
+    const { rows } = await searchCandidates({
+      ids: ids.map((i) => i.candidate_id),
+      limit,
+      offset: 0,
+    })
+    const withDetail = await attachCardDetail(rows)
 
     return page(
       res,
