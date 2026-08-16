@@ -37,11 +37,10 @@ export default function Footer() {
           </div>
 
           <div className="footer__reach">
+            {/* No email address here. The contact page carries it, and the
+                link below leads there — a mailto in a site footer is the single
+                easiest thing on a page for an address harvester to find. */}
             <ul className="footer__contact">
-              <li>
-                <span className="footer__contactIcon"><Icon name="mail" size={15} /></span>
-                <a href={`mailto:${contact.email}`}>{contact.email}</a>
-              </li>
               <li>
                 <span className="footer__contactIcon"><Icon name="phone" size={15} /></span>
                 <a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>
