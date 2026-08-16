@@ -6,8 +6,13 @@ import ErrorBoundary from './components/ErrorBoundary.jsx'
 import { I18nProvider } from './context/I18nContext.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { ToastProvider } from './context/ToastContext.jsx'
+import { watchForNewBuild } from './lib/version.js'
 import './styles/base.css'
 import './styles/console.css'
+
+// A console left open across a deploy otherwise keeps running the old build
+// forever, which looks exactly like a fix that never shipped.
+watchForNewBuild()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

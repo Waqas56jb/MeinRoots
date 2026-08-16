@@ -7,7 +7,12 @@ import { I18nProvider } from './context/I18nContext.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
 import { ToastProvider } from './context/ToastContext.jsx'
 import './styles/base.css'
+import { watchForNewBuild } from './lib/version.js'
 import './styles/portal.css'
+
+// A tab left open across a deploy otherwise keeps running the old build, which
+// looks exactly like a fix that never shipped.
+watchForNewBuild()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

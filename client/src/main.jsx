@@ -5,7 +5,12 @@ import App from './App.jsx'
 import ErrorBoundary from './components/ui/ErrorBoundary.jsx'
 import { I18nProvider } from './context/I18nContext.jsx'
 import { AuthProvider } from './context/AuthContext.jsx'
+import { watchForNewBuild } from './lib/version.js'
 import './styles/global.css'
+
+// A tab left open across a deploy otherwise keeps running the old build, which
+// looks exactly like a fix that never shipped.
+watchForNewBuild()
 import './styles/sections.css'
 import './styles/home.css'
 import './styles/footer.css'
