@@ -1,7 +1,12 @@
+import config from '../../config.js'
 import { query, transaction } from '../../db/pool.js'
 import { finaliseErasure } from '../../lib/erasure.js'
 import { logger } from '../../lib/logger.js'
+import { queueEmail } from '../../lib/mailer.js'
 import { enqueue } from '../queue.js'
+
+/** Greeting only. The full name is not needed to say one sentence to someone. */
+const firstName = (name) => String(name ?? '').trim().split(/\s+/)[0] || 'there'
 
 /**
  * Retires candidate accounts that never uploaded a CV.
@@ -111,22 +116,30 @@ export const countEligible = async (hours = MAX_AGE_HOURS) => {
  */
 const eraseIfStillEligible = async (userId) =>
   transaction(async (client) => {
+    // Name, address and language are read here, inside the lock, because after
+    // the DELETE there is nobody left to ask. They are the only things that
+    // outlive the row, they are held just long enough to address one message,
+    // and they are never written to the audit log.
     const { rows } = await client.query(
-      `SELECT id FROM users
+      `SELECT id, full_name, email, locale FROM users
         WHERE id = $1 AND role = 'candidate' AND deleted_at IS NULL
         FOR UPDATE`,
       [userId],
     )
-    if (!rows.length) return 'gone'
+    if (!rows.length) return { outcome: 'gone' }
+    const person = rows[0]
 
     const { rows: docs } = await client.query(
       'SELECT 1 FROM cv_documents WHERE user_id = $1 LIMIT 1',
       [userId],
     )
-    if (docs.length) return 'has_cv'
+    if (docs.length) return { outcome: 'has_cv' }
 
     await client.query('DELETE FROM users WHERE id = $1', [userId])
-    return 'erased'
+    return {
+      outcome: 'erased',
+      notify: { name: person.full_name, email: person.email, locale: person.locale ?? 'en' },
+    }
   })
 
 export const cleanupNoCv = async () => {
@@ -134,6 +147,7 @@ export const cleanupNoCv = async () => {
   logger.info('candidate cleanup started', { maxAgeHours: MAX_AGE_HOURS, batch: BATCH })
 
   let erased = 0
+  let notified = 0
   let savedByUpload = 0
   let alreadyGone = 0
   let batches = 0
@@ -143,18 +157,36 @@ export const cleanupNoCv = async () => {
     if (!rows.length) break
 
     for (const row of rows) {
-      let outcome
+      let result
       try {
-        outcome = await eraseIfStillEligible(row.id)
+        result = await eraseIfStillEligible(row.id)
       } catch (err) {
         logger.error('candidate cleanup: erase failed', { userId: row.id, message: err.message })
         continue
       }
 
-      if (outcome === 'has_cv') { savedByUpload += 1; continue }
-      if (outcome === 'gone') { alreadyGone += 1; continue }
+      if (result.outcome === 'has_cv') { savedByUpload += 1; continue }
+      if (result.outcome === 'gone') { alreadyGone += 1; continue }
 
       erased += 1
+
+      // Tell them, and why. Queued after the delete with no userId, because
+      // the user this concerns no longer exists — outbound_emails.user_id is
+      // nullable for exactly this kind of message. Failing to send must not
+      // undo an erasure that has already happened, so it is best-effort and
+      // logged rather than thrown.
+      if (result.notify?.email) {
+        notified += 1
+        await queueEmail({
+          userId: null,
+          to: result.notify.email,
+          template: 'account_removed_no_cv',
+          locale: result.notify.locale,
+          vars: { name: firstName(result.notify.name) },
+          url: `${config.appUrl}/signup`,
+        }).catch((err) =>
+          logger.error('candidate cleanup: could not queue the removal notice', { message: err.message }))
+      }
       // Files and audit, outside the transaction that removed the row. No
       // email is passed: it went with the row, and a deletion nobody requested
       // does not need a fingerprint of the person it removed.
@@ -176,9 +208,9 @@ export const cleanupNoCv = async () => {
 
   const ms = Date.now() - started
   logger.info('candidate cleanup finished', {
-    erased, savedByUpload, alreadyGone, batches, ms,
+    erased, notified, savedByUpload, alreadyGone, batches, ms,
   })
-  return { erased, savedByUpload, alreadyGone, batches, ms }
+  return { erased, notified, savedByUpload, alreadyGone, batches, ms }
 }
 
 /**

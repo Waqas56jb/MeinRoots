@@ -8,6 +8,7 @@ import VerifyEmailPage from './pages/VerifyEmailPage.jsx'
 import NotFoundPage from './pages/NotFoundPage.jsx'
 import TermsPage from './pages/TermsPage.jsx'
 import PrivacyPage from './pages/PrivacyPage.jsx'
+import ContactPage from './pages/ContactPage.jsx'
 import Spinner from './components/ui/Spinner.jsx'
 import { useAuth } from './context/AuthContext.jsx'
 import { WorkspaceProvider } from './context/WorkspaceContext.jsx'
@@ -89,6 +90,7 @@ export default function App() {
             read what they are agreeing to before they have an account. */}
         <Route path="/terms" element={<TermsPage />} />
         <Route path="/privacy" element={<PrivacyPage />} />
+        <Route path="/contact" element={<ContactPage />} />
 
         <Route path="/dashboard" element={<Protected><DashboardPage /></Protected>} />
         <Route path="/cv" element={<Protected gate="cv"><MyCvPage /></Protected>} />

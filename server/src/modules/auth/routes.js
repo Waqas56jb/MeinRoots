@@ -68,7 +68,10 @@ const consentsSchema = z.object({
   terms: z.literal(true, { errorMap: () => ({ message: 'consent_required' }) }),
   privacy: z.literal(true, { errorMap: () => ({ message: 'consent_required' }) }),
   data_processing: z.literal(true, { errorMap: () => ({ message: 'consent_required' }) }),
-  employer_sharing: z.boolean().default(false),
+  // employer_sharing is still accepted so an older client build does not start
+  // failing validation, but the value is ignored: the server derives it from
+  // the terms. A field the caller cannot influence is safer than one it can.
+  employer_sharing: z.boolean().optional(),
   job_alerts: z.boolean().default(false),
   marketing: z.boolean().default(false),
 })
@@ -127,10 +130,12 @@ router.post(
         goals: result.user.goals,
         termsVersion: TERMS_VERSION,
         optionalConsents: {
-          employer_sharing: Boolean(req.body.consents.employer_sharing),
           job_alerts: Boolean(req.body.consents.job_alerts),
           marketing: Boolean(req.body.consents.marketing),
         },
+        // Recorded separately because it is no longer something the candidate
+        // ticked: it came with the terms, and the log should say which.
+        employerSharingVia: 'terms',
       },
     })
     const current = await currentConsents(result.user.id)

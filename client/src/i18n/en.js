@@ -93,6 +93,7 @@ export default {
     readiness: 'Readiness',
     trust: 'Trust',
     getStarted: 'Get started',
+    contact: 'Contact',
   },
 
   hero: {
@@ -190,6 +191,8 @@ export default {
       terms: 'Terms & Conditions',
       imprint: 'Imprint',
     },
+    contact: 'Contact',
+    follow: 'Follow MeinRoots',
   },
 
   auth: {
@@ -303,7 +306,7 @@ export default {
     tagline: 'Candidate access',
     consents: {
       read: 'Read it',
-      terms: 'I agree to the MeinRoots Terms & Conditions.',
+      terms: 'I agree to the MeinRoots Terms & Conditions, including that my professional profile may be presented to suitable employers and recruiters. I can turn this off at any time in Settings.',
       privacy: 'I acknowledge the MeinRoots Privacy Policy.',
       data_processing: 'I consent to the processing of my personal data for the purposes described in the Privacy Policy.',
       employer_sharing: 'I agree that MeinRoots may present my professional profile to suitable employers and recruiters.',
@@ -1259,6 +1262,49 @@ export default {
           text: 'Presenting your profile to an employer or recruiter is a separate, optional consent. If you have not given it, your profile is not shared, and you can withdraw it later.',
         },
       },
+    },
+  },
+
+  contact: {
+    eyebrow: 'Contact',
+    title: 'Talk to MeinRoots',
+    lead: 'Tell us what you are trying to do and we will answer properly. Candidates and employers both write here.',
+    submit: 'Send message',
+    planNone: 'Not sure yet',
+    placeholder: 'What would you like to know?',
+    consent: 'I agree that MeinRoots may use the details above to answer me, as described in the',
+    fields: {
+      name: 'Your name',
+      email: 'Email address',
+      role: 'You are writing as',
+      goals: 'What you are looking for',
+      plan: 'Plan you are interested in',
+      message: 'Your message',
+    },
+    roles: {
+      candidate: 'A candidate',
+      recruiter: 'An employer or recruiter',
+    },
+    plans: {
+      trial: 'Free trial',
+      professional: 'Professional',
+      premium: 'Premium',
+    },
+    errors: {
+      name: 'Please tell us your name.',
+      email: 'That does not look like an email address.',
+      message: 'A little more detail will get you a better answer.',
+      consent: 'We need your agreement before we can reply.',
+    },
+    sent: {
+      title: 'Message sent',
+      text: 'It has arrived at recruiting@meinroots.de. We reply to the address you gave us, usually within one working day.',
+      back: 'Back to the homepage',
+    },
+    direct: {
+      title: 'Or write directly',
+      text: 'No form required. Email or call, whichever suits you.',
+      note: 'Your message reaches the MeinRoots team only. It is never shared with employers.',
     },
   },
 }

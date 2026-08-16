@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import Icon from './ui/Icon.jsx'
 import { Brand } from './Navbar.jsx'
-import { contact } from '../data/content.js'
+import { contact, social } from '../data/content.js'
 import { useI18n } from '../context/I18nContext.jsx'
 
 /**
@@ -21,6 +21,7 @@ const LEGAL = [
 export default function Footer() {
   const { t } = useI18n()
   const year = new Date().getFullYear()
+  const links = social.filter((s) => s.url)
 
   return (
     <footer className="footer">
@@ -35,16 +36,44 @@ export default function Footer() {
             <p className="footer__about">{t('footer.about')}</p>
           </div>
 
-          <ul className="footer__contact">
-            <li>
-              <span className="footer__contactIcon"><Icon name="mail" size={15} /></span>
-              <a href={`mailto:${contact.email}`}>{contact.email}</a>
-            </li>
-            <li>
-              <span className="footer__contactIcon"><Icon name="phone" size={15} /></span>
-              <a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>
-            </li>
-          </ul>
+          <div className="footer__reach">
+            <ul className="footer__contact">
+              <li>
+                <span className="footer__contactIcon"><Icon name="mail" size={15} /></span>
+                <a href={`mailto:${contact.email}`}>{contact.email}</a>
+              </li>
+              <li>
+                <span className="footer__contactIcon"><Icon name="phone" size={15} /></span>
+                <a href={`tel:${contact.phone.replace(/\s/g, '')}`}>{contact.phone}</a>
+              </li>
+              <li>
+                <span className="footer__contactIcon"><Icon name="message" size={15} /></span>
+                <Link to="/contact">{t('footer.contact')}</Link>
+              </li>
+            </ul>
+
+            {/* Only the accounts that exist. An icon linking nowhere under the
+                company's own name is worse than no icon. */}
+            {links.length > 0 && (
+              <div className="footer__social">
+                <span className="footer__socialLabel">{t('footer.follow')}</span>
+                <ul>
+                  {links.map((s) => (
+                    <li key={s.key}>
+                      <a
+                        href={s.url}
+                        target="_blank"
+                        rel="noreferrer noopener"
+                        aria-label={s.key}
+                      >
+                        <Icon name={s.icon} size={17} />
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         </div>
 
         <div className="footer__bottom">

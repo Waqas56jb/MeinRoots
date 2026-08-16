@@ -98,3 +98,32 @@
   .footer__bottom { justify-content: center; text-align: center; }
   .footer__legal { justify-content: center; }
 }
+
+/* ------------------------------ social row --------------------------------
+   Sits under the contact list rather than beside it: on a phone the two would
+   otherwise share a row too narrow for either.
+   -------------------------------------------------------------------------- */
+
+.footer__reach { display: grid; gap: 18px; }
+
+.footer__social { display: grid; gap: 9px; }
+.footer__socialLabel {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(195, 210, 234, 0.55);
+}
+.footer__social ul { display: flex; gap: 9px; }
+.footer__social a {
+  display: grid;
+  place-items: center;
+  /* 40px so it is a real target on a phone, not a 17px icon. */
+  width: 40px; height: 40px;
+  border-radius: 11px;
+  border: 1px solid rgba(195, 210, 234, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+  color: rgba(195, 210, 234, 0.9);
+  transition: background 0.2s var(--ease), border-color 0.2s var(--ease), color 0.2s var(--ease);
+}
+.footer__social a:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(195, 210, 234, 0.4); color: #fff; }

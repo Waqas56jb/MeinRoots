@@ -906,3 +906,127 @@
 }
 
 .consentlist { display: grid; gap: var(--s-2); }
+
+/* ------------------------------ contact page ------------------------------
+   Form on the left, the direct email and phone on the right. Some people would
+   simply rather send an email, and hiding that behind a form to capture a lead
+   is what makes people not write at all.
+   -------------------------------------------------------------------------- */
+
+.contactgrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: start;
+  margin-top: 26px;
+}
+@media (max-width: 900px) { .contactgrid { grid-template-columns: minmax(0, 1fr); } }
+
+.contactcard {
+  padding: clamp(18px, 3vw, 30px);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  box-shadow: var(--shadow-sm);
+}
+.contactcard form { display: grid; gap: 16px; }
+
+/* Two per row where there is room, stacked where there is not. The 220px floor
+   is what keeps an email field from collapsing to something unusable. */
+.contactrow { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); gap: 14px; }
+
+.field__box--area { align-items: stretch; padding: 0; }
+.field__box--area textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 0;
+  background: none;
+  font: inherit;
+  color: inherit;
+  resize: vertical;
+  min-height: 132px;
+}
+.field__box--area textarea:focus { outline: none; }
+
+.pickset { display: grid; gap: 9px; border: 0; padding: 0; margin: 0; }
+.pickset legend {
+  padding: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--muted);
+}
+.pickrow { display: flex; gap: 9px; }
+.pickrow--wrap { flex-wrap: wrap; }
+.pick {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  min-height: 44px;
+  border-radius: var(--r-pill);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  font-size: 0.87rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  cursor: pointer;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease), color 0.18s var(--ease);
+}
+.pick:hover { border-color: var(--brand-400); }
+.pick.is-on { background: var(--brand-50); border-color: var(--brand-500); color: var(--brand-700); }
+.pick svg { flex: none; }
+@media (max-width: 520px) { .pickrow { flex-wrap: wrap; } .pick { flex: 1 1 100%; justify-content: center; } }
+
+.checkline { display: flex; align-items: flex-start; gap: 11px; font-size: 0.86rem; color: var(--ink-2); line-height: 1.55; }
+.checkline input { margin-top: 3px; width: 18px; height: 18px; flex: none; accent-color: var(--brand-600); }
+.checkline a { color: var(--brand-700); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+.formerr {
+  display: flex; align-items: center; gap: 8px;
+  padding: 11px 13px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--bad-line);
+  background: var(--bad-bg);
+  color: var(--bad);
+  font-size: 0.86rem;
+  font-weight: 600;
+}
+
+.contactdone { display: grid; gap: 12px; justify-items: start; padding: 8px 0; }
+.contactdone__icon {
+  display: grid; place-items: center;
+  width: 54px; height: 54px;
+  border-radius: 50%;
+  background: var(--good-bg);
+  color: var(--good);
+}
+.contactdone h2 { font-size: 1.2rem; }
+.contactdone p { font-size: 0.92rem; color: var(--muted); max-width: 46ch; line-height: 1.65; }
+
+.contactaside {
+  display: grid; gap: 13px;
+  padding: clamp(18px, 3vw, 26px);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--line);
+  background: var(--surface-2);
+}
+.contactaside h2 { font-size: 1.05rem; }
+.contactaside > p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+.contactaside__list { display: grid; gap: 11px; }
+.contactaside__list li { display: flex; align-items: center; gap: 11px; min-height: 44px; }
+.contactaside__list a { font-weight: 600; color: var(--brand-700); overflow-wrap: anywhere; }
+.contactaside__icon {
+  display: grid; place-items: center;
+  width: 32px; height: 32px; flex: none;
+  border-radius: 9px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  color: var(--muted);
+}
+.contactaside__note {
+  display: flex; align-items: flex-start; gap: 9px;
+  padding-top: 13px;
+  border-top: 1px solid var(--line);
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.contactaside__note svg { flex: none; margin-top: 2px; color: var(--good); }

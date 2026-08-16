@@ -119,6 +119,11 @@ export const api = {
 
 // ------------------------------- endpoints ----------------------------------
 
+/** The public contact form. No session, no cookie — anyone may write in. */
+export const contactApi = {
+  send: (payload) => api.post('/api/contact', payload),
+}
+
 export const authApi = {
   register: (payload) => api.post('/api/auth/register', payload),
   login: (payload) => api.post('/api/auth/login', payload),

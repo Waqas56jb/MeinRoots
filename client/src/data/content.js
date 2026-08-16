@@ -115,3 +115,18 @@ export const contact = {
   email: 'recruiting@meinroots.de',
   phone: '+4917677861007',
 }
+
+/**
+ * The company's social accounts.
+ *
+ * Only entries with a URL are rendered, so an account that does not exist yet
+ * leaves no dead icon in the footer. Facebook is the confirmed page; LinkedIn
+ * and Instagram are waiting on their real addresses — guessing a handle would
+ * ship a link that 404s under the company's own name, which is worse than not
+ * linking at all. Fill in the two strings and they appear.
+ */
+export const social = [
+  { key: 'facebook', icon: 'facebook', url: 'https://www.facebook.com/meinroots' },
+  { key: 'linkedin', icon: 'linkedin', url: '' },
+  { key: 'instagram', icon: 'instagram', url: '' },
+]

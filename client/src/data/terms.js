@@ -220,7 +220,12 @@ export const consentBoxes = [
   { key: 'terms', required: true, link: '/terms' },
   { key: 'privacy', required: true, link: '/privacy' },
   { key: 'data_processing', required: true },
-  { key: 'employer_sharing', required: false },
+  // employer_sharing is no longer a box. Being presented to employers is the
+  // service, so it is stated in the terms checkbox and granted by accepting
+  // them rather than asked for a second time underneath. It remains a separate
+  // consent row, and Settings still turns it off — a candidate who changes
+  // their mind must be able to act on that, and the recruiter search reads the
+  // consent, not the account.
   { key: 'job_alerts', required: false },
   { key: 'marketing', required: false },
 ]

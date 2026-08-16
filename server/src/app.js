@@ -11,6 +11,7 @@ import { attachUser } from './middleware/auth.js'
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js'
 import { generalLimiter } from './middleware/rateLimit.js'
 import authRoutes from './modules/auth/routes.js'
+import contactRoutes from './modules/contact/routes.js'
 import cvRoutes from './modules/cv/routes.js'
 import profileRoutes from './modules/profile/routes.js'
 import profileEditRoutes from './modules/profile/editRoutes.js'
@@ -91,6 +92,9 @@ export const createApp = () => {
   )
 
   app.use('/api/auth', authRoutes)
+  // Public and unauthenticated, which is why it carries its own rate limit and
+  // can only ever mail one configured address.
+  app.use('/api/contact', contactRoutes)
   app.use('/api/cv', cvRoutes)
   app.use('/api/profile', profileRoutes)
   // Mounted after the fixed routes above so /me/readiness is matched by its own

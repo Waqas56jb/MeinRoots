@@ -70,9 +70,21 @@ export const register = async ({ name, email, password, goals, locale, consents 
     // The profile row exists from minute one so the dashboard has something to
     // read before any CV is uploaded — an empty profile is a valid state.
     await client.query('INSERT INTO candidate_profiles (user_id) VALUES ($1)', [created.id])
+    // Being presented to employers is what the candidate came for, so it is
+    // part of accepting the terms rather than a second box underneath them.
+    // The consent row is still written, and it is still its own row: the
+    // recruiter search reads this consent and nothing else, and Settings still
+    // withdraws it. What changed is where the agreement is given, not whether
+    // there is one or whether it can be taken back.
+    //
+    // Guarded on terms rather than set unconditionally — registration cannot
+    // succeed without terms today, and if that ever changes this must not
+    // quietly start granting sharing to someone who refused them.
+    const recorded = { ...consents, employer_sharing: Boolean(consents.terms) }
+
     // Inside the same transaction: a user without their consent record, or a
     // consent record without its user, is a state nothing should ever observe.
-    await recordConsents(client, { userId: created.id, consents, source: 'registration', req })
+    await recordConsents(client, { userId: created.id, consents: recorded, source: 'registration', req })
     return created
   })
 

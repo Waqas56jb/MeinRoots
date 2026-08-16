@@ -118,6 +118,10 @@ export const config = {
     // rather than set to the sender, because a Reply-To identical to From is
     // noise some clients render as a second address.
     replyTo: optional('MAIL_REPLY_TO', ''),
+    // Where the public contact form delivers. Read once, at boot, and never
+    // from a request — a form that mails whatever address it is handed is an
+    // open relay with a nicer front end.
+    contactTo: optional('CONTACT_TO', 'recruiting@meinroots.de'),
   },
 
   appUrl: optional('APP_URL', 'http://localhost:5173'),

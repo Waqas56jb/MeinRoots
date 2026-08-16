@@ -93,6 +93,7 @@ export default {
     readiness: 'Bereitschaft',
     trust: 'Vertrauen',
     getStarted: 'Loslegen',
+    contact: 'Kontakt',
   },
 
   hero: {
@@ -190,6 +191,8 @@ export default {
       terms: 'AGB',
       imprint: 'Impressum',
     },
+    contact: 'Kontakt',
+    follow: 'MeinRoots folgen',
   },
 
   auth: {
@@ -303,7 +306,7 @@ export default {
     tagline: 'Kandidatenzugang',
     consents: {
       read: 'Lesen',
-      terms: 'Ich stimme den AGB von MeinRoots zu.',
+      terms: 'Ich stimme den MeinRoots-AGB zu, einschließlich der Vorstellung meines beruflichen Profils bei passenden Arbeitgebern und Recruitern. Ich kann dies jederzeit in den Einstellungen deaktivieren.',
       privacy: 'Ich habe die Datenschutzerklärung von MeinRoots zur Kenntnis genommen.',
       data_processing: 'Ich willige in die Verarbeitung meiner personenbezogenen Daten für die in der Datenschutzerklärung beschriebenen Zwecke ein.',
       employer_sharing: 'Ich bin damit einverstanden, dass MeinRoots mein berufliches Profil passenden Arbeitgebern und Recruitern vorstellt.',
@@ -1259,6 +1262,49 @@ export default {
           text: 'Dein Profil einem Arbeitgeber oder Recruiter vorzustellen ist eine separate, optionale Einwilligung. Ohne sie wird dein Profil nicht weitergegeben, und du kannst sie später widerrufen.',
         },
       },
+    },
+  },
+
+  contact: {
+    eyebrow: 'Kontakt',
+    title: 'Sprich mit MeinRoots',
+    lead: 'Sag uns, was du vorhast — wir antworten dir persönlich. Kandidatinnen, Kandidaten und Arbeitgeber schreiben hier gleichermaßen.',
+    submit: 'Nachricht senden',
+    planNone: 'Noch unklar',
+    placeholder: 'Was möchtest du wissen?',
+    consent: 'Ich bin einverstanden, dass MeinRoots die obigen Angaben nutzt, um mir zu antworten — wie beschrieben in der',
+    fields: {
+      name: 'Dein Name',
+      email: 'E-Mail-Adresse',
+      role: 'Du schreibst als',
+      goals: 'Wonach du suchst',
+      plan: 'Tarif, der dich interessiert',
+      message: 'Deine Nachricht',
+    },
+    roles: {
+      candidate: 'Kandidatin oder Kandidat',
+      recruiter: 'Arbeitgeber oder Recruiter',
+    },
+    plans: {
+      trial: 'Kostenlose Testphase',
+      professional: 'Professional',
+      premium: 'Premium',
+    },
+    errors: {
+      name: 'Bitte nenne uns deinen Namen.',
+      email: 'Das sieht nicht wie eine E-Mail-Adresse aus.',
+      message: 'Mit etwas mehr Detail können wir dir besser antworten.',
+      consent: 'Ohne deine Zustimmung können wir nicht antworten.',
+    },
+    sent: {
+      title: 'Nachricht gesendet',
+      text: 'Sie ist bei recruiting@meinroots.de angekommen. Wir antworten an die angegebene Adresse, in der Regel innerhalb eines Werktags.',
+      back: 'Zurück zur Startseite',
+    },
+    direct: {
+      title: 'Oder schreib direkt',
+      text: 'Ganz ohne Formular — per E-Mail oder Telefon, wie es dir lieber ist.',
+      note: 'Deine Nachricht erreicht nur das MeinRoots-Team. Sie wird nie an Arbeitgeber weitergegeben.',
     },
   },
 }

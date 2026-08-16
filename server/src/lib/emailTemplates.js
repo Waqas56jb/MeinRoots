@@ -229,6 +229,97 @@ const COPY = {
         `${v.accepted ? 'Votre demande a été acceptée.' : 'Votre demande a été refusée.'}\n\nOuvrir le portail :\n${url}`,
     }),
   },
+
+  /**
+   * An enquiry from the public contact form, addressed to the team.
+   *
+   * The only template written for us rather than for a customer, so it is a
+   * briefing, not a greeting: who wrote, which side of the marketplace they are
+   * on, what they asked about, and their words unaltered. English only —
+   * whoever reads the inbox reads one language, and the enquirer's own is
+   * stated so the reply can be written in it.
+   *
+   * Everything interpolated here came from a stranger over the internet, so the
+   * message is escaped explicitly before newlines become <br>. The shared
+   * layout escapes headings and footers but takes `body` as trusted HTML.
+   */
+  contact_message: {
+    en: (v) => {
+      const goals = v.goals?.length ? v.goals.join(', ') : '—'
+      const facts = [
+        `<strong>From:</strong> ${escape(v.name)} &lt;${escape(v.email)}&gt;`,
+        `<strong>Writing as:</strong> ${escape(v.role)}`,
+        `<strong>Interested in:</strong> ${escape(v.plan ?? '—')}`,
+        `<strong>Goals:</strong> ${escape(goals)}`,
+        `<strong>Language:</strong> ${escape(String(v.locale ?? 'en').toUpperCase())}`,
+      ].join('<br>')
+
+      return {
+        subject: `Contact form — ${v.name} (${v.role})`,
+        heading: 'New enquiry',
+        body:
+          `${facts}<br><br><strong>Message</strong><br>` +
+          escape(v.message).replace(/\r?\n/g, '<br>') +
+          `<br><br>Reply directly to ${escape(v.email)}.`,
+        button: '',
+        footer: 'Sent by the contact form on meinroots.de.',
+        text: () =>
+          `New enquiry\n\nFrom: ${v.name} <${v.email}>\nWriting as: ${v.role}\n` +
+          `Interested in: ${v.plan ?? '—'}\nGoals: ${goals}\n` +
+          `Language: ${String(v.locale ?? 'en').toUpperCase()}\n\nMessage\n${v.message}\n\n` +
+          `Reply directly to ${v.email}.`,
+      }
+    },
+  },
+
+  /**
+   * The account is already gone by the time this arrives.
+   *
+   * So it says so plainly, gives the one reason, and points at signing up
+   * again rather than at a settings page that no longer belongs to anybody.
+   * No apology and no attempt to win them back: they registered, they did not
+   * upload a CV, and the account was removed because an account with no CV
+   * holds nothing for anyone. Telling them is the courtesy; the button is so
+   * that changing their mind takes one click.
+   */
+  account_removed_no_cv: {
+    en: (v) => ({
+      subject: 'Your MeinRoots account has been removed',
+      heading: `Your account has been removed, ${v.name}`,
+      body:
+        'You created a MeinRoots account but never uploaded a CV, so there was nothing for us to analyse. ' +
+        'Accounts without a CV are removed automatically after 24 hours, and yours and everything in it have now been deleted. ' +
+        'You are welcome back at any time — signing up again takes a minute, and this time you can upload your CV straight away.',
+      button: 'Create a new account',
+      footer: 'Nothing is kept. If you did not create this account, no action is needed.',
+      text: (url) =>
+        `Your account has been removed, ${v.name}\n\nYou created a MeinRoots account but never uploaded a CV, so there was nothing to analyse. Accounts without a CV are removed automatically after 24 hours, and yours has now been deleted along with everything in it.\n\nYou are welcome back at any time:\n${url}\n\nNothing is kept. If you did not create this account, no action is needed.`,
+    }),
+    de: (v) => ({
+      subject: 'Dein MeinRoots-Konto wurde gelöscht',
+      heading: `Dein Konto wurde gelöscht, ${v.name}`,
+      body:
+        'Du hast ein MeinRoots-Konto erstellt, aber keinen Lebenslauf hochgeladen — damit gab es nichts zu analysieren. ' +
+        'Konten ohne Lebenslauf werden nach 24 Stunden automatisch entfernt; deines wurde jetzt mit allen Daten gelöscht. ' +
+        'Du bist jederzeit wieder willkommen — die Anmeldung dauert eine Minute, und diesmal kannst du deinen Lebenslauf direkt hochladen.',
+      button: 'Neues Konto erstellen',
+      footer: 'Es wird nichts aufbewahrt. Falls du dieses Konto nicht erstellt hast, musst du nichts tun.',
+      text: (url) =>
+        `Dein Konto wurde gelöscht, ${v.name}\n\nDu hast ein MeinRoots-Konto erstellt, aber keinen Lebenslauf hochgeladen — damit gab es nichts zu analysieren. Konten ohne Lebenslauf werden nach 24 Stunden automatisch entfernt; deines wurde jetzt mit allen Daten gelöscht.\n\nDu bist jederzeit wieder willkommen:\n${url}\n\nEs wird nichts aufbewahrt. Falls du dieses Konto nicht erstellt hast, musst du nichts tun.`,
+    }),
+    fr: (v) => ({
+      subject: 'Votre compte MeinRoots a été supprimé',
+      heading: `Votre compte a été supprimé, ${v.name}`,
+      body:
+        'Vous avez créé un compte MeinRoots sans jamais téléverser de CV : il n’y avait donc rien à analyser. ' +
+        'Les comptes sans CV sont supprimés automatiquement au bout de 24 heures, et le vôtre vient de l’être avec toutes ses données. ' +
+        'Vous êtes le bienvenu à tout moment — l’inscription prend une minute, et cette fois vous pourrez téléverser votre CV immédiatement.',
+      button: 'Créer un nouveau compte',
+      footer: 'Rien n’est conservé. Si vous n’avez pas créé ce compte, aucune action n’est nécessaire.',
+      text: (url) =>
+        `Votre compte a été supprimé, ${v.name}\n\nVous avez créé un compte MeinRoots sans jamais téléverser de CV : il n’y avait donc rien à analyser. Les comptes sans CV sont supprimés automatiquement au bout de 24 heures, et le vôtre vient de l’être avec toutes ses données.\n\nVous êtes le bienvenu à tout moment :\n${url}\n\nRien n’est conservé. Si vous n’avez pas créé ce compte, aucune action n’est nécessaire.`,
+    }),
+  },
 }
 
 export const TEMPLATES = Object.keys(COPY)

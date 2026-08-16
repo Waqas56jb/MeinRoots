@@ -125,11 +125,21 @@ const run = async () => {
   const consents = me.body?.data?.user?.consents
   check('consents are returned with the session', Boolean(consents), JSON.stringify(consents))
   check('required consents are recorded as given', consents?.terms === true && consents?.data_processing === true)
-  // The registration above sent no optional consents at all. They must come back
-  // false — an omitted optional consent is a refusal, never an assumption.
+  // The registration above sent no optional consents at all. The two that are
+  // still opt-in must come back false — an omitted optional consent is a
+  // refusal, never an assumption.
   check(
     'omitted optional consents default to refused',
-    consents?.employer_sharing === false && consents?.marketing === false,
+    consents?.job_alerts === false && consents?.marketing === false,
+    JSON.stringify(consents),
+  )
+  // employer_sharing is the exception, and deliberately so: being presented to
+  // employers is what the candidate came for, so it is stated in the terms
+  // checkbox and granted by accepting them. It is asserted here rather than
+  // left untested, because it is now the one consent the server decides.
+  check(
+    'employer_sharing comes with accepting the terms',
+    consents?.employer_sharing === true,
     JSON.stringify(consents),
   )
   check('the accepted terms version is recorded', Boolean(consents?.acceptedVersion))
