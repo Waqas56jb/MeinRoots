@@ -68,6 +68,35 @@
   --risk-bg: #fef2f2;
   --risk-line: #fecaca;
 
+  /*
+   * The console's names, pointing at this palette.
+   *
+   * The three apps grew two vocabularies for the same colours: this one uses
+   * --blue-600 and --ok/--risk, the admin and recruiter builds use --brand-600
+   * and --good/--bad. Stylesheets written for the console and later used here —
+   * the contact page, the sign-up consent rows — asked for names that did not
+   * exist, and because an undefined custom property voids the whole declaration
+   * it appears in, those rules were silently dead: a selected goal card looked
+   * unselected, an error notice rendered with no colour at all, and the contact
+   * links were the same grey as the text around them.
+   *
+   * Aliases rather than new hexes, so there is still exactly one definition of
+   * each colour and the two names cannot drift apart.
+   */
+  --brand-50: var(--blue-50);
+  --brand-100: var(--blue-100);
+  --brand-400: var(--blue-400);
+  --brand-500: var(--blue-500);
+  --brand-600: var(--blue-600);
+  --brand-700: var(--blue-700);
+
+  --good: var(--ok-ink);
+  --good-bg: var(--ok-bg);
+  --good-line: var(--ok-line);
+  --bad: var(--risk-ink);
+  --bad-bg: var(--risk-bg);
+  --bad-line: var(--risk-line);
+
   /* Elevation */
   --shadow-xs: 0 1px 2px rgba(12, 32, 74, 0.06);
   --shadow-sm: 0 2px 8px rgba(12, 32, 74, 0.06);

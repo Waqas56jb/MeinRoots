@@ -218,11 +218,47 @@ const run = async () => {
   check('unknown route returns a structured 404', notFound.status === 404 && notFound.body?.error?.code === 'not_found')
 
   process.stdout.write(`\n  ${passed} passed, ${failed} failed\n`)
-  process.stdout.write(`  test account left behind: ${email}\n\n`)
-  process.exit(failed ? 1 : 0)
 }
 
-run().catch((err) => {
-  process.stderr.write(`smoke test crashed: ${err.message}\n`)
-  process.exit(1)
-})
+/**
+ * Removes what this run created.
+ *
+ * It used to print "test account left behind" and exit, which over a couple of
+ * days left thirty-odd @meinroots.test accounts sitting in the production
+ * console. The client saw a list of profiles with no CV that appeared never to
+ * be cleaned up and reported the deletion feature as broken three times; the
+ * feature was working, and this was the mess it was working around.
+ *
+ * Runs even when the suite fails — a failed run leaves more behind, not less.
+ * Matched on the exact addresses this run used, so a parallel run or a real
+ * candidate can never be caught by it.
+ */
+const teardown = async () => {
+  const { closePool, query } = await import('../db/pool.js')
+  try {
+    // The suite only ever creates one account. The x…/y… addresses belong to
+    // registrations it expects to be *rejected*, so nothing should exist for
+    // them — they are swept anyway, because "should" is how leftovers happen.
+    const { rowCount } = await query(
+      `DELETE FROM users
+        WHERE email = $1
+           OR email ~ '^[xy][0-9]{13}@meinroots\\.test$'`,
+      [email],
+    )
+    process.stdout.write(`  cleaned up ${rowCount} test account(s)\n\n`)
+  } catch (err) {
+    process.stdout.write(`  WARNING: could not clean up test accounts — ${err.message}\n\n`)
+  } finally {
+    await closePool().catch(() => {})
+  }
+}
+
+run()
+  .catch((err) => {
+    failed += 1
+    process.stderr.write(`smoke test crashed: ${err.message}\n`)
+  })
+  .finally(async () => {
+    await teardown()
+    process.exit(failed ? 1 : 0)
+  })

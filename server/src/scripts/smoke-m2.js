@@ -280,11 +280,48 @@ const run = async () => {
   const badSort = await call(rec, 'GET', '/api/recruiter/candidates?sort=users;DROP')
   check('an unknown sort key is rejected', badSort.status === 400, `status ${badSort.status}`)
 
-  process.stdout.write(`\n  ${passed} passed, ${failed} failed\n\n`)
-  process.exit(failed ? 1 : 0)
+  process.stdout.write(`\n  ${passed} passed, ${failed} failed\n`)
 }
 
-run().catch((err) => {
-  process.stderr.write(`\nsmoke run failed: ${err.message}\n`)
-  process.exit(1)
-})
+/**
+ * Removes what this run created.
+ *
+ * There was no teardown at all, and each run registers a candidate, a recruiter
+ * with a company, and two more recruiters for the isolation checks. Over a
+ * couple of days that left ten test candidates and twenty-six test companies in
+ * the production console — enough that the client reported the no-CV cleanup as
+ * broken three times while looking at a list made almost entirely of my test
+ * accounts.
+ *
+ * Every address this suite creates carries the same `stamp`, so one pattern
+ * removes exactly this run and nothing else. Companies go with their owner:
+ * company_members cascades from users, and a company with no members is removed
+ * explicitly because companies has no owner column to cascade from.
+ */
+const teardown = async () => {
+  const { closePool, query } = await import('../db/pool.js')
+  try {
+    const users = await query('DELETE FROM users WHERE email LIKE $1', [`%${stamp}@meinroots.test`])
+    const companies = await query(
+      `DELETE FROM companies c
+        WHERE NOT EXISTS (SELECT 1 FROM company_members m WHERE m.company_id = c.id)
+          AND c.legal_name = ANY($1::text[])`,
+      [['Nordwind Pflege GmbH', 'Other Company Ltd']],
+    )
+    process.stdout.write(`  cleaned up ${users.rowCount} account(s), ${companies.rowCount} compan(ies)\n\n`)
+  } catch (err) {
+    process.stdout.write(`  WARNING: could not clean up test data — ${err.message}\n\n`)
+  } finally {
+    await closePool().catch(() => {})
+  }
+}
+
+run()
+  .catch((err) => {
+    failed += 1
+    process.stderr.write(`\nsmoke run failed: ${err.message}\n`)
+  })
+  .finally(async () => {
+    await teardown()
+    process.exit(failed ? 1 : 0)
+  })

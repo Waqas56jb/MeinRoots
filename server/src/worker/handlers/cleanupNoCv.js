@@ -45,8 +45,17 @@ const MAX_AGE_HOURS = 24
 const BATCH = 50
 const MAX_BATCHES = 40
 
-/** How long until the next sweep. */
-const INTERVAL_HOURS = 6
+/**
+ * How long until the next sweep.
+ *
+ * Hourly, not six-hourly. The rule is "gone after 24 hours", and a six-hour
+ * cadence meant an account could sit for thirty — long enough for the person
+ * looking at the list to conclude nothing was happening, which is exactly what
+ * was reported. An hour makes the worst case 25, and the scan is one indexed
+ * range read over live candidate rows, so the cost of asking more often is
+ * nothing.
+ */
+const INTERVAL_HOURS = 1
 
 export const CLEANUP_JOB = 'candidates.cleanup_no_cv'
 

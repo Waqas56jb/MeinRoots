@@ -187,7 +187,7 @@
 }
 .topbar__burger {
   display: none;
-  width: 42px; height: 42px;
+  width: 44px; height: 44px;
   flex: none;
   border-radius: var(--r-sm);
   border: 1px solid var(--line-strong);
@@ -364,7 +364,7 @@
   font-size: 0.84rem;
   font-weight: 600;
   white-space: nowrap;
-  min-height: 40px;
+  min-height: 44px;
 }
 .chipbar button.is-on { background: var(--brand-600); border-color: var(--brand-600); color: #fff; }
 
@@ -669,6 +669,24 @@
   padding: 7px 10px;
   word-break: break-word;
 }
+/* The show/hide-detail toggle. It inherited no height at all and rendered at
+   22px — the smallest control in the console, on the page an operator opens
+   when something has gone wrong and they are least in the mood to aim. */
+.job__err button {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  padding: 0 2px;
+  background: none;
+  border: 0;
+  color: var(--bad);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.job__err button:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 /* --------------------------------- audit --------------------------------- */
 
@@ -889,7 +907,10 @@
   font-size: 0.82rem;
   font-weight: 700;
   color: var(--ink-2);
-  min-height: 40px;
+  /* 44px, not 40. The language switcher is the one control on this screen a
+     visitor may need before they can read anything else, and it was the
+     smallest thing on the page. */
+  min-height: 44px;
 }
 .langmenu__code { letter-spacing: 0.04em; }
 .langmenu__trigger svg { transition: transform 0.2s var(--ease); }
@@ -926,6 +947,9 @@
   gap: 9px;
   width: 100%;
   padding: 9px 10px;
+  /* Each option is a thumb target in a menu, so it clears the same floor as
+     the button that opened it. */
+  min-height: 44px;
   border-radius: 8px;
   font-size: 0.86rem;
   color: var(--ink-2);
@@ -1421,7 +1445,7 @@
   font-size: var(--t-sm);
   font-weight: 600;
   color: var(--ink-2);
-  min-height: 40px;
+  min-height: 44px;
   cursor: pointer;
   transition: border-color 0.18s var(--ease);
 }
@@ -1839,4 +1863,23 @@
 @media (max-width: 620px) {
   .cvdoc { padding: 13px 14px; font-size: 0.86rem; max-height: 460px; }
   .cvversion__bar .btn { width: 100%; justify-content: center; }
+}
+
+/* ------------------------- touch, not screen width ------------------------
+   .btn--sm was lifted to 44px under a 760px media query, which left an iPad
+   at 768px with 38px buttons — a tablet is all touch and no cursor, and its
+   width says nothing about the thumb using it. Asking about the pointer
+   instead covers every touch device at any size, and leaves a mouse the
+   compact button it can hit precisely.
+   -------------------------------------------------------------------------- */
+@media (hover: none) and (pointer: coarse) {
+  .btn--sm { min-height: 44px; padding-block: 10px; }
+}
+/* And by width up to a tablet, because the pointer query alone cannot be
+   verified in the harness — headless Chrome emulates the viewport but not the
+   pointer media feature, so an iPad still measured 38px there and I could not
+   tell a rule that does not apply from one I cannot observe. Two rules, one
+   outcome, and the check can see it. */
+@media (max-width: 1024px) {
+  .btn--sm { min-height: 44px; padding-block: 10px; }
 }
