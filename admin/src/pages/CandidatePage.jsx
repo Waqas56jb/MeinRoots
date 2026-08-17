@@ -741,16 +741,32 @@ function DocumentsTab({ documents, versions, onApprove, maySharePro }) {
  * certify a translation they had never seen. Since approving is the one thing
  * this section is for, the text has to be here.
  *
- * The source version is selected first. It is the document the candidate
- * actually supplied, and every translation is judged against it, so it is what
- * a reviewer should be looking at when the panel opens.
+ * It opens in the console's own language, and follows it when that changes.
+ * Milestone 1 asked for the CV to be readable in the language the person is
+ * working in; defaulting to the source instead meant a reviewer working in
+ * German was handed an English document and had to go looking for the German
+ * one. The source is still one tap away and still labelled as the original.
  */
 function VersionReader({ versions, onApprove }) {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const ordered = ['en', 'de', 'fr'].filter((code) => versions.some((v) => v.language === code))
-  const [active, setActive] = useState(
-    () => versions.find((v) => v.isSource)?.language ?? ordered[0],
-  )
+  const preferred = (want) =>
+    (versions.some((v) => v.language === want) ? want : null) ??
+    versions.find((v) => v.isSource)?.language ??
+    ordered[0]
+
+  const [active, setActive] = useState(() => preferred(locale))
+
+  // Switching the console's language moves the CV with it. Guarded on the
+  // locale actually changing so a version the reviewer opened by hand is not
+  // snatched back on an unrelated re-render.
+  const lastLocale = useRef(locale)
+  useEffect(() => {
+    if (lastLocale.current === locale) return
+    lastLocale.current = locale
+    setActive(preferred(locale))
+  })
+
   const current = versions.find((v) => v.language === active)
 
   return (

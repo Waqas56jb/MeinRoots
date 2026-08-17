@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import AppShell from '../components/app/AppShell.jsx'
 import UploadCard from '../components/app/UploadCard.jsx'
 import AnalysisProgress from '../components/app/AnalysisProgress.jsx'
@@ -82,6 +82,27 @@ export default function MyCvPage() {
       setBusy(false)
     }
   }
+
+  /*
+    The CV follows the interface language.
+
+    It opened in the interface language and then stopped listening: switching
+    the site to German left the English CV on screen, because `active` was only
+    ever set on mount and by the fallback below. Milestone 1 asked for the
+    version to match the language the person is reading the site in, so a change
+    of language moves the CV with it.
+
+    Keyed on the locale changing rather than on every render, so a version the
+    reader picked by hand survives the translation poll refreshing `versions`
+    underneath it — it is only overridden when they actually switch language,
+    which is them asking for exactly this.
+  */
+  const lastLocale = useRef(locale)
+  useEffect(() => {
+    if (lastLocale.current === locale) return
+    lastLocale.current = locale
+    if (versions?.some((v) => v.language === locale)) setActive(locale)
+  }, [locale, versions])
 
   const current = versions?.find((v) => v.language === active)
 

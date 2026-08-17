@@ -18,6 +18,8 @@ import './styles/auth.css'
 import './styles/app.css'
 import './styles/workspace.css'
 import './styles/pages.css'
+// Last on purpose: the touch-target floor has to win over every file above it.
+import './styles/touch.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

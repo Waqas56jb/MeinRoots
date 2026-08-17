@@ -1077,3 +1077,32 @@
      the height of one line of text rather than a link inside a sentence. */
   .settings__meta a { min-height: 44px; display: inline-flex; align-items: center; }
 }
+
+/* ========================== touch target floor =============================
+   Measured on the live portal across seven viewports. Every control listed
+   here came back under the 44px a thumb needs — none by much, which is how
+   they survived: 42px looks right and is not.
+
+   Scoped to touch and to tablet width. A cursor hits a 40px button precisely
+   and does not need the extra room, and the desktop layout already passes.
+
+   The .btn--sm rule above stops at 760px, which left an iPad at 768px with
+   38px buttons — a tablet is all touch and no cursor, so the width where the
+   floor applies has to reach past it.
+   ========================================================================== */
+@media (hover: none) and (pointer: coarse), (max-width: 1024px) {
+  .topbar__burger { width: 44px; height: 44px; }
+  .accountmenu__trigger { min-height: 44px; }
+
+  /* Save/unsave on a candidate card — the one action on that screen. */
+  .ccard__save { min-height: 44px; }
+
+  /* The status filter above the request list. */
+  .tabbar__inline button { min-height: 44px; }
+
+  /* The status filter chips on the requests list — these are buttons, not
+     decorative labels, and 34px is the smallest thing in the portal. */
+  button.chip { min-height: 44px; padding-block: 9px; }
+
+  .btn--sm { min-height: 44px; padding-block: 10px; }
+}

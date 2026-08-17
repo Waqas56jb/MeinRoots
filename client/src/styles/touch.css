@@ -1,0 +1,55 @@
+/* ========================== touch target floor =============================
+   Measured on the live site across seven viewports, then listed here rather
+   than guessed at. Every control below came back under the 44px a thumb needs;
+   several already had a 44px rule, but only inside a 520px media query, so a
+   large phone or a tablet missed it entirely.
+
+   Scoped to touch, and to tablet width for the emulators that report a mouse:
+   a cursor can hit a 40px button precisely and does not need the extra room.
+
+   What is deliberately NOT here: links inside a sentence, such as the Privacy
+   Policy link in the consent rows. Their box is one line of text by
+   definition, and giving them a 44px height would break the paragraph they sit
+   in to fix a number. The row around them is the target that matters, and that
+   one clears 44px.
+   Its own file, imported last. The first attempt lived in sections.css, which
+   loads before home.css, footer.css and auth.css — so every rule here lost to
+   an equally specific one in a later file and the social icons and demo tabs
+   stayed at 40px. Ordering, not specificity, was the whole problem.
+   ========================================================================== */
+@media (hover: none) and (pointer: coarse), (max-width: 1024px) {
+  /* Logo, in the header and on the auth pages — it is the way home. */
+  .brand,
+  .auth__brand { min-height: 44px; }
+
+  /* The language switcher. The one control someone may need before they can
+     read anything else on the page. */
+  .lang-menu__trigger { min-height: 44px; }
+
+  /* The demo CV's language tabs on the landing page. */
+  .cvdoc-demo__tabs button { min-height: 44px; }
+
+  /* Footer and contact details: the phone number, the contact link and the
+     social icons were 23, 23 and 40px. */
+  .footer__contact a,
+  .contactaside__list a {
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+  }
+  .footer__social a { width: 44px; height: 44px; }
+
+  .nav__login { display: inline-flex; align-items: center; min-height: 44px; }
+
+  /* Sign-up: the goal chips and the show-password toggle. The toggle had a
+     44px rule already, two breakpoints below where it was needed. */
+  .goalpick__chip { min-height: 44px; }
+  .ffield__toggle { width: 44px; height: 44px; padding: 0; }
+
+  /* The contact form's controls. The recruiter dropdown measured 24px. */
+  .field__box select,
+  .field__box input { min-height: 44px; }
+
+  /* Any button that still sets a smaller height of its own. */
+  .btn { min-height: 44px; }
+}
