@@ -245,7 +245,12 @@
     left: 0; right: 0; bottom: 0;
     z-index: 40;
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* One row, whatever the item count. `repeat(4, 1fr)` silently wrapped
+       seven links onto a second row, and nothing below accounted for the extra
+       height, so the foot of every page — the pagination, on the list that
+       needs it — sat underneath the bar. Column flow cannot wrap. */
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
     background: rgba(255, 255, 255, 0.94);
     backdrop-filter: saturate(180%) blur(14px);
     border-top: 1px solid var(--line);

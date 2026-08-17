@@ -23,9 +23,9 @@ const GROUPS = [
   {
     key: 'operations',
     items: [
-      { to: '/', key: 'overview', icon: 'gauge', end: true },
-      { to: '/candidates', key: 'candidates', icon: 'users', badge: 'candidates' },
-      { to: '/queue', key: 'queue', icon: 'layers', badge: 'queue' },
+      { to: '/', key: 'overview', icon: 'gauge', end: true, primary: true },
+      { to: '/candidates', key: 'candidates', icon: 'users', badge: 'candidates', primary: true },
+      { to: '/queue', key: 'queue', icon: 'layers', badge: 'queue', primary: true },
     ],
   },
   {
@@ -34,7 +34,7 @@ const GROUPS = [
     // make neither scannable.
     key: 'market',
     items: [
-      { to: '/recruiters', key: 'recruiters', icon: 'company' },
+      { to: '/recruiters', key: 'recruiters', icon: 'company', primary: true },
       { to: '/requests', key: 'requests', icon: 'message' },
       { to: '/subscriptions', key: 'subscriptions', icon: 'card' },
     ],
@@ -45,8 +45,16 @@ const GROUPS = [
   },
 ]
 
-/** The same items, flat, for the phone tab bar where grouping has no room. */
-const NAV = GROUPS.flatMap((g) => g.items)
+/**
+ * The four the bar has room for. The rest are a tap away in the drawer.
+ *
+ * All seven used to go in, into a four-column grid, so the bar silently became
+ * two rows — about 140px of a 667px phone. Nothing accounted for the second
+ * row, so the last stretch of every page sat underneath it, and on the
+ * candidate list that stretch is the pagination. The client reported it as a
+ * missing next-page button; it was there, behind the navigation.
+ */
+const NAV = GROUPS.flatMap((g) => g.items).filter((i) => i.primary)
 
 /**
  * @param drop  Which way the list opens. The sidebar footer sits at the bottom
